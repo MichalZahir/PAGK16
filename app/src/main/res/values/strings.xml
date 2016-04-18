@@ -13,4 +13,5 @@
     <string name="fbLogin">Login with Facebook</string>
     <string name="name">Fullname</string>
     <string name="facebook_app_id">1618163225119724</string>
+    <string name="title_activity_new_game">NewGameActivity</string>
 </resources>

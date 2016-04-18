@@ -31,6 +31,8 @@ public class ProfileActivity extends Activity {
     String UserName;
     private TextView UserNameTectView;
     private Button LOGOutButton;
+    private Button newGameButton;
+
     AccessToken accessToken;
     // Session Manager Class
     SessionManager session;
@@ -49,7 +51,7 @@ public class ProfileActivity extends Activity {
 
 //        session = new SessionManager(getApplicationContext());
         LOGOutButton = (Button) findViewById(R.id.LogOutButton);
-
+        newGameButton = (Button) findViewById(R.id.newGameButton);
 //        if (session.checkLogin()){
             // get user data from session
             //HashMap<String, String> user = session.getUserDetails();
@@ -105,6 +107,18 @@ public class ProfileActivity extends Activity {
 
             public void onClick(View view) {
                 logOut();
+            }
+        });
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        NewGameActivity.class);
+                //i.setFlags(16777216);
+                startActivity(i);
+                finish();
+
+
             }
         });
     }

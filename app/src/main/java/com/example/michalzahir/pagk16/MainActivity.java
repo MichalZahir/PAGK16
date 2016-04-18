@@ -217,9 +217,11 @@ public class MainActivity extends AppCompatActivity {
 
                     Intent i = new Intent(getApplicationContext(),
                             ProfileActivity.class);
+                    //makes the profile activity the home activity
+                    //i.setFlags(16384);
                     i.putExtra("name", name);
-                   // startActivity(i);
-                    startActivityForResult(i, 1);
+                    startActivity(i);
+                    //startActivityForResult(i, 1);
 
                     finish();
 

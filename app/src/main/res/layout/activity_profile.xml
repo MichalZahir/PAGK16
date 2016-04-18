@@ -5,11 +5,11 @@
     android:weightSum="1">
 
     <TextView
-        android:layout_width="258dp"
+        android:layout_width="276dp"
         android:layout_height="wrap_content"
         android:text="Welcom to Play and get knolwedge"
         android:id="@+id/UserNameIcone"
-        android:layout_weight="0.18" />
+        android:layout_weight="0.28" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -18,4 +18,12 @@
         android:text="Log out"
         android:id="@+id/LogOutButton"
         android:layout_gravity="right" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Game"
+        android:id="@+id/newGameButton"
+        android:layout_weight="0.18"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
