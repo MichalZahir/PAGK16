@@ -50,7 +50,8 @@
             android:name=".Profile2_ScrollingActivity"
             android:label="@string/title_activity_profile2__scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".categoryChoiceActivity"></activity>
+        <activity android:name=".categoryChoiceActivity" />
+        <activity android:name=".questionActivity"></activity>
     </application>
 
 </manifest>
