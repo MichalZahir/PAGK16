@@ -37,7 +37,7 @@ public class NewGameActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
-                        CategoryChoiceActivity.class);
+                        categoryChoiceActivity.class);
                 startActivity(i);
                 //finish();
 

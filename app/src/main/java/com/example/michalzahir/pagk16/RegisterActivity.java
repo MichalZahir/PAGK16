@@ -139,7 +139,7 @@ public class RegisterActivity extends Activity {
                     // session.createLoginSession(name, password);
 
                     Intent i = new Intent(getApplicationContext(),
-                            ProfileActivity.class);
+                            Profile2_ScrollingActivity.class);
                     i.putExtra("name", name);
                     // startActivity(i);
                     startActivityForResult(i, 1);

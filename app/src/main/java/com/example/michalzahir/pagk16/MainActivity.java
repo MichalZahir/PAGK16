@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             Intent i = new Intent(getApplicationContext(),
-                    ProfileActivity.class);
+                    Profile2_ScrollingActivity.class);
              startActivity(i);
 
          }
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(" faceboook UserNameFb  : " + UserNameFb);
 
             Intent i = new Intent(getApplicationContext(),
-                    ProfileActivity.class);
+                    Profile2_ScrollingActivity.class);
             startActivity(i);
 
         }
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                    // session.createLoginSession(name, password);
 
                     Intent i = new Intent(getApplicationContext(),
-                            ProfileActivity.class);
+                            Profile2_ScrollingActivity.class);
                     //makes the profile activity the home activity
                     //i.setFlags(16384);
                     i.putExtra("name", name);
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                 // user logged in successfully
 
                 Intent i = new Intent(getApplicationContext(),
-                        ProfileActivity.class);
+                        Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
                 String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
                  i.putExtra ( "name", UserNameFb );
