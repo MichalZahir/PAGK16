@@ -10,7 +10,7 @@ import com.example.michalzahir.pagk16.adapter.RecyclerAdapter;
 import com.example.michalzahir.pagk16.model.Landscape;
 
 public class categoryChoiceActivity extends AppCompatActivity {
-
+    public static RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +21,7 @@ public class categoryChoiceActivity extends AppCompatActivity {
     }
     private void setUpRecyclerView(){
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         RecyclerAdapter adapter = new RecyclerAdapter(Landscape.getData(),this);
         recyclerView.setAdapter(adapter);
 
