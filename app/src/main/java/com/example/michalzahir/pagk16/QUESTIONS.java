@@ -12,32 +12,32 @@ public class QUESTIONS {
     private Date updated;
     private String QUESTION;
     private String ANSWER_A;
-    private String answer_b;
-    private String answer_c;
+    private String ANSWER_B;
+    private String ANSWER_C;
 
 
 
-    private String answer_d;
-    private Boolean correct_a;
-    private Boolean correct_b;
-    private Boolean correct_c;
-    private Boolean correct_d;
+    private String ANSWER_D;
+    private Boolean CORRECT_A;
+    private Boolean CORRECT_B;
+    private Boolean CORRECT_C;
+    private Boolean CORRECT_D;
 
     public QUESTIONS(String objectId, int ID, Date created, Date updated, String ANSWER_A, String QUESTION,
-                     String answer_b, String answer_c, String answer_d, Boolean correct_a,
-                     Boolean correct_b,Boolean correct_c, Boolean correct_d) {
+                     String ANSWER_B, String ANSWER_C, String ANSWER_D, Boolean CORRECT_A,
+                     Boolean CORRECT_B, Boolean CORRECT_C, Boolean CORRECT_D) {
         this.objectId = objectId;
         this.created = created;
         this.updated = updated;
         this.ANSWER_A = ANSWER_A;
         this.QUESTION = QUESTION;
-        this.answer_b = answer_b;
-        this.answer_c = answer_c;
-        this.answer_d = answer_d;
-        this.correct_a = correct_a;
-        this.correct_b = correct_b;
-        this.correct_c = correct_c;
-        this.correct_d = correct_d;
+        this.ANSWER_B = ANSWER_B;
+        this.ANSWER_C = ANSWER_C;
+        this.ANSWER_D = ANSWER_D;
+        this.CORRECT_A = CORRECT_A;
+        this.CORRECT_B = CORRECT_B;
+        this.CORRECT_C = CORRECT_C;
+        this.CORRECT_D = CORRECT_D;
         this.ID = ID;
     }
 
@@ -52,36 +52,36 @@ public class QUESTIONS {
         this.ID = ID;
     }
 
-    public Boolean getCorrect_a() {
-        return correct_a;
+    public Boolean getCORRECT_A() {
+        return CORRECT_A;
     }
 
-    public void setCorrect_a(Boolean correct_a) {
-        this.correct_a = correct_a;
+    public void setCORRECT_A(Boolean CORRECT_A) {
+        this.CORRECT_A = CORRECT_A;
     }
 
-    public Boolean getCorrect_b() {
-        return correct_b;
+    public Boolean getCORRECT_B() {
+        return CORRECT_B;
     }
 
-    public void setCorrect_b(Boolean correct_b) {
-        this.correct_b = correct_b;
+    public void setCORRECT_B(Boolean CORRECT_B) {
+        this.CORRECT_B = CORRECT_B;
     }
 
-    public Boolean getCorrect_d() {
-        return correct_d;
+    public Boolean getCORRECT_D() {
+        return CORRECT_D;
     }
 
-    public void setCorrect_d(Boolean correct_d) {
-        this.correct_d = correct_d;
+    public void setCORRECT_D(Boolean CORRECT_D) {
+        this.CORRECT_D = CORRECT_D;
     }
 
-    public Boolean getCorrect_c() {
-        return correct_c;
+    public Boolean getCORRECT_C() {
+        return CORRECT_C;
     }
 
-    public void setCorrect_c(Boolean correct_c) {
-        this.correct_c = correct_c;
+    public void setCORRECT_C(Boolean CORRECT_C) {
+        this.CORRECT_C = CORRECT_C;
     }
 
     public String getObjectId()
@@ -97,12 +97,12 @@ public class QUESTIONS {
         this.ANSWER_A = ANSWER_A;
     }
 
-    public String getAnswer_b() {
-        return answer_b;
+    public String getANSWER_B() {
+        return ANSWER_B;
     }
 
-    public void setAnswer_b(String answer_b) {
-        this.answer_b = answer_b;
+    public void setANSWER_B(String ANSWER_B) {
+        this.ANSWER_B = ANSWER_B;
     }
 
     public String getQuestion() {
@@ -113,20 +113,20 @@ public class QUESTIONS {
         this.QUESTION = QUESTION;
     }
 
-    public String getAnswer_c() {
-        return answer_c;
+    public String getANSWER_C() {
+        return ANSWER_C;
     }
 
-    public void setAnswer_c(String answer_c) {
-        this.answer_c = answer_c;
+    public void setANSWER_C(String ANSWER_C) {
+        this.ANSWER_C = ANSWER_C;
     }
 
-    public String getAnswer_d() {
-        return answer_d;
+    public String getANSWER_D() {
+        return ANSWER_D;
     }
 
-    public void setAnswer_d(String answer_d) {
-        this.answer_d = answer_d;
+    public void setANSWER_D(String ANSWER_D) {
+        this.ANSWER_D = ANSWER_D;
     }
 
     public void setObjectId( String objectId )

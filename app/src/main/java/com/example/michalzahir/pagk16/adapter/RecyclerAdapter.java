@@ -1,7 +1,9 @@
 package com.example.michalzahir.pagk16.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
@@ -14,7 +16,9 @@ import android.widget.Toast;
 
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.categoryChoiceActivity;
+import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.model.Landscape;
+import com.example.michalzahir.pagk16.questionActivity;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -105,13 +109,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         @Override
         public void onClick(View v) {
-            int itemPosition = categoryChoiceActivity.recyclerView.getChildLayoutPosition(v);
+            int itemPosition = categoryChoiceActivity.recyclerView.indexOfChild(v);
+            //int itemPosition1 = categoryChoiceActivity.recyclerView.getChildAdapterPosition(v);
+            //int itemPosition2 = categoryChoiceActivity.recyclerView.getChildLayoutPosition(v);
+            System.out.println(" 1   "+itemPosition    );
             Landscape item = mdata.get(itemPosition);
 
             Toast.makeText(context, "Item Clicked  item position : "+itemPosition +"Image ID:    "+item.getImageID()+"Category:   "+item.getCategory(), Toast.LENGTH_LONG).show();
-
-            //v.getVerticalScrollbarPosition();
-            //Toast.makeText(mContext, item, Toast.LENGTH_LONG).show();
+            gettingQuestions gt  = new gettingQuestions(context);
+            Bundle bundle;
+            bundle = gt.getQuestions();
+            System.out.println("bundle from the middle tier : "+bundle);
+            Intent i = new Intent(context, questionActivity.class);
+            i.putExtras(bundle);
+            context.startActivity(i);
 
         }
     }
