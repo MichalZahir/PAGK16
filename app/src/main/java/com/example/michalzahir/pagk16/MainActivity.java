@@ -76,7 +76,18 @@ public class MainActivity extends AppCompatActivity {
         //backendless namiary na apke
         final String appVersion = "v1";
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+        String ProjectNumberNotification = "687259024455";
+        Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
+            }
 
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+            }
+        });
 
 
 
