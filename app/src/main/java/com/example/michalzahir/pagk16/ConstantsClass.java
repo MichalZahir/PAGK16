@@ -9,6 +9,6 @@ public class ConstantsClass {
     final static int HistoryQuestiSize = 10;
     final static int MedicineQuestiSize = 10;
     final static int ScienceQuestiSize = 10;
-    final static int QuestionsQuestSize = 10;
+    public final static int QuestionsQuestSize = 10;
 
 }

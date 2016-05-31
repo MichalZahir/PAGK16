@@ -20,10 +20,20 @@ import java.util.Random;
  */
 public class gettingQuestions extends Application {
     private static final String TAG = gettingQuestions.class.getSimpleName();
-    private  Bundle  bundle = new Bundle();
-
     Context context;
-    public gettingQuestions(Context context) {
+    private Bundle  bundle ;
+
+    public Bundle getBundle() {
+        return bundle;
+    }
+
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
+
+
+    public gettingQuestions(Bundle bundle, Context context) {
+        this.bundle = bundle;
         this.context = context;
     }
 
@@ -46,22 +56,22 @@ public class gettingQuestions extends Application {
                         @Override
                         public void handleResponse(QUESTIONS response) {
                             // a Contact instance has been found by ObjectId
-
+                            Bundle insideBundle = new Bundle();
                             System.out.println("this is the question from the backendless DB  "+response.getQuestion()
                                    +".    this is the first answer   "+response.getAnswer_a()+".   Hurrraaa success !!!!"+response.getCORRECT_A()+" B boolean:"+response.getCORRECT_B()+" D boolean:"+response.getCORRECT_D()+" C boolean:"+response.getCORRECT_C()+"AA"+response.getAnswer_a()+"bA"+response.getANSWER_B()+"cA"+response.getANSWER_C()+"DA"+response.getANSWER_D());
-                            bundle.putString("Question",response.getQuestion());
-                            bundle.putString("Answer_A",response.getAnswer_a());
-                            bundle.putString("Answer_B",response.getANSWER_B());
-                            bundle.putString("Answer_C",response.getANSWER_C());
-                            bundle.putString("Answer_D",response.getANSWER_D());
-                            bundle.putBoolean("correct_A",response.getCORRECT_A());
-                            bundle.putBoolean("correct_B",response.getCORRECT_B());
-                            bundle.putBoolean("correct_D",response.getCORRECT_C());
-                            bundle.putBoolean("correct_C",response.getCORRECT_D());
+                            insideBundle.putString("Question",response.getQuestion());
+                            insideBundle.putString("Answer_A",response.getAnswer_a());
+                            insideBundle.putString("Answer_B",response.getANSWER_B());
+                            insideBundle.putString("Answer_C",response.getANSWER_C());
+                            insideBundle.putString("Answer_D",response.getANSWER_D());
+                            insideBundle.putBoolean("correct_A",response.getCORRECT_A());
+                            insideBundle.putBoolean("correct_B",response.getCORRECT_B());
+                            insideBundle.putBoolean("correct_D",response.getCORRECT_C());
+                            insideBundle.putBoolean("correct_C",response.getCORRECT_D());
 
-                            Log.d(TAG, "trying to fetch questions from DB" +bundle);
+                            Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " +insideBundle);
                             //StartActivity(bundle ,context);
-
+                            setBundle(insideBundle);
                         }
 
                         @Override
@@ -77,8 +87,16 @@ public class gettingQuestions extends Application {
                             Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass());
 
             }});
+        Log.d(TAG, "Bundle b4 returnning it :       " +getBundle());
         return bundle;
 
+    }
+    public Bundle passBundle (QUESTIONS q){
+
+
+
+        Bundle bundle = new Bundle();
+        return  bundle;
     }
 
 }
