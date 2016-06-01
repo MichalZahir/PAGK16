@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.backendless.Messaging;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -255,6 +256,56 @@ public class MainActivity extends AppCompatActivity {
 
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
+                final String currentUserObjectId = backendlessUser.getObjectId();
+                String ProjectNumberNotification = "687259024455";
+                // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+                Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
+                        final String Device_ID = Messaging.DEVICE_ID;
+                        Log.d(TAG,"The Device ID is :  "+Device_ID);
+                       // UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
+
+                        //Backendless.UserService.loggedInUser();
+                        System.out.println("the current user for fb users :    " + currentUserObjectId);
+
+
+                        Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
+                        public void handleResponse(BackendlessUser backendlessUser )
+                        {
+                            System.out.println(backendlessUser.getObjectId());
+                            backendlessUser.setProperty("Device_ID", Device_ID);
+
+                            Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                                public void handleResponse(BackendlessUser user) {
+                                    Log.d(TAG, "The Device ID is updated succeffully for the user  :" + user.getUserId());
+                                }
+
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.d(TAG, "User not updated (Device ID Update ) for the reasons" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+
+                                }
+                            });
+
+
+                        }
+
+                            @Override
+                            public void handleFault( BackendlessFault fault )
+                            {
+                                System.err.println( "Error - " + fault );
+                            }});
+
+
+
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                    }
+                });
                 String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
                  i.putExtra ( "name", UserNameFb );
                 //startActivity(i);
@@ -268,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 // failed to log in
             }
         });
-        RegisterDeviceUpdateUserDeviceID();
+        //RegisterDeviceUpdateUserDeviceID();
 
 
     }
