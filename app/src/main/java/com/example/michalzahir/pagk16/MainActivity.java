@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             System.out.println(" faceboook UserNameFb  : " + UserNameFb);
-
+            RegisterDeviceUpdateUserDeviceID();
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
             startActivity(i);
@@ -251,6 +251,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
+
+
+                System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
+                Backendless.UserService.setCurrentUser(backendlessUser);
                 String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
                  i.putExtra ( "name", UserNameFb );
                 //startActivity(i);
@@ -264,6 +268,8 @@ public class MainActivity extends AppCompatActivity {
                 // failed to log in
             }
         });
+        RegisterDeviceUpdateUserDeviceID();
+
 
     }
     private void showDialog() {
@@ -298,5 +304,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 }
