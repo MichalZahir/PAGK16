@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
 import com.backendless.async.callback.BackendlessCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
@@ -97,11 +98,6 @@ public class RegisterActivity extends Activity {
                     Log.i("Registration", backendlessUser.getEmail() + " successfully registered");
 
 
-//                    Intent i = new Intent(getApplicationContext(),
-//                            ProfileActivity.class);
-
-                    //i.putExtra ( "name",name);
-                    //startActivity(i);
                     Login(name,password);
                     finish();
 
@@ -141,6 +137,7 @@ public class RegisterActivity extends Activity {
                     Intent i = new Intent(getApplicationContext(),
                             Profile2_ScrollingActivity.class);
                     i.putExtra("name", name);
+                    RegisterDeviceUpdateUserDeviceID();
                     // startActivity(i);
                     startActivityForResult(i, 1);
 
@@ -154,8 +151,33 @@ public class RegisterActivity extends Activity {
         {
             String fault = exception.getCause().toString()+exception.getCode()+exception.getMessage();
             Log.i("Log in Error",fault);
-            // an error has occurred, the error code can be retrieved with fault.getCode()
+            Toast.makeText(getApplicationContext(),
+                    "Login Failed! " + exception.getCause()+"  "+ exception.getMessage(), Toast.LENGTH_LONG)
+                    .show();
         }
+
+    }
+    public void RegisterDeviceUpdateUserDeviceID(){
+
+
+        String ProjectNumberNotification = "687259024455";
+        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+        Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
+                String Device_ID = Backendless.Messaging.DEVICE_ID;
+                Log.d(TAG,"The Device ID is :  "+Device_ID);
+                UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+            }
+        });
+
+
 
     }
 }

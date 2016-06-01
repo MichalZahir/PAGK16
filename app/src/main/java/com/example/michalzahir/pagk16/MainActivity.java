@@ -77,17 +77,8 @@ public class MainActivity extends AppCompatActivity {
         final String appVersion = "v1";
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         String ProjectNumberNotification = "687259024455";
-        Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
-            @Override
-            public void handleResponse(Void response) {
-                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
-            }
-        });
+        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+        RegisterDeviceUpdateUserDeviceID();
 
 
 
@@ -108,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if( accessToken != null){
             System.out.println("access token user token faceboook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
+
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             System.out.println(" faceboook UserNameFb  : " + UserNameFb);
 
@@ -146,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),
                         RegisterActivity.class);
+
                 startActivity(i);
                 finish();
             }
@@ -158,20 +151,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        ///Test code backendless register one user
 
-//        BackendlessUser user = new BackendlessUser();
-//        user.setEmail( "zahir93@wp.pl" );
-//        user.setPassword("Mz123456789");
-//
-//        Backendless.UserService.register(user, new BackendlessCallback<BackendlessUser>() {
-//            @Override
-//            public void handleResponse(BackendlessUser backendlessUser) {
-//                Log.i("Registration", backendlessUser.getEmail() + " successfully registered");
-//            }
-//        });
-
-        ///
     }
 
     @Override
@@ -230,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
                             Profile2_ScrollingActivity.class);
                     //makes the profile activity the home activity
                     //i.setFlags(16384);
+                    RegisterDeviceUpdateUserDeviceID();
+
                     i.putExtra("name", name);
                     startActivity(i);
                     //startActivityForResult(i, 1);
@@ -244,7 +226,9 @@ public class MainActivity extends AppCompatActivity {
         {
             String fault = exception.getCause().toString()+exception.getCode()+exception.getMessage();
             Log.i("Log in Error",fault);
-            // an error has occurred, the error code can be retrieved with fault.getCode()
+            Toast.makeText(getApplicationContext(),
+                    "Login Failed! " + exception.getCause()+"  "+ exception.getMessage(), Toast.LENGTH_LONG)
+                    .show();
         }
 
     }
@@ -290,6 +274,29 @@ public class MainActivity extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+    public void RegisterDeviceUpdateUserDeviceID(){
+
+
+        String ProjectNumberNotification = "687259024455";
+        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+        Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
+                String Device_ID = Backendless.Messaging.DEVICE_ID;
+                Log.d(TAG,"The Device ID is :  "+Device_ID);
+                UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+            }
+        });
+
+
+
     }
 
 }

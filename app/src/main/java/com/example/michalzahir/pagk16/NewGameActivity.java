@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.LinkedList;
+
 public class NewGameActivity extends AppCompatActivity {
     private Button newFBGameButton;
     private Button newRandomGameButton;
@@ -36,6 +38,12 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+
+                //playersQueue PLAYERSQUEUE = new playersQueue();
+
+
+
+
                 Intent i = new Intent(getApplicationContext(),
                         categoryChoiceActivity.class);
                 startActivity(i);
