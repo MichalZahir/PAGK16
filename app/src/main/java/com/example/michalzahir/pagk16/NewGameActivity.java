@@ -14,14 +14,14 @@ import java.util.LinkedList;
 public class NewGameActivity extends AppCompatActivity {
     private Button newFBGameButton;
     private Button newRandomGameButton;
-
+    static gameResult result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
         newFBGameButton = (Button) findViewById(R.id.fbNewGameButton);
         newRandomGameButton = (Button) findViewById(R.id.RandomNewGameButton);
-
+        result = new gameResult();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,9 +39,23 @@ public class NewGameActivity extends AppCompatActivity {
 
             public void onClick(View view) {
 
-                //playersQueue PLAYERSQUEUE = new playersQueue();
+                playersQueue PLAYERSQUEUE = playersQueue.getPlayersQueueInstance();
+                if(PLAYERSQUEUE.isEmpty()){
+
+                    playersQueue.AddUserToPlayersQueue(playerObejtID.getUserObjectID());
+                    result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
+                    result.setFirstUserResult(0);
+
+                }
+                else {
+                    result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
+                    result.setSecondtUserResult(0);
+                    playersQueue.RemoveUserFromPlayersQueue();
+                    SavedQuestions.ListToBundleStartQueAct(getApplicationContext());
 
 
+
+                }
 
 
                 Intent i = new Intent(getApplicationContext(),
@@ -52,6 +66,17 @@ public class NewGameActivity extends AppCompatActivity {
 
             }
         });
+
+
+        newFBGameButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+
+                pushNotification.PublishNotification(getApplicationContext());
+
+            }
+        });
         }
+
 
     }

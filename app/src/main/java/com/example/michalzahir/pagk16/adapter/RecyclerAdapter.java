@@ -20,12 +20,14 @@ import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.ConstantsClass;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.R;
+import com.example.michalzahir.pagk16.SavedQuestions;
 import com.example.michalzahir.pagk16.categoryChoiceActivity;
 import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.model.Landscape;
 import com.example.michalzahir.pagk16.questionActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -154,7 +156,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                                 insideBundle.putBoolean("correct_B",response.getCORRECT_B());
                                 insideBundle.putBoolean("correct_D",response.getCORRECT_C());
                                 insideBundle.putBoolean("correct_C",response.getCORRECT_D());
-
+                                List<QUESTIONS> savedQuestions =  new ArrayList<>();
+                                SavedQuestions savedquestions = new SavedQuestions(savedQuestions);
+                                savedquestions.addToSavedQuestions(response);
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " +insideBundle);
                                 //StartActivity(bundle ,context);
                                 System.out.println("bundle from the middle tier : "+insideBundle);

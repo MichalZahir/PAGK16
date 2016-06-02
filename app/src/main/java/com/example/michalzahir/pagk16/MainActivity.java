@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("Loggin in ", backendlessUser.getProperty("name") + " successfully logged in");
 
                    // session.createLoginSession(name, password);
-
+                    playerObejtID.setUserObjectID(backendlessUser.getObjectId());
                     Intent i = new Intent(getApplicationContext(),
                             Profile2_ScrollingActivity.class);
                     //makes the profile activity the home activity
@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
                 final String currentUserObjectId = backendlessUser.getObjectId();
+                playerObejtID.setUserObjectID(currentUserObjectId);
                 String ProjectNumberNotification = "687259024455";
                 // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
                 Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
