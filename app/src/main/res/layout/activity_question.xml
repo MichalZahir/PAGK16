@@ -14,6 +14,7 @@
         android:layout_height="160dp"
         android:layout_weight="0.5"
         android:text="The Question"
+        android:textSize="30dp"
         android:id="@+id/QuestionTextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
