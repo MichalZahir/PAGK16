@@ -1,5 +1,6 @@
 package com.example.michalzahir.pagk16;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +42,9 @@ public class questionActivity extends AppCompatActivity {
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        resultActivity.class);
+                startActivity(i);
                 if (AnswerABoolean==true){
 
                 incrementResultForGoodAnswer();
