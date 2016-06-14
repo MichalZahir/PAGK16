@@ -38,9 +38,11 @@
             android:id="@+id/AnswerButtonA"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            />
 
         <Button
+
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

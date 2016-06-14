@@ -1,6 +1,8 @@
 package com.example.michalzahir.pagk16;
 
 import android.content.Intent;
+import android.os.SystemClock;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,13 +44,21 @@ public class questionActivity extends AppCompatActivity {
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        resultActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(),
+//                        resultActivity.class);
+//                startActivity(i);
                 if (AnswerABoolean==true){
 
-                incrementResultForGoodAnswer();
 
+                AnswerAButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+                    SystemClock.sleep(4000);
+
+                    incrementResultForGoodAnswer();
+
+                }
+                else{
+                    AnswerAButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
+                    findTHeRightAnswer();
                 }
                 // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
         }});
@@ -58,8 +68,15 @@ public class questionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (AnswerBBoolean==true){
 
+                    AnswerBButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+                    SystemClock.sleep(4000);
+
                     incrementResultForGoodAnswer();
 
+                }
+                else{
+                    AnswerBButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
+                    findTHeRightAnswer();
                 }
                 // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
             }});
@@ -68,8 +85,17 @@ public class questionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (AnswerCBoolean==true){
 
+                    AnswerCButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+                    SystemClock.sleep(4000);
+
                     incrementResultForGoodAnswer();
 
+                }
+                else{
+                    AnswerCButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
+                    SystemClock.sleep(4000);
+
+                    findTHeRightAnswer();
                 }
                 // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
             }});
@@ -80,8 +106,15 @@ public class questionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (AnswerDBoolean==true){
 
+                    AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+                    SystemClock.sleep(4000);
                     incrementResultForGoodAnswer();
 
+
+                }
+                else{
+                    AnswerDButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
+                    findTHeRightAnswer();
                 }
                 // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
             }});
@@ -91,12 +124,25 @@ public class questionActivity extends AppCompatActivity {
 
     public void incrementResultForGoodAnswer(){
 
-        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getFirstUSerObjectID()) NewGameActivity.result.Increment1stUserResult();
-        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getSecondUSerObjectID()) NewGameActivity.result.Increment2ndUserResult();
+        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getFirstUSerObjectID()) {NewGameActivity.result.Increment1stUserResult();
+            NewGameActivity.result.publishResults(this);
+        }
+        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getSecondUSerObjectID()) {NewGameActivity.result.Increment2ndUserResult();
+            NewGameActivity.result.publishResults(this);
+        }
 
     }
 
+    public void findTHeRightAnswer(){
+        if (AnswerABoolean==true)AnswerAButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+        if (AnswerBBoolean==true)AnswerBButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+        if (AnswerCBoolean==true)AnswerCButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+        if (AnswerDBoolean==true)AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
+        SystemClock.sleep(4000);
 
+        NewGameActivity.result.publishResults(this);
+
+    }
 
 
 

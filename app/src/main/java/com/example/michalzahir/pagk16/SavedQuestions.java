@@ -50,8 +50,8 @@ public class SavedQuestions {
             QuestionBundle.putString("Answer_D", savedQuestions.get(i).getANSWER_D());
             QuestionBundle.putBoolean("correct_A", savedQuestions.get(i).getCORRECT_A());
             QuestionBundle.putBoolean("correct_B", savedQuestions.get(i).getCORRECT_B());
-            QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_C());
-            QuestionBundle.putBoolean("correct_C", savedQuestions.get(i).getCORRECT_D());
+            QuestionBundle.putBoolean("correct_C", savedQuestions.get(i).getCORRECT_C());
+            QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_D());
             Intent in = new Intent(context, questionActivity.class);
             in.putExtras(QuestionBundle);
             context.startActivity(in);

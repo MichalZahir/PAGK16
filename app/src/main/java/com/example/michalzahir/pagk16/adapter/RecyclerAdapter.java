@@ -154,8 +154,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                                 insideBundle.putString("Answer_D",response.getANSWER_D());
                                 insideBundle.putBoolean("correct_A",response.getCORRECT_A());
                                 insideBundle.putBoolean("correct_B",response.getCORRECT_B());
-                                insideBundle.putBoolean("correct_D",response.getCORRECT_C());
-                                insideBundle.putBoolean("correct_C",response.getCORRECT_D());
+                                insideBundle.putBoolean("correct_C",response.getCORRECT_C());
+                                insideBundle.putBoolean("correct_D",response.getCORRECT_D());
                                 List<QUESTIONS> savedQuestions =  new ArrayList<>();
                                 SavedQuestions savedquestions = new SavedQuestions(savedQuestions);
                                 savedquestions.addToSavedQuestions(response);

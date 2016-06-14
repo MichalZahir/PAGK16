@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         if( userToken != null && !userToken.equals( "" ) )
         {  // user login is available, skip the login activity/login form
-
+            playerObejtID.setUserObjectID(Backendless.UserService.loggedInUser());
 
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
@@ -100,9 +100,13 @@ public class MainActivity extends AppCompatActivity {
         if( accessToken != null){
             System.out.println("access token user token faceboook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
-
+            //String a = AccessToken.getCurrentAccessToken().getUserId();
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             System.out.println(" faceboook UserNameFb  : " + UserNameFb);
+            // TODO: 2016-06-14  save The user object ID when logged in from the fb token
+//            String s = Backendless.UserService.loggedInUser();
+//            playerObejtID.setUserObjectID(s);
+
             RegisterDeviceUpdateUserDeviceID();
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
@@ -260,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 playerObejtID.setUserObjectID(currentUserObjectId);
                 String ProjectNumberNotification = "687259024455";
                 // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+                // TODO: 2016-06-14 Add the user object id to the playerObjectID when logging in with facebook or when loggin in with the token of facebook.
                 Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
                     @Override
                     public void handleResponse(Void response) {
@@ -359,3 +364,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+// TODO: 2016-06-14 Fix bad login !!!!!

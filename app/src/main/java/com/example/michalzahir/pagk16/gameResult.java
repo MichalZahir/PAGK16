@@ -1,5 +1,9 @@
 package com.example.michalzahir.pagk16;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
 /**
  * Created by zahirm on 2016-06-02.
  */
@@ -59,5 +63,13 @@ public class gameResult {
     public void Increment2ndUserResult(){
 
         this.secondtUserResult=this.secondtUserResult+1;
+    }
+    public void publishResults(Context context){
+        Bundle resultsBundle = new Bundle();
+        resultsBundle.putInt("1st user result",getFirstUserResult());
+        resultsBundle.putInt("2nd user result",getSecondtUserResult());
+        Intent i = new Intent(context, resultActivity.class);
+        i.putExtras(resultsBundle);
+        context.startActivity(i);
     }
 }
