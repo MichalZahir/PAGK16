@@ -39,7 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private List<Landscape> mdata;
     private LayoutInflater mInflater;
     private Context context;
-
+    public  static SavedQuestions savedquestions;
 
     public RecyclerAdapter(List<Landscape> mdata, Context context) {
         this.mdata = mdata;
@@ -157,7 +157,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                                 insideBundle.putBoolean("correct_C",response.getCORRECT_C());
                                 insideBundle.putBoolean("correct_D",response.getCORRECT_D());
                                 List<QUESTIONS> savedQuestions =  new ArrayList<>();
-                                SavedQuestions savedquestions = new SavedQuestions(savedQuestions);
+                                savedquestions = new SavedQuestions(savedQuestions);
                                 savedquestions.addToSavedQuestions(response);
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " +insideBundle);
                                 //StartActivity(bundle ,context);

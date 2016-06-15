@@ -71,5 +71,7 @@ public class gameResult {
         Intent i = new Intent(context, resultActivity.class);
         i.putExtras(resultsBundle);
         context.startActivity(i);
+        pushNotification.PublishNotification(context);
+
     }
 }

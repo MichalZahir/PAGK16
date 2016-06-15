@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class SavedQuestions {
 
-    static List<QUESTIONS> savedQuestions = new ArrayList<>();
+     static List<QUESTIONS> savedQuestions = new ArrayList<>();
 
     public SavedQuestions(List<QUESTIONS> savedQuestions) {
         this.savedQuestions = savedQuestions;
