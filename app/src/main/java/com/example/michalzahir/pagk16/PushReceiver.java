@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import com.backendless.messaging.PublishOptions;
@@ -40,15 +41,20 @@ public class PushReceiver extends BackendlessBroadcastReceiver
             PendingIntent contentIntent = PendingIntent.getActivity( context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT );
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder( context );
-            notificationBuilder.setSmallIcon( appIcon );
+            notificationBuilder.setSmallIcon( getNotificationIcon() );
             notificationBuilder.setTicker( tickerText );
             notificationBuilder.setWhen( System.currentTimeMillis() );
             notificationBuilder.setContentTitle( contentTitle );
             notificationBuilder.setContentText( contentText );
             notificationBuilder.setAutoCancel( true );
             notificationBuilder.setContentIntent( contentIntent );
+//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                notificationBuilder.setColor( context.getResources().getColor(R.color.Black));
+//            }
 
             Notification notification = notificationBuilder.build();
+
+
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService( Context.NOTIFICATION_SERVICE );
             notificationManager.notify( 0, notification );
@@ -74,5 +80,9 @@ public class PushReceiver extends BackendlessBroadcastReceiver
             QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_D());
 
         }
+    }
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.drawable.notification_pagk : R.mipmap.ic_launcher;
     }
 }

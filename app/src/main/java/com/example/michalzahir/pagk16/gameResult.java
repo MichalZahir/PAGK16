@@ -3,6 +3,7 @@ package com.example.michalzahir.pagk16;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 /**
  * Created by zahirm on 2016-06-02.
@@ -64,13 +65,22 @@ public class gameResult {
 
         this.secondtUserResult=this.secondtUserResult+1;
     }
-    public void publishResults(Context context){
+    public void publishResults(final Context context){
         Bundle resultsBundle = new Bundle();
         resultsBundle.putInt("1st user result",getFirstUserResult());
         resultsBundle.putInt("2nd user result",getSecondtUserResult());
-        Intent i = new Intent(context, resultActivity.class);
+        final Intent i = new Intent(context, resultActivity.class);
         i.putExtras(resultsBundle);
-        context.startActivity(i);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                context.startActivity(i);
+            }
+        }, 5000);
+
+
+        //context.startActivity(i);
         pushNotification.PublishNotification(context);
 
     }

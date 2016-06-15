@@ -51,7 +51,7 @@ public class questionActivity extends AppCompatActivity {
 
 
                 AnswerAButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-                    SystemClock.sleep(4000);
+//                    SystemClock.sleep(4000);
 
                     incrementResultForGoodAnswer();
 
@@ -69,7 +69,7 @@ public class questionActivity extends AppCompatActivity {
                 if (AnswerBBoolean==true){
 
                     AnswerBButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-                    SystemClock.sleep(4000);
+//                    SystemClock.sleep(4000);
 
                     incrementResultForGoodAnswer();
 
@@ -86,14 +86,14 @@ public class questionActivity extends AppCompatActivity {
                 if (AnswerCBoolean==true){
 
                     AnswerCButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-                    SystemClock.sleep(4000);
+//                    SystemClock.sleep(4000);
 
                     incrementResultForGoodAnswer();
 
                 }
                 else{
                     AnswerCButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
-                    SystemClock.sleep(4000);
+//                    SystemClock.sleep(4000);
 
                     findTHeRightAnswer();
                 }
@@ -107,7 +107,7 @@ public class questionActivity extends AppCompatActivity {
                 if (AnswerDBoolean==true){
 
                     AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-                    SystemClock.sleep(4000);
+//                    SystemClock.sleep(4000);
                     incrementResultForGoodAnswer();
 
 
@@ -138,7 +138,7 @@ public class questionActivity extends AppCompatActivity {
         if (AnswerBBoolean==true)AnswerBButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
         if (AnswerCBoolean==true)AnswerCButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
         if (AnswerDBoolean==true)AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-        SystemClock.sleep(4000);
+//        SystemClock.sleep(4000);
 
         NewGameActivity.result.publishResults(this);
 
