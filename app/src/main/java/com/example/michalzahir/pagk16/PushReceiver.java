@@ -16,8 +16,7 @@ import java.util.List;
 
 public class PushReceiver extends BackendlessBroadcastReceiver
 {
-
-    Bundle QuestionBundle = new Bundle();
+    static Intent notificationIntent;
 
     @Override
     public boolean onMessage( Context context, Intent intent )
@@ -33,9 +32,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver
             if( appIcon == 0 )
                 appIcon = android.R.drawable.sym_def_app_icon;
 
-                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
-            Intent notificationIntent = new Intent( context, questionActivity.class );
-            notificationIntent.putExtras(QuestionBundle);
+
+//
+//                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
+            notificationIntent = new Intent( context, questionActivity.class );
+            System.out.println("The current bundle is  from the push receiver why is it empty:     "+pushNotification.QuestionBundle);
+            notificationIntent.putExtras(pushNotification.QuestionBundle);
 
             notificationIntent.putExtra( "subtopic", subtopic );
             PendingIntent contentIntent = PendingIntent.getActivity( context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT );
@@ -58,29 +60,17 @@ public class PushReceiver extends BackendlessBroadcastReceiver
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService( Context.NOTIFICATION_SERVICE );
             notificationManager.notify( 0, notification );
+
+
+
+
+
+
         }
 
         return false;
     }
-    public void SavedQuestionsToBundle(List<QUESTIONS> savedQuestions){
 
-
-
-        for (int i = 0 ; i< savedQuestions.size();i++) {
-            System.out.println("this is the question from the backendless DB  " + savedQuestions.get(i).getQuestion()
-                    + ".    this is the first answer   " + savedQuestions.get(i).getAnswer_a() + ".   Hurrraaa success !!!!" + savedQuestions.get(i).getCORRECT_A() + " B boolean:" + savedQuestions.get(i).getCORRECT_B() + " D boolean:" + savedQuestions.get(i).getCORRECT_D() + " C boolean:" + savedQuestions.get(i).getCORRECT_C() + "AA" + savedQuestions.get(i).getAnswer_a() + "bA" + savedQuestions.get(i).getANSWER_B() + "cA" + savedQuestions.get(i).getANSWER_C() + "DA" + savedQuestions.get(i).getANSWER_D());
-            QuestionBundle.putString("Question", savedQuestions.get(i).getQuestion());
-            QuestionBundle.putString("Answer_A", savedQuestions.get(i).getAnswer_a());
-            QuestionBundle.putString("Answer_B", savedQuestions.get(i).getANSWER_B());
-            QuestionBundle.putString("Answer_C", savedQuestions.get(i).getANSWER_C());
-            QuestionBundle.putString("Answer_D", savedQuestions.get(i).getANSWER_D());
-            QuestionBundle.putBoolean("correct_A", savedQuestions.get(i).getCORRECT_A());
-            QuestionBundle.putBoolean("correct_B", savedQuestions.get(i).getCORRECT_B());
-            QuestionBundle.putBoolean("correct_C", savedQuestions.get(i).getCORRECT_C());
-            QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_D());
-
-        }
-    }
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.drawable.notification_pagk : R.mipmap.ic_launcher;
