@@ -65,7 +65,7 @@ public class gameResult {
 
         this.secondtUserResult=this.secondtUserResult+1;
     }
-    public void publishResults(final Context context){
+    public void publishResults(final Context context, Bundle bundle ){
         Bundle resultsBundle = new Bundle();
         resultsBundle.putInt("1st user result",getFirstUserResult());
         resultsBundle.putInt("2nd user result",getSecondtUserResult());
@@ -81,7 +81,7 @@ public class gameResult {
 
 
         //context.startActivity(i);
-        pushNotification.PublishNotification(context);
+        pushNotification.PublishNotification(context , bundle  );
 
     }
 }

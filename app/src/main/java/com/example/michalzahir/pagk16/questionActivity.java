@@ -19,7 +19,7 @@ public class questionActivity extends AppCompatActivity {
     Boolean AnswerBBoolean;
     Boolean AnswerCBoolean;
     Boolean AnswerDBoolean;
-
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +30,9 @@ public class questionActivity extends AppCompatActivity {
         AnswerBButton = (Button) findViewById(R.id.AnswerButtonB);
         AnswerCButton= (Button) findViewById(R.id.AnswerButtonC);
         AnswerDButton = (Button) findViewById(R.id.AnswerButtonD);
-        Bundle bundle = this.getIntent().getExtras();
-        System.out.println(bundle.getString("Question")+bundle.getString("Answer_A")+bundle.getString("Answer_B")+bundle.getString("Answer_C")+bundle.getString("Answer_D"));
+         bundle = this.getIntent().getExtras();
+
+        System.out.println("The Question bundle  "+ bundle.getString("Question")+bundle.getString("Answer_A")+bundle.getString("Answer_B")+bundle.getString("Answer_C")+bundle.getString("Answer_D"));
         QuestionTV.setText(bundle.getString("Question"));
         AnswerAButton.setText(bundle.getString("Answer_A"));
         AnswerBButton.setText(bundle.getString("Answer_B"));
@@ -41,6 +42,8 @@ public class questionActivity extends AppCompatActivity {
         AnswerBBoolean = bundle.getBoolean("correct_B");
         AnswerCBoolean = bundle.getBoolean("correct_C");
         AnswerDBoolean = bundle.getBoolean("correct_D");
+
+
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -125,10 +128,10 @@ public class questionActivity extends AppCompatActivity {
     public void incrementResultForGoodAnswer(){
 
         if (playerObejtID.getUserObjectID()==NewGameActivity.result.getFirstUSerObjectID()) {NewGameActivity.result.Increment1stUserResult();
-            NewGameActivity.result.publishResults(this);
+            NewGameActivity.result.publishResults(this,bundle);
         }
         if (playerObejtID.getUserObjectID()==NewGameActivity.result.getSecondUSerObjectID()) {NewGameActivity.result.Increment2ndUserResult();
-            NewGameActivity.result.publishResults(this);
+            NewGameActivity.result.publishResults(this,bundle);
         }
 
     }
@@ -140,7 +143,7 @@ public class questionActivity extends AppCompatActivity {
         if (AnswerDBoolean==true)AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
 //        SystemClock.sleep(4000);
 
-        NewGameActivity.result.publishResults(this);
+        NewGameActivity.result.publishResults(this, bundle);
 
     }
 

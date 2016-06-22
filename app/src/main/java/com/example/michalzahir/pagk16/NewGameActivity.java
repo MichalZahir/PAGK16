@@ -6,15 +6,30 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.messaging.DeliveryOptions;
+import com.backendless.messaging.MessageStatus;
+import com.backendless.messaging.PublishOptions;
+import com.backendless.messaging.PushBroadcastMask;
+import com.backendless.messaging.PushPolicyEnum;
+
 import java.util.LinkedList;
+
+import weborb.client.Responder;
 
 public class NewGameActivity extends AppCompatActivity {
     private Button newFBGameButton;
     private Button newRandomGameButton;
     static gameResult result;
+    private static final String TAG = NewGameActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +87,9 @@ public class NewGameActivity extends AppCompatActivity {
 
             public void onClick(View view) {
 
-                pushNotification.PublishNotification(getApplicationContext());
+               // pushNotification.PublishNotification(getApplicationContext());
 
+                        //MessageStatus status = Backendless.Messaging.publish((Object) "this is a private message!", publishOptions );
             }
         });
         }
