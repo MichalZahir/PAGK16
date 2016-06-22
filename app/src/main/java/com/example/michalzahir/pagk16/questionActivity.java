@@ -42,7 +42,11 @@ public class questionActivity extends AppCompatActivity {
         AnswerBBoolean = bundle.getBoolean("correct_B");
         AnswerCBoolean = bundle.getBoolean("correct_C");
         AnswerDBoolean = bundle.getBoolean("correct_D");
+        if(bundle.containsKey("firstUSerObjectID")){
 
+            NewGameActivity.result = new gameResult(Integer.parseInt(bundle.getString("firstUserResult")),Integer.parseInt(bundle.getString("secondtUserResult")),bundle.getString("firstUSerObjectID"),bundle.getString("secondUSerObjectID"));
+
+        }
 
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 

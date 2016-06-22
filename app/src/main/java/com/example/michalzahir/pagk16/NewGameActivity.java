@@ -60,9 +60,11 @@ public class NewGameActivity extends AppCompatActivity {
                     playersQueue.AddUserToPlayersQueue(playerObejtID.getUserObjectID());
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
                     result.setFirstUserResult(0);
+                    NewGameActivity.result.setSecondUSerObjectID("3783DA0D-A495-5CEB-FFA3-83FB70123800");
 
                 }
                 else {
+                    // TODO: 2016-06-22 hardcoded second user object ID !!!!! neeeeeed to take it somewhere from the User Table
                     result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
                     result.setSecondtUserResult(0);
                     playersQueue.RemoveUserFromPlayersQueue();

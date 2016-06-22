@@ -66,7 +66,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         notificationBundle.putBoolean("correct_C",Correct_C );
         notificationBundle.putBoolean("correct_D",Correct_D );
 
-
+        notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
+        notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
+        notificationBundle.putString("firstUserResult", bundle.getString("firstUserResult"));
+        notificationBundle.putString("secondtUserResult", bundle.getString("secondtUserResult"));
 
         //pushNotification.retrieveDane(context);
         //retrieveDane();
