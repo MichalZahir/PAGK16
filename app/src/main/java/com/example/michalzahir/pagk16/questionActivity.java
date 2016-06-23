@@ -45,7 +45,10 @@ public class questionActivity extends AppCompatActivity {
         if(bundle.containsKey("firstUSerObjectID")){
 
             NewGameActivity.result = new gameResult(Integer.parseInt(bundle.getString("firstUserResult")),Integer.parseInt(bundle.getString("secondtUserResult")),bundle.getString("firstUSerObjectID"),bundle.getString("secondUSerObjectID"));
-
+            NewGameActivity.result.setFirstUserResult(Integer.parseInt(bundle.getString("firstUserResult")));
+            NewGameActivity.result.setSecondtUserResult(Integer.parseInt(bundle.getString("secondtUserResult")));
+            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+            NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
         }
 
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
@@ -131,10 +134,12 @@ public class questionActivity extends AppCompatActivity {
 
     public void incrementResultForGoodAnswer(){
 
-        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getFirstUSerObjectID()) {NewGameActivity.result.Increment1stUserResult();
+        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
+            NewGameActivity.result.Increment1stUserResult();
             NewGameActivity.result.publishResults(this,bundle);
         }
-        if (playerObejtID.getUserObjectID()==NewGameActivity.result.getSecondUSerObjectID()) {NewGameActivity.result.Increment2ndUserResult();
+        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+            NewGameActivity.result.Increment2ndUserResult();
             NewGameActivity.result.publishResults(this,bundle);
         }
 
