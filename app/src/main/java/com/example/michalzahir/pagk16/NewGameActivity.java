@@ -29,7 +29,7 @@ public class NewGameActivity extends AppCompatActivity {
     private Button newRandomGameButton;
     static gameResult result;
     private static final String TAG = NewGameActivity.class.getSimpleName();
-
+    public static Boolean yourTurnToChooseCategory = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +37,7 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton = (Button) findViewById(R.id.fbNewGameButton);
         newRandomGameButton = (Button) findViewById(R.id.RandomNewGameButton);
         result = new gameResult();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,7 +61,9 @@ public class NewGameActivity extends AppCompatActivity {
                     playersQueue.AddUserToPlayersQueue(playerObejtID.getUserObjectID());
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
                     result.setFirstUserResult(0);
+                    // TODO: 2016-06-23 hardcoded   second user object id
                     NewGameActivity.result.setSecondUSerObjectID("3783DA0D-A495-5CEB-FFA3-83FB70123800");
+
 
                 }
                 else {
@@ -96,5 +99,12 @@ public class NewGameActivity extends AppCompatActivity {
         });
         }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(getApplicationContext(),
+                Profile2_ScrollingActivity.class);
+        //i.setFlags(16777216);
+        startActivity(i);
+        finish();
+    }
     }
