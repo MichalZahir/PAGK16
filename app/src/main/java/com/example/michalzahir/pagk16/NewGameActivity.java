@@ -30,6 +30,7 @@ public class NewGameActivity extends AppCompatActivity {
     static gameResult result;
     private static final String TAG = NewGameActivity.class.getSimpleName();
     public static Boolean yourTurnToChooseCategory = false;
+    public static int StopTheGame=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
