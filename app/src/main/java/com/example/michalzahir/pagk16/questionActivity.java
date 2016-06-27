@@ -49,6 +49,7 @@ public class questionActivity extends AppCompatActivity {
             NewGameActivity.result.setSecondtUserResult(Integer.parseInt(bundle.getString("secondtUserResult")));
             NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
+            NewGameActivity.yourTurnToChooseCategory = true;
         }
 
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +134,7 @@ public class questionActivity extends AppCompatActivity {
 
 
     public void incrementResultForGoodAnswer(){
-
+        // TODO: 2016-06-27 Bug, users logged in with fb got no userobject ID wich leads to a null pointer exception in this palce.
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
             NewGameActivity.result.Increment1stUserResult();
             NewGameActivity.result.publishResults(this,bundle);

@@ -24,6 +24,7 @@ import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.HISTORY_QUESTIONS;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.LITERATURE_QUESTIONS;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SPORT_QUESTIONS;
 import com.example.michalzahir.pagk16.ConstantsClass;
+import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.SavedQuestions;
@@ -131,6 +132,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 //            gettingQuestions gt  = new gettingQuestions(bundle, context);
 //            System.out.println(context);
 //            bundle = gt.getQuestions();
+            NewGameActivity.yourTurnToChooseCategory=false;
             if (item.getCategory() == "Sport")
                 get_sport_questions();
             else if (item.getCategory() == "History")
