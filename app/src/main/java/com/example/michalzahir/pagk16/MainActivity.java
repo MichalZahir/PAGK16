@@ -46,7 +46,10 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    int wonGames;
+    int lostGames;
+    int drawGames;
+    int playedGames;
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnLogin;
     private Button FBLOGIN;
@@ -256,8 +259,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
+                wonGames = (int) backendlessUser.getProperty("WON");
+                lostGames = (int) backendlessUser.getProperty("LOST");
+                drawGames = (int) backendlessUser.getProperty("DRAW");
 
-
+                playedGames = wonGames +lostGames+ drawGames;
+                i.putExtra ( "wonGames", wonGames );
+                i.putExtra ( "lostGames", lostGames );
+                i.putExtra ( "drawGames", drawGames );
+                i.putExtra ( "playedGames", playedGames );
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
                 final String currentUserObjectId = backendlessUser.getObjectId();
@@ -280,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
                         Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
                         public void handleResponse(BackendlessUser backendlessUser )
                         {
+
                             System.out.println(backendlessUser.getObjectId());
                             backendlessUser.setProperty("Device_ID", Device_ID);
 

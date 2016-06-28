@@ -105,7 +105,18 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
         accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
+            String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
+            Intent intent = getIntent();
+            wonGames =  intent.getIntExtra("wonGames",-1);
+            lostGames = intent.getIntExtra("lostGames",-1);
+            drawGames = intent.getIntExtra("drawGames",-1);
+            playedGames = intent.getIntExtra("playedGames",-1);
+            lostGamesTextView.setText(String.valueOf(lostGames));
+            drawGamesTextView.setText(String.valueOf(drawGames));
+            playedGamesTextView.setText(String.valueOf(playedGames));
+            wonGamesTextView.setText(String.valueOf(wonGames));
 
+            // TODO: 2016-06-28 Take the current user object id i find it in the db and update the info for the facebook account.
             Profile profile = Profile.getCurrentProfile();
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             UserName =  UserNameFb;
