@@ -38,7 +38,7 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton = (Button) findViewById(R.id.fbNewGameButton);
         newRandomGameButton = (Button) findViewById(R.id.RandomNewGameButton);
         result = new gameResult();
-
+        StopTheGame=0;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

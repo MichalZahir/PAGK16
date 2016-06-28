@@ -33,13 +33,32 @@ public class resultActivity extends AppCompatActivity {
         int intSecondResult;
         intFirstResult = bundle.getInt("1st user result");
         intSecondResult = bundle.getInt("2nd user result");
+        Log.d(TAG, "The result of the first user:" + intFirstResult);
+        Log.d(TAG, "The result of the second user:" + intSecondResult);
         NewGameActivity.result.setFirstUserResult(intFirstResult);
         NewGameActivity.result.setSecondtUserResult(intSecondResult);
+
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
         NewGameActivity.StopTheGame = NewGameActivity.StopTheGame +1;
-        if (NewGameActivity.StopTheGame >=  4)
+        if (NewGameActivity.StopTheGame >=  ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
             endTheGame();
+        else if (NewGameActivity.StopTheGame >=  ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
+        {
+            NewGameActivity.StopTheGame=0;
+            new AlertDialog.Builder(this)
+                    .setTitle("The game is done ")
+                    .setMessage("Your current game is finished, please click ok to go to your profile")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+                            startActivity(i);
+                        }
+                    })
+
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .show();
+        }
         else {
 
             if (NewGameActivity.yourTurnToChooseCategory) {
