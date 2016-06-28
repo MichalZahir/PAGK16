@@ -30,14 +30,30 @@ import java.util.concurrent.ExecutionException;
 public class Profile2_ScrollingActivity extends AppCompatActivity {
     String UserName;
     private TextView UserNameTectView;
+    private TextView wonGamesTextView;
+    private TextView lostGamesTextView;
+    private TextView drawGamesTextView;
+    private TextView playedGamesTextView;
     private Button newGameButton;
+
+
+    int wonGames;
+    int lostGames;
+    int drawGames;
+    int playedGames;
     ImageView ProfilPicture;
     AccessToken accessToken;
+
+    // TODO: 2016-06-28  fix the problem with the lat eipdateing of the info on the profile activity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
+        wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);
+        lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
+        drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
+        playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
 
         ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
         newGameButton = (Button) findViewById(R.id.newGameButton);
@@ -64,7 +80,18 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             Backendless.UserService.setCurrentUser(backendlessUser);
 
             UserName = "" + backendlessUser.getProperty("name");
+            wonGames = (int) backendlessUser.getProperty("WON");
+            lostGames = (int) backendlessUser.getProperty("LOST");
+            drawGames = (int) backendlessUser.getProperty("DRAW");
+
+            playedGames = wonGames +lostGames+ drawGames;
+
+
             UserNameTectView.setText(UserName);
+            lostGamesTextView.setText(String.valueOf(lostGames));
+            drawGamesTextView.setText(String.valueOf(drawGames));
+            playedGamesTextView.setText(String.valueOf(playedGames));
+            wonGamesTextView.setText(String.valueOf(wonGames));
 
 
         }

@@ -188,7 +188,7 @@
                 android:layout_toStartOf="@+id/chkState4"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Played Games by the user : 24"
+                android:text="Played "
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -201,7 +201,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivContactItem4"
                 android:layout_toRightOf="@id/ivContactItem4"
-                android:text="Played :"
+                android:text="Played Games by the user :"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
@@ -251,7 +251,7 @@
                 android:layout_toStartOf="@+id/chkState5"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Won games"
+                android:text="Won "
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -264,7 +264,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivContactItem5"
                 android:layout_toRightOf="@id/ivContactItem5"
-                android:text="Wins : 12"
+                android:text="Won games"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
@@ -314,7 +314,7 @@
                 android:layout_toStartOf="@+id/chkState6"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Lost games :12"
+                android:text="Lost"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -327,7 +327,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivContactItem6"
                 android:layout_toRightOf="@id/ivContactItem6"
-                android:text="Lost :"
+                android:text="Lost games "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
@@ -373,7 +373,6 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem1"
                 android:layout_toRightOf="@id/ivContactItem1"
-                android:text="(123) 456-7890"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -386,7 +385,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivContactItem1"
                 android:layout_toRightOf="@id/ivContactItem1"
-                android:text="Home"
+                android:text="Draw games:"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
