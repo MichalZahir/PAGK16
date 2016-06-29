@@ -230,6 +230,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
+                public void handleFault( BackendlessFault fault )
+                {
+                    // login failed, to get the error code call fault.getCode()
+                    Log.d(TAG, "The login failed because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                    Toast.makeText(getApplicationContext(),
+                            fault.getMessage()+"           Please enter the correct credentials! " +
+                                    "Or click the Not a member? Sign me up now, button if you don't have an account.", Toast.LENGTH_LONG)
+                            .show();
+                }
             },true);}
         catch( BackendlessException exception )
         {
