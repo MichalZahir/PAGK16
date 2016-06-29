@@ -126,25 +126,49 @@ public class pushNotification {
 
     }
 
-    public void SavedQuestionsToBundle(List<QUESTIONS> savedQuestions) {
+    public static void PublishTheLastResultNotificaton(final Context c, Bundle bundle) {
+
+        final String appVersion = "v1";
+        final DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
+        deliveryOptions.addPushSinglecast("LGH440nce43a48f");
+        deliveryOptions.addPushSinglecast("unknown");
+        deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
+
+        PublishOptions publishOptions = new PublishOptions();
+        publishOptions.setPublisherId("michael");
+        publishOptions.setSubtopic("Zahiiiir");
+        publishOptions.putHeader("1st user result", bundle.getString("1st user result"));
+        publishOptions.putHeader("2nd user result", bundle.getString("2nd user result"));
+        publishOptions.putHeader("Last Result", "Last Result");
+
+        publishOptions.putHeader("firstUSerObjectID", NewGameActivity.result.getFirstUSerObjectID());
+        publishOptions.putHeader("secondUSerObjectID", NewGameActivity.result.getSecondUSerObjectID());
+        publishOptions.putHeader("firstUserResult", String.valueOf(NewGameActivity.result.getFirstUserResult()));
+        publishOptions.putHeader("secondtUserResult", String.valueOf(NewGameActivity.result.getSecondtUserResult()));
 
 
-        for (int i = 0; i < savedQuestions.size(); i++) {
-            System.out.println("this is the question from the backendless DB  " + savedQuestions.get(i).getQuestion()
-                    + ".    this is the first answer   " + savedQuestions.get(i).getAnswer_a() + ".   Hurrraaa success !!!!" + savedQuestions.get(i).getCORRECT_A() + " B boolean:" + savedQuestions.get(i).getCORRECT_B() + " D boolean:" + savedQuestions.get(i).getCORRECT_D() + " C boolean:" + savedQuestions.get(i).getCORRECT_C() + "AA" + savedQuestions.get(i).getAnswer_a() + "bA" + savedQuestions.get(i).getANSWER_B() + "cA" + savedQuestions.get(i).getANSWER_C() + "DA" + savedQuestions.get(i).getANSWER_D());
-            //QuestionBundle = new Bundle();
-            QuestionBundle.putString("Question", savedQuestions.get(i).getQuestion());
-            QuestionBundle.putString("Answer_A", savedQuestions.get(i).getAnswer_a());
-            QuestionBundle.putString("Answer_B", savedQuestions.get(i).getANSWER_B());
-            QuestionBundle.putString("Answer_C", savedQuestions.get(i).getANSWER_C());
-            QuestionBundle.putString("Answer_D", savedQuestions.get(i).getANSWER_D());
-            QuestionBundle.putBoolean("correct_A", savedQuestions.get(i).getCORRECT_A());
-            QuestionBundle.putBoolean("correct_B", savedQuestions.get(i).getCORRECT_B());
-            QuestionBundle.putBoolean("correct_C", savedQuestions.get(i).getCORRECT_C());
-            QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_D());
+        publishOptions.putHeader("android-ticker-text", "You just got a private push notification!");
+        publishOptions.putHeader("android-content-title", "PAGK");
+        publishOptions.putHeader("android-content-text", "Your oponent just finished, It's your turn to play");
+        // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
+        //retrieveDane(c);
+        Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
+            @Override
+            public void handleResponse(MessageStatus messageStatus) {
+                Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Push Notification not workin .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+            }
+        });
+
 
         }
     }
 
 
-}
+

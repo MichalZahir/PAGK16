@@ -40,44 +40,48 @@ public class resultActivity extends AppCompatActivity {
 
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
-        NewGameActivity.StopTheGame = NewGameActivity.StopTheGame +1;
-        if (NewGameActivity.StopTheGame >=  ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
-            endTheGame();
-        else if (NewGameActivity.StopTheGame >=  ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
-        {
-            NewGameActivity.StopTheGame=0;
-            new AlertDialog.Builder(this)
-                    .setTitle("The game is done ")
-                    .setMessage("Your current game is finished, please click ok to go to your profile")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
-                            startActivity(i);
-                        }
-                    })
+        if (bundle.containsKey("Last Result")){
 
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    .show();
+
         }
         else {
+            NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
+            if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+                endTheGame();
+            else if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+                NewGameActivity.StopTheGame = 0;
+                new AlertDialog.Builder(this)
+                        .setTitle("The game is done ")
+                        .setMessage("Your current game is finished, please click ok to go to your profile")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+                                startActivity(i);
+                            }
+                        })
 
-            if (NewGameActivity.yourTurnToChooseCategory) {
-                NewGameActivity.yourTurnToChooseCategory = false;
-                Toast.makeText(getApplicationContext(),
-                        "It's your turn to pick a category. Just wait a second. ", Toast.LENGTH_LONG)
+                        .setIcon(android.R.drawable.ic_dialog_info)
                         .show();
+            } else {
 
-                final Intent i = new Intent(getApplicationContext(), categoryChoiceActivity.class);
+                if (NewGameActivity.yourTurnToChooseCategory) {
+                    NewGameActivity.yourTurnToChooseCategory = false;
+                    Toast.makeText(getApplicationContext(),
+                            "It's your turn to pick a category. Just wait a second. ", Toast.LENGTH_LONG)
+                            .show();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                    final Intent i = new Intent(getApplicationContext(), categoryChoiceActivity.class);
 
-                        startActivity(i);
-                    }
-                }, 5000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-            } else SetDialogue();
+                            startActivity(i);
+                        }
+                    }, 5000);
+
+                } else SetDialogue();
+            }
         }
     }
     public void SetDialogue(){
@@ -289,6 +293,7 @@ public class resultActivity extends AppCompatActivity {
 
 
         }
+        sendTheLastResultNotificationToscndUser();
         new AlertDialog.Builder(this)
                 .setTitle("The game is done ")
                 .setMessage("Your current game is finished, please click ok to go to your profile")
@@ -303,5 +308,12 @@ public class resultActivity extends AppCompatActivity {
                 .show();
 
 
+    }
+    public void sendTheLastResultNotificationToscndUser(){
+        Bundle resultsBundle = new Bundle();
+        resultsBundle.putInt("1st user result",NewGameActivity.result.getFirstUserResult());
+        resultsBundle.putInt("2nd user result",NewGameActivity.result.getSecondtUserResult());
+
+        pushNotification.PublishTheLastResultNotificaton(getApplicationContext(),resultsBundle);
     }
 }

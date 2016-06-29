@@ -22,7 +22,7 @@ import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
 public class PushReceiver extends BackendlessBroadcastReceiver {
     static Intent notificationIntent;
     Bundle insideBundle = new Bundle();
-
+    static Intent LastResultIntent;
 
     @Override
     public boolean onMessage(Context context, Intent intent) {
@@ -31,50 +31,107 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
         String subtopic = intent.getStringExtra("message");
         Bundle bundle = intent.getExtras();
+        // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
+        if (bundle.containsKey("Last Result")){
+
+            GetLastResultNotification(bundle, intent, context);
+        }
+        else {
+            Bundle notificationBundle = new Bundle();
+            notificationBundle.putString("Question", bundle.getString("Question"));
+            notificationBundle.putString("Answer_A", bundle.getString("Answer_A"));
+            notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
+            notificationBundle.putString("Answer_C", bundle.getString("Answer_C"));
+            notificationBundle.putString("Answer_D", bundle.getString("Answer_D"));
+            Boolean Correct_A = null;
+            if (bundle.getString("correct_A").equals("1"))
+                Correct_A = true;
+            else if (bundle.getString("correct_A").equals("0"))
+                Correct_A = false;
+            Boolean Correct_B = null;
+            if (bundle.getString("correct_B").equals("1"))
+                Correct_B = true;
+            else if (bundle.getString("correct_B").equals("0"))
+                Correct_B = false;
+            Boolean Correct_C = null;
+            if (bundle.getString("correct_C").equals("1"))
+                Correct_C = true;
+            else if (bundle.getString("correct_C").equals("0"))
+                Correct_C = false;
+
+            Boolean Correct_D = null;
+            if (bundle.getString("correct_D").equals("1"))
+                Correct_D = true;
+            else if (bundle.getString("correct_D").equals("0"))
+                Correct_D = false;
+
+
+            notificationBundle.putBoolean("correct_A", Correct_A);
+            notificationBundle.putBoolean("correct_B", Correct_B);
+            notificationBundle.putBoolean("correct_C", Correct_C);
+            notificationBundle.putBoolean("correct_D", Correct_D);
+
+            notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
+            notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
+            notificationBundle.putString("firstUserResult", bundle.getString("firstUserResult"));
+            notificationBundle.putString("secondtUserResult", bundle.getString("secondtUserResult"));
+
+            //pushNotification.retrieveDane(context);
+            //retrieveDane();
+
+            //pushNotification.retrieveDane(context);
+            if (tickerText != null && tickerText.length() > 0) {
+                int appIcon = R.mipmap.ic_launcher;
+                if (appIcon == 0)
+                    appIcon = android.R.drawable.sym_def_app_icon;
+
+
+//
+//                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
+                notificationIntent = new Intent(context, questionActivity.class);
+                System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
+                notificationIntent.putExtras(notificationBundle);
+
+                notificationIntent.putExtra("subtopic", subtopic);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+                notificationBuilder.setSmallIcon(getNotificationIcon());
+                notificationBuilder.setTicker(tickerText);
+                notificationBuilder.setWhen(System.currentTimeMillis());
+                notificationBuilder.setContentTitle(contentTitle);
+                notificationBuilder.setContentText(contentText);
+                notificationBuilder.setAutoCancel(true);
+                notificationBuilder.setContentIntent(contentIntent);
+
+
+                Notification notification = notificationBuilder.build();
+
+
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(0, notification);
+
+
+            }
+        }
+
+            return false;
+
+    }
+    public void GetLastResultNotification(Bundle bundle,Intent intent, Context context){
 
         Bundle notificationBundle = new Bundle();
-        notificationBundle.putString("Question", bundle.getString("Question"));
-        notificationBundle.putString("Answer_A", bundle.getString("Answer_A"));
-        notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
-        notificationBundle.putString("Answer_C", bundle.getString("Answer_C"));
-        notificationBundle.putString("Answer_D", bundle.getString("Answer_D"));
-        Boolean Correct_A = null;
-        if (bundle.getString("correct_A").equals("1"))
-            Correct_A = true;
-        else if (bundle.getString("correct_A").equals("0"))
-            Correct_A = false;
-        Boolean Correct_B = null;
-        if (bundle.getString("correct_B").equals("1"))
-            Correct_B = true;
-        else if (bundle.getString("correct_B").equals("0"))
-            Correct_B = false;
-        Boolean Correct_C = null;
-        if (bundle.getString("correct_C").equals("1"))
-            Correct_C = true;
-        else if (bundle.getString("correct_C").equals("0"))
-            Correct_C = false;
-
-        Boolean Correct_D = null;
-        if (bundle.getString("correct_D").equals("1"))
-            Correct_D = true;
-        else if (bundle.getString("correct_D").equals("0"))
-            Correct_D = false;
-
-
-        notificationBundle.putBoolean("correct_A",Correct_A );
-        notificationBundle.putBoolean("correct_B",Correct_B );
-        notificationBundle.putBoolean("correct_C",Correct_C );
-        notificationBundle.putBoolean("correct_D",Correct_D );
-
+        //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
+        //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
+        notificationBundle.putInt("1st user result", Integer.parseInt(bundle.getString("firstUserResult")));
+        notificationBundle.putInt("2nd user result", Integer.parseInt(bundle.getString("secondtUserResult")));
+        notificationBundle.putString("Last Result","Last Result");
         notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
         notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
-        notificationBundle.putString("firstUserResult", bundle.getString("firstUserResult"));
-        notificationBundle.putString("secondtUserResult", bundle.getString("secondtUserResult"));
-
-        //pushNotification.retrieveDane(context);
-        //retrieveDane();
-
-        //pushNotification.retrieveDane(context);
+        CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
+        CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
+        CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
+        String subtopic = intent.getStringExtra("message");
         if (tickerText != null && tickerText.length() > 0) {
             int appIcon = R.mipmap.ic_launcher;
             if (appIcon == 0)
@@ -83,12 +140,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
 //
 //                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
-            notificationIntent = new Intent(context, questionActivity.class);
+            LastResultIntent = new Intent(context, resultActivity.class);
             System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
-            notificationIntent.putExtras(notificationBundle);
+            LastResultIntent.putExtras(notificationBundle);
 
-            notificationIntent.putExtra("subtopic", subtopic);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            LastResultIntent.putExtra("subtopic", subtopic);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, LastResultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
             notificationBuilder.setSmallIcon(getNotificationIcon());
@@ -106,12 +163,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
 
-
         }
-
-        return false;
     }
-
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.drawable.notification_pagk : R.mipmap.ic_launcher;
