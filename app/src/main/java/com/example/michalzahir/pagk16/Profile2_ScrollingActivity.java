@@ -44,7 +44,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     ImageView ProfilPicture;
     AccessToken accessToken;
 
-    // TODO: 2016-06-28  fix the problem with the lat eipdateing of the info on the profile activity.
+    // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

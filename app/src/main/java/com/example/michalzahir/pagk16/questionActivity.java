@@ -71,7 +71,7 @@ public class questionActivity extends AppCompatActivity {
                     AnswerAButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
                     findTHeRightAnswer();
                 }
-                // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
+
         }});
 
         AnswerBButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class questionActivity extends AppCompatActivity {
                     AnswerBButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
                     findTHeRightAnswer();
                 }
-                // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
+
             }});
         AnswerCButton.setOnClickListener(new View.OnClickListener() {
 
@@ -108,7 +108,7 @@ public class questionActivity extends AppCompatActivity {
 
                     findTHeRightAnswer();
                 }
-                // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
+
             }});
 
 
@@ -127,7 +127,7 @@ public class questionActivity extends AppCompatActivity {
                     AnswerDButton.setBackgroundColor(getResources().getColor(R.color.badAnswer));
                     findTHeRightAnswer();
                 }
-                // TODO: 2016-06-02 Send Notfication and Saved Questions to the other opponent
+
             }});
 
     }
