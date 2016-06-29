@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +41,11 @@ public class resultActivity extends AppCompatActivity {
 
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
+        // the last result sent to the second user
         if (bundle.containsKey("Last Result")){
 
 
+            com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
         }
         else {
             NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
@@ -51,8 +54,8 @@ public class resultActivity extends AppCompatActivity {
             else if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
                 NewGameActivity.StopTheGame = 0;
                 new AlertDialog.Builder(this)
-                        .setTitle("The game is done ")
-                        .setMessage("Your current game is finished, please click ok to go to your profile")
+                        .setTitle("Your part is done, It's turn for your oponent. ")
+                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
@@ -89,7 +92,7 @@ public class resultActivity extends AppCompatActivity {
         // new Contact instance has been saved
         new AlertDialog.Builder(this)
                 .setTitle("Your result : ")
-                .setMessage("Your oponennt is playing his round right now please wait for a notification when he finishes .")
+                .setMessage("Your oponent is playing his round right now. Please wait for a notification when he finishes.")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -294,18 +297,8 @@ public class resultActivity extends AppCompatActivity {
 
         }
         sendTheLastResultNotificationToscndUser();
-        new AlertDialog.Builder(this)
-                .setTitle("The game is done ")
-                .setMessage("Your current game is finished, please click ok to go to your profile")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
-                        startActivity(i);
-                    }
-                })
+        com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
 
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .show();
 
 
     }

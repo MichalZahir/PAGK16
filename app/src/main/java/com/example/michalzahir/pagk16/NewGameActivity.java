@@ -27,7 +27,7 @@ import weborb.client.Responder;
 public class NewGameActivity extends AppCompatActivity {
     private Button newFBGameButton;
     private Button newRandomGameButton;
-    static gameResult result;
+    static public gameResult result;
     private static final String TAG = NewGameActivity.class.getSimpleName();
     public static Boolean yourTurnToChooseCategory = false;
     public static int StopTheGame=0;
