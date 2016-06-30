@@ -2,23 +2,21 @@ package com.example.michalzahir.pagk16;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.backendless.Messaging;
 import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -60,16 +58,13 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     // Session Manager Class
     SessionManager session;
-
+    static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
-
         super.onCreate(savedInstanceState);
-
-
-         callbackManager  = CallbackManager.Factory.create();
-        // Session Manager
+        user = User.getInstance();
+        callbackManager  = CallbackManager.Factory.create();
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -91,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         if( userToken != null && !userToken.equals( "" ) )
         {  // user login is available, skip the login activity/login form
-            playerObejtID.setUserObjectID(Backendless.UserService.loggedInUser());
-
+            String s =Backendless.UserService.loggedInUser();
+            playerObejtID.setUserObjectID(s);
+            user.setUserObjectId(s);
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
              startActivity(i);
@@ -106,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             //String a = AccessToken.getCurrentAccessToken().getUserId();
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             System.out.println(" faceboook UserNameFb  : " + UserNameFb);
+            user.setName(UserNameFb);
             // TODO: 2016-06-14  save The user object ID when logged in from the fb token
             // TODO: 2016-06-28 Take info about the lost games won games draw games
 //            String s = Backendless.UserService.loggedInUser();
@@ -212,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void handleResponse(BackendlessUser backendlessUser) {
                     Log.i("Loggin in ", backendlessUser.getProperty("name") + " successfully logged in");
-
+                    user.setName(name);
                    // session.createLoginSession(name, password);
                     playerObejtID.setUserObjectID(backendlessUser.getObjectId());
                     Intent i = new Intent(getApplicationContext(),
@@ -272,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 wonGames = (int) backendlessUser.getProperty("WON");
                 lostGames = (int) backendlessUser.getProperty("LOST");
                 drawGames = (int) backendlessUser.getProperty("DRAW");
-
+                user.setUserObjectId(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
                 i.putExtra ( "wonGames", wonGames );
                 i.putExtra ( "lostGames", lostGames );
@@ -292,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                         final String Device_ID = Messaging.DEVICE_ID;
                         Log.d(TAG,"The Device ID is :  "+Device_ID);
                        // UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
-
+                        user.setDeviceID(Device_ID);
                         //Backendless.UserService.loggedInUser();
                         System.out.println("the current user for fb users :    " + currentUserObjectId);
 
@@ -371,6 +368,7 @@ public class MainActivity extends AppCompatActivity {
                 String Device_ID = Backendless.Messaging.DEVICE_ID;
                 Log.d(TAG,"The Device ID is :  "+Device_ID);
                 UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
+                user.setDeviceID(Device_ID);
             }
 
             @Override
@@ -385,4 +383,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
-// TODO: 2016-06-14 Fix bad login !!!!!

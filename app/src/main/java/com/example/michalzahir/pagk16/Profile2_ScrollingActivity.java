@@ -18,6 +18,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -36,8 +37,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView playedGamesTextView;
     private Button newGameButton;
 
-
-    int wonGames;
+     int wonGames;
     int lostGames;
     int drawGames;
     int playedGames;
@@ -49,6 +49,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
+
+        MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
         wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);
         lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
@@ -72,8 +74,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             });
         }
         String currentUserObjectId = Backendless.UserService.loggedInUser();
-
-        Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
+        MainActivity.user.setUserObjectId(currentUserObjectId);
+         Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
         public void handleResponse(BackendlessUser backendlessUser )
         {
 
@@ -83,9 +85,9 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             wonGames = (int) backendlessUser.getProperty("WON");
             lostGames = (int) backendlessUser.getProperty("LOST");
             drawGames = (int) backendlessUser.getProperty("DRAW");
+            MainActivity.user.setName(UserName);
 
             playedGames = wonGames +lostGames+ drawGames;
-
 
             UserNameTectView.setText(UserName);
             lostGamesTextView.setText(String.valueOf(lostGames));
@@ -120,6 +122,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             Profile profile = Profile.getCurrentProfile();
             String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
             UserName =  UserNameFb;
+            MainActivity.user.setName(UserNameFb);
             UserNameTectView.setText(UserName);
             try {
 
