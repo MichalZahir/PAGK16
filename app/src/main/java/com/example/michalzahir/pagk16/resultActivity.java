@@ -174,7 +174,7 @@ public class resultActivity extends AppCompatActivity {
 
         }
         else if (NewGameActivity.result.getFirstUserResult()<NewGameActivity.result.getSecondtUserResult()){
-            String secondUserObjectId = NewGameActivity.result.getFirstUSerObjectID();
+            String secondUserObjectId = NewGameActivity.result.getSecondUSerObjectID();
             System.out.println("The winner is  :    " + secondUserObjectId);
 
 
