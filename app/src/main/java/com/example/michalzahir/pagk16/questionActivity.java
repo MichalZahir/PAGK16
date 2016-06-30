@@ -131,7 +131,10 @@ public class questionActivity extends AppCompatActivity {
             }});
 
     }
+    @Override
+    public void onBackPressed(){
 
+    }
 
     public void incrementResultForGoodAnswer(){
         // TODO: 2016-06-27 Bug, users logged in with fb got no userobject ID wich leads to a null pointer exception in this palce.

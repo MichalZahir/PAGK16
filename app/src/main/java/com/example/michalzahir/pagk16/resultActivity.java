@@ -87,6 +87,11 @@ public class resultActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed(){
+
+    }
     public void SetDialogue(){
 
         // new Contact instance has been saved
