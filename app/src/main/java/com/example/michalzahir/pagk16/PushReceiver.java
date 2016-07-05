@@ -45,6 +45,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
             notificationBundle.putString("Answer_C", bundle.getString("Answer_C"));
             notificationBundle.putString("Answer_D", bundle.getString("Answer_D"));
+
             Boolean Correct_A = null;
             if (bundle.getString("correct_A").equals("1"))
                 Correct_A = true;
@@ -110,7 +111,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
 
                 Notification notification = notificationBuilder.build();
-                notification.defaults |= Notification.DEFAULT_VIBRATE;
+                //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 
 
@@ -165,7 +166,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             notificationBuilder.setSound(uri);
 
             Notification notification = notificationBuilder.build();
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);

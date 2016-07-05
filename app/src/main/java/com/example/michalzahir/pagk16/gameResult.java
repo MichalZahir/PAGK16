@@ -67,6 +67,7 @@ public class gameResult {
     }
     public void publishResults(final Context context, Bundle bundle ){
         Bundle resultsBundle = new Bundle();
+        MainActivity.user.setResult(getFirstUserResult());
         resultsBundle.putInt("1st user result",getFirstUserResult());
         resultsBundle.putInt("2nd user result",getSecondtUserResult());
         final Intent i = new Intent(context, resultActivity.class);
@@ -78,10 +79,12 @@ public class gameResult {
                 context.startActivity(i);
             }
         }, 5000);
-
+        if(NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
+        com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
         //context.startActivity(i);
         pushNotification.PublishNotification(context , bundle  );
+
 
     }
 }

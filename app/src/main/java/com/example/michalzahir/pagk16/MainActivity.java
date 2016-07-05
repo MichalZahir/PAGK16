@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     // Session Manager Class
     SessionManager session;
-    static User user;
+    public static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());

@@ -9,7 +9,9 @@ public class User {
     String userObjectId;
     String DeviceID;
     String Name;
-
+    String Category;
+    int Question_ID;
+    int result;
 
     private static User ourInstance = new User();
 
@@ -44,4 +46,27 @@ public class User {
         Name = name;
     }
 
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public int getQuestion_ID() {
+        return Question_ID;
+    }
+
+    public void setQuestion_ID(int question_ID) {
+        Question_ID = question_ID;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
 }
