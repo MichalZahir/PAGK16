@@ -26,10 +26,10 @@ public class resultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        firstUserResultTextView = (TextView) findViewById(R.id.firstUserResult );
+        firstUserResultTextView = (TextView) findViewById(R.id.firstUserResult);
         secondUserResultTextView = (TextView) findViewById(R.id.secondUserResult);
         Bundle bundle = this.getIntent().getExtras();
-        System.out.println("first result from bundle"+bundle.getInt("1st user result")+"      second result from bundle"+bundle.getInt("2nd user result"));
+        System.out.println("first result from bundle" + bundle.getInt("1st user result") + "      second result from bundle" + bundle.getInt("2nd user result"));
         int intFirstResult;
         int intSecondResult;
         intFirstResult = bundle.getInt("1st user result");
@@ -42,12 +42,12 @@ public class resultActivity extends AppCompatActivity {
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
         // the last result sent to the second user
-        if (bundle.containsKey("Last Result")){
+        if (bundle.containsKey("Last Result")) {
 
+            NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
 
             com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
-        }
-        else {
+        } else {
             NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
             if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
                 endTheGame();
@@ -89,10 +89,11 @@ public class resultActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
     }
-    public void SetDialogue(){
+
+    public void SetDialogue() {
 
         // new Contact instance has been saved
         new AlertDialog.Builder(this)
@@ -108,196 +109,190 @@ public class resultActivity extends AppCompatActivity {
                 .show();
 
     }
-    public void endTheGame(){
+
+    public void endTheGame() {
 
         // the game is finish go back to your profile save the result in the users table
-        if (NewGameActivity.result.getFirstUserResult()>NewGameActivity.result.getSecondtUserResult())
-        {
+        if (NewGameActivity.result.getFirstUserResult() > NewGameActivity.result.getSecondtUserResult()) {
 
             String firstUserObjectId = NewGameActivity.result.getFirstUSerObjectID();
             System.out.println("The winner is  :    " + firstUserObjectId);
 
 
-            Backendless.UserService.findById  (firstUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                System.out.println(backendlessUser.getObjectId());
-                int wonGames = (int) backendlessUser.getProperty("WON");
-                backendlessUser.setProperty("WON",wonGames +1);
+            Backendless.UserService.findById(firstUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    System.out.println(backendlessUser.getObjectId());
+                    int wonGames = (int) backendlessUser.getProperty("WON");
+                    backendlessUser.setProperty("WON", wonGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of won games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of won games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
             // for the loser
             String secondUserObjectId = NewGameActivity.result.getSecondUSerObjectID();
-            Backendless.UserService.findById  (secondUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                //System.out.println(backendlessUser.getObjectId());
-                int lostGames = (int) backendlessUser.getProperty("LOST");
+            Backendless.UserService.findById(secondUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    //System.out.println(backendlessUser.getObjectId());
+                    int lostGames = (int) backendlessUser.getProperty("LOST");
 
-                backendlessUser.setProperty("LOST",lostGames +1);
+                    backendlessUser.setProperty("LOST", lostGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of lost games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of lost games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of lost games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of lost games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
 
 
-
-
-        }
-        else if (NewGameActivity.result.getFirstUserResult()<NewGameActivity.result.getSecondtUserResult()){
+        } else if (NewGameActivity.result.getFirstUserResult() < NewGameActivity.result.getSecondtUserResult()) {
             String secondUserObjectId = NewGameActivity.result.getSecondUSerObjectID();
             System.out.println("The winner is  :    " + secondUserObjectId);
 
 
-            Backendless.UserService.findById  (secondUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                System.out.println(backendlessUser.getObjectId());
-                int wonGames = (int) backendlessUser.getProperty("WON");
-                backendlessUser.setProperty("WON",wonGames +1);
+            Backendless.UserService.findById(secondUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    System.out.println(backendlessUser.getObjectId());
+                    int wonGames = (int) backendlessUser.getProperty("WON");
+                    backendlessUser.setProperty("WON", wonGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of won games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of won games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
 
 
             // for the loser
             String firstUserObjectId = NewGameActivity.result.getFirstUSerObjectID();
-            Backendless.UserService.findById  (firstUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                //System.out.println(backendlessUser.getObjectId());
-                int lostGames = (int) backendlessUser.getProperty("LOST");
+            Backendless.UserService.findById(firstUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    //System.out.println(backendlessUser.getObjectId());
+                    int lostGames = (int) backendlessUser.getProperty("LOST");
 
-                backendlessUser.setProperty("LOST",lostGames +1);
+                    backendlessUser.setProperty("LOST", lostGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of lost games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of lost games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of lost games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of lost games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
 
 
-        }
-        else if (NewGameActivity.result.getFirstUserResult()==NewGameActivity.result.getSecondtUserResult()){
+        } else if (NewGameActivity.result.getFirstUserResult() == NewGameActivity.result.getSecondtUserResult()) {
             String firstUserObjectId = NewGameActivity.result.getFirstUSerObjectID();
-            Backendless.UserService.findById  (firstUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                int drawGames = (int) backendlessUser.getProperty("DRAW");
-                backendlessUser.setProperty("DRAW", drawGames+1);
+            Backendless.UserService.findById(firstUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    int drawGames = (int) backendlessUser.getProperty("DRAW");
+                    backendlessUser.setProperty("DRAW", drawGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of draw games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of draw games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of draw games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of draw games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
             String secondUserObjectId = NewGameActivity.result.getSecondUSerObjectID();
-            Backendless.UserService.findById  (secondUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-            public void handleResponse(BackendlessUser backendlessUser )
-            {
-                int drawGames = (int) backendlessUser.getProperty("DRAW");
-                backendlessUser.setProperty("DRAW", drawGames+1);
+            Backendless.UserService.findById(secondUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
+                    int drawGames = (int) backendlessUser.getProperty("DRAW");
+                    backendlessUser.setProperty("DRAW", drawGames + 1);
 
-                Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                    public void handleResponse(BackendlessUser user) {
-                        Log.d(TAG, "The Number of draw games is updated of the user :" + user.getUserId());
-                    }
+                    Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
+                        public void handleResponse(BackendlessUser user) {
+                            Log.d(TAG, "The Number of draw games is updated of the user :" + user.getUserId());
+                        }
 
-                    public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "The Number of draw games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d(TAG, "The Number of draw games Was  not updated because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-                    }
-                });
+                        }
+                    });
 
 
-            }
+                }
 
                 @Override
-                public void handleFault( BackendlessFault fault )
-                {
-                    System.err.println( "Error - " + fault );
-                }});
-
-
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - " + fault);
+                }
+            });
 
 
         }
@@ -305,13 +300,13 @@ public class resultActivity extends AppCompatActivity {
         com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
 
 
-
     }
-    public void sendTheLastResultNotificationToscndUser(){
-        Bundle resultsBundle = new Bundle();
-        resultsBundle.putInt("1st user result",NewGameActivity.result.getFirstUserResult());
-        resultsBundle.putInt("2nd user result",NewGameActivity.result.getSecondtUserResult());
 
-        pushNotification.PublishTheLastResultNotificaton(getApplicationContext(),resultsBundle);
+    public void sendTheLastResultNotificationToscndUser() {
+        Bundle resultsBundle = new Bundle();
+        resultsBundle.putInt("1st user result", NewGameActivity.result.getFirstUserResult());
+        resultsBundle.putInt("2nd user result", NewGameActivity.result.getSecondtUserResult());
+
+        pushNotification.PublishTheLastResultNotificaton(getApplicationContext(), resultsBundle);
     }
 }

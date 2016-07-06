@@ -57,33 +57,39 @@ public class gameResult {
     public void setSecondUSerObjectID(String secondUSerObjectID) {
         this.secondUSerObjectID = secondUSerObjectID;
     }
-    public void Increment1stUserResult(){
 
-        this.firstUserResult=this.firstUserResult+1;
-    }
-    public void Increment2ndUserResult(){
+    public void Increment1stUserResult() {
 
-        this.secondtUserResult=this.secondtUserResult+1;
+        this.firstUserResult = this.firstUserResult + 1;
     }
-    public void publishResults(final Context context, Bundle bundle ){
+
+    public void Increment2ndUserResult() {
+
+        this.secondtUserResult = this.secondtUserResult + 1;
+    }
+
+    public void publishResults(final Context context, Bundle bundle) {
         Bundle resultsBundle = new Bundle();
         MainActivity.user.setResult(getFirstUserResult());
-        resultsBundle.putInt("1st user result",getFirstUserResult());
-        resultsBundle.putInt("2nd user result",getSecondtUserResult());
+        resultsBundle.putInt("1st user result", getFirstUserResult());
+        resultsBundle.putInt("2nd user result", getSecondtUserResult());
         final Intent i = new Intent(context, resultActivity.class);
         i.putExtras(resultsBundle);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                context.startActivity(i);
+//            }
+//        }, 5000)
+        i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
 
-                context.startActivity(i);
-            }
-        }, 5000);
-        if(NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
-        com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
+        if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
+            com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
         //context.startActivity(i);
-        if(NewGameActivity.StopTheGame!=0) {
+        if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
 
             pushNotification.PublishNotification(context, bundle);
         }

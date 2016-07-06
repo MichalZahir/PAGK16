@@ -201,53 +201,7 @@ public class pushNotification {
             });
         thread.start();
 
-        //        Backendless.UserService.findById  (OpponentUserObjectID, new AsyncCallback<BackendlessUser>() { @Override
-        //        public void handleResponse(BackendlessUser backendlessUser )
-        //        {
-        //            System.out.println(backendlessUser.getObjectId());
-        //            OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
-        //
-        //
-        //
-        //        }
-        //
-        //            @Override
-        //            public void handleFault( BackendlessFault fault )
-        //            {
-        //                Log.d(TAG, "The device ID was Not found in the user table:   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
-        //            }});
-//        Thread thread = new Thread(new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                try
-//                {
-//                    //Your code goes here
-//                    BackendlessUser backendlessUser = Backendless.UserService.findById(OpponentUserObjectID);
-//                    Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + OpponentUserObjectID );
-//                    OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
-//
-//                    Log.d(TAG, "The device ID was found = :   " + OpponentDeviceID );
-//                }
-//                catch (BackendlessException e)
-//                {
-//                    Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );                }
-//            }
-//        });
-//
-//        thread.start();
 
-//        try {
-//            BackendlessUser backendlessUser = Backendless.UserService.findById(OpponentUserObjectID);
-//            Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + OpponentUserObjectID );
-//            OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
-//
-//            Log.d(TAG, "The device ID was found = :   " + OpponentDeviceID );
-//        }
-//        catch (BackendlessException e){
-//            Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );
-//        }
 
     }
 
