@@ -9,6 +9,9 @@ import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.Profile2_ScrollingActivity;
 import com.example.michalzahir.pagk16.playerObejtID;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by zahirm on 2016-06-29.
  */
@@ -21,8 +24,15 @@ public class wonOrLost  {
                     .setMessage("Please click OK to go to Your profile")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(c, Profile2_ScrollingActivity.class);
-                            c.startActivity(i);
+                            final Intent i = new Intent(c, Profile2_ScrollingActivity.class);
+
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    c.startActivity(i);
+                                }
+                            }, 3000);
+
                         }
                     })
 
@@ -36,8 +46,13 @@ public class wonOrLost  {
                     .setMessage("Please click OK to go to Your profile")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(c, Profile2_ScrollingActivity.class);
-                            c.startActivity(i);
+                            final Intent i = new Intent(c, Profile2_ScrollingActivity.class);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    c.startActivity(i);
+                                }
+                            }, 3000);
                         }
                     })
 
@@ -51,8 +66,13 @@ public class wonOrLost  {
                     .setMessage("Please click OK to go to Your profile")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(c, Profile2_ScrollingActivity.class);
-                            c.startActivity(i);
+                            final Intent i = new Intent(c, Profile2_ScrollingActivity.class);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    c.startActivity(i);
+                                }
+                            }, 3000);
                         }
                     })
 
@@ -69,8 +89,13 @@ public class wonOrLost  {
                     .setMessage("Try to play again, Please click OK to go to Your profile")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(c, Profile2_ScrollingActivity.class);
-                            c.startActivity(i);
+                            final Intent i = new Intent(c, Profile2_ScrollingActivity.class);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    c.startActivity(i);
+                                }
+                            }, 3000);
                         }
                     })
 
@@ -84,8 +109,13 @@ public class wonOrLost  {
                     .setMessage("Try to play again, Please click OK to go to Your profile")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(c, Profile2_ScrollingActivity.class);
-                            c.startActivity(i);
+                            final Intent i = new Intent(c, Profile2_ScrollingActivity.class);
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    c.startActivity(i);
+                                }
+                            }, 3000);
                         }
                     })
 
