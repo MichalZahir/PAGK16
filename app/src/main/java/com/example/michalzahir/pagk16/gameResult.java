@@ -83,8 +83,10 @@ public class gameResult {
         com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
         //context.startActivity(i);
-        pushNotification.PublishNotification(context , bundle  );
+        if(NewGameActivity.StopTheGame!=0) {
 
+            pushNotification.PublishNotification(context, bundle);
+        }
 
     }
 }

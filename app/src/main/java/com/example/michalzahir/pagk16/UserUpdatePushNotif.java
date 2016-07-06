@@ -36,6 +36,8 @@ public class UserUpdatePushNotif {
 
             Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                 public void handleResponse(BackendlessUser user) {
+                    user.setProperty("Device_ID", Device_ID);
+
                     Log.d(TAG, "The Device ID is updated succeffully for the user  :" + user.getUserId());
                 }
 

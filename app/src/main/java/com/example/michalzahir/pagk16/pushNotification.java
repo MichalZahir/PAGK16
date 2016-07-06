@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.messaging.DeliveryOptions;
 import com.backendless.messaging.MessageStatus;
@@ -29,6 +31,8 @@ import java.util.List;
 public class pushNotification {
     private static final String TAG = "Push Notification";
     static Bundle QuestionBundle = new Bundle();
+    static String OpponentDeviceID;
+
 
 
     public static void setQuestionBundle(Bundle questionBundle) {
@@ -41,9 +45,12 @@ public class pushNotification {
         final String appVersion = "v1";
         final DeliveryOptions deliveryOptions = new DeliveryOptions();
         deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
-        deliveryOptions.addPushSinglecast("LGH440nce43a48f");
-        deliveryOptions.addPushSinglecast("unknown");
-        deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
+        //deliveryOptions.addPushSinglecast("LGH440nce43a48f");
+        //deliveryOptions.addPushSinglecast("unknown");
+
+
+        deliveryOptions.addPushSinglecast(OpponentDeviceID);
+        //deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
 
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");
@@ -92,29 +99,7 @@ public class pushNotification {
             @Override
             public void handleResponse(MessageStatus messageStatus) {
                 Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
-                //   if( messageStatus.equals( PublishStatusEnum.SCHEDULED ))
-                // {
 
-//                List<QUESTIONS> savedQuestions = RecyclerAdapter.savedquestions.getSavedQuestions();
-//
-//
-//
-//                for (int i = 0 ; i< savedQuestions.size();i++) {
-//                    System.out.println("this is the question from the backendless DB  " + savedQuestions.get(i).getQuestion()
-//                            + ".    this is the first answer   " + savedQuestions.get(i).getAnswer_a() + ".   Hurrraaa success !!!!" + savedQuestions.get(i).getCORRECT_A() + " B boolean:" + savedQuestions.get(i).getCORRECT_B() + " D boolean:" + savedQuestions.get(i).getCORRECT_D() + " C boolean:" + savedQuestions.get(i).getCORRECT_C() + "AA" + savedQuestions.get(i).getAnswer_a() + "bA" + savedQuestions.get(i).getANSWER_B() + "cA" + savedQuestions.get(i).getANSWER_C() + "DA" + savedQuestions.get(i).getANSWER_D());
-//                    QuestionBundle.putString("Question", savedQuestions.get(i).getQuestion());
-//                    QuestionBundle.putString("Answer_A", savedQuestions.get(i).getAnswer_a());
-//                    QuestionBundle.putString("Answer_B", savedQuestions.get(i).getANSWER_B());
-//                    QuestionBundle.putString("Answer_C", savedQuestions.get(i).getANSWER_C());
-//                    QuestionBundle.putString("Answer_D", savedQuestions.get(i).getANSWER_D());
-//                    QuestionBundle.putBoolean("correct_A", savedQuestions.get(i).getCORRECT_A());
-//                    QuestionBundle.putBoolean("correct_B", savedQuestions.get(i).getCORRECT_B());
-//                    QuestionBundle.putBoolean("correct_C", savedQuestions.get(i).getCORRECT_C());
-//                    QuestionBundle.putBoolean("correct_D", savedQuestions.get(i).getCORRECT_D());
-//                    System.out.println(" push notification sender !! bundle : The current bundle is  from the push receiver why is it empty:     "+pushNotification.QuestionBundle);
-//                }
-
-                // }
             }
 
             @Override
@@ -131,8 +116,9 @@ public class pushNotification {
         final String appVersion = "v1";
         final DeliveryOptions deliveryOptions = new DeliveryOptions();
         deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
-        deliveryOptions.addPushSinglecast("LGH440nce43a48f");
-        deliveryOptions.addPushSinglecast("unknown");
+         //deliveryOptions.addPushSinglecast("LGH440nce43a48f");
+        //deliveryOptions.addPushSinglecast("unknown");
+        deliveryOptions.addPushSinglecast(OpponentDeviceID);
         deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
 
         PublishOptions publishOptions = new PublishOptions();
@@ -167,8 +153,103 @@ public class pushNotification {
         });
 
 
-        }
     }
 
+    public static void GetOpponentUserObjID() {
 
+
+        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
+            Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + NewGameActivity.result.getSecondUSerObjectID() );
+            GetReceiverDeviceID(NewGameActivity.result.getSecondUSerObjectID());
+
+        } else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+            Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + NewGameActivity.result.getFirstUSerObjectID() );
+            GetReceiverDeviceID(NewGameActivity.result.getFirstUSerObjectID());
+
+        }
+
+    }
+
+    public static void GetReceiverDeviceID(final String OpponentUserObjectID) {
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Backendless.UserService.findById  (OpponentUserObjectID, new AsyncCallback<BackendlessUser>() { @Override
+                                 public void handleResponse(BackendlessUser backendlessUser )
+                                 {
+                                    System.out.println(backendlessUser.getObjectId());
+                                    OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
+
+
+
+                                }
+
+                                    @Override
+                                    public void handleFault( BackendlessFault fault )
+                                    {
+                                        Log.d(TAG, "The device ID was Not found in the user table:   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                                    }});
+
+                }catch (BackendlessException e)
+                    {
+                        Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );                }
+                }
+            });
+        thread.start();
+
+        //        Backendless.UserService.findById  (OpponentUserObjectID, new AsyncCallback<BackendlessUser>() { @Override
+        //        public void handleResponse(BackendlessUser backendlessUser )
+        //        {
+        //            System.out.println(backendlessUser.getObjectId());
+        //            OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
+        //
+        //
+        //
+        //        }
+        //
+        //            @Override
+        //            public void handleFault( BackendlessFault fault )
+        //            {
+        //                Log.d(TAG, "The device ID was Not found in the user table:   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+        //            }});
+//        Thread thread = new Thread(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                try
+//                {
+//                    //Your code goes here
+//                    BackendlessUser backendlessUser = Backendless.UserService.findById(OpponentUserObjectID);
+//                    Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + OpponentUserObjectID );
+//                    OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
+//
+//                    Log.d(TAG, "The device ID was found = :   " + OpponentDeviceID );
+//                }
+//                catch (BackendlessException e)
+//                {
+//                    Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );                }
+//            }
+//        });
+//
+//        thread.start();
+
+//        try {
+//            BackendlessUser backendlessUser = Backendless.UserService.findById(OpponentUserObjectID);
+//            Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + OpponentUserObjectID );
+//            OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
+//
+//            Log.d(TAG, "The device ID was found = :   " + OpponentDeviceID );
+//        }
+//        catch (BackendlessException e){
+//            Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );
+//        }
+
+    }
+
+}
 

@@ -50,6 +50,8 @@ public class questionActivity extends AppCompatActivity {
             NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
             NewGameActivity.yourTurnToChooseCategory = true;
+            pushNotification.GetOpponentUserObjID();
+
         }
 
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
