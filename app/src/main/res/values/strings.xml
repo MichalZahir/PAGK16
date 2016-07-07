@@ -111,4 +111,5 @@
     </string>
     <string name="title_activity_profile2__scrolling">Profile2_ScrollingActivity</string>
     <string name="NewGame">New Game</string>
+    <string name="invite_other_friends">Invite Other Friends</string>
 </resources>

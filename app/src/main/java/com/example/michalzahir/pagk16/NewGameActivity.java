@@ -91,33 +91,7 @@ public class NewGameActivity extends AppCompatActivity {
                     startActivity(i);
 
                 }
-                
 
-
-//                System.out.println("The adding user to the queue flag:  "+AddUserToQueue);
-//                playersQueue PLAYERSQUEUE = playersQueue.getPlayersQueueInstance();
-//                if(PLAYERSQUEUE.isEmpty()){
-//                     playersQueue.AddUserToPlayersQueue(playerObejtID.getUserObjectID());
-//                    result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
-//                    result.setFirstUserResult(0);
-//                     NewGameActivity.result.setSecondUSerObjectID("3783DA0D-A495-5CEB-FFA3-83FB70123800");
-//
-//
-//                }
-//                else {
-//
-//                    result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
-//                    result.setSecondtUserResult(0);
-//                    playersQueue.RemoveUserFromPlayersQueue();
-//                    SavedQuestions.ListToBundleStartQueAct(getApplicationContext());
-//
-//
-//
-//                }
-
-
-
-                //finish();
 
 
             }
@@ -127,7 +101,10 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-            com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFrienList();
+            com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
+//                Intent i = new Intent(getApplicationContext(),
+//                        com.example.michalzahir.pagk16.FacebookUsers.invitingFriendsActivity.class);
+//                startActivity(i);
 
             }
         });
