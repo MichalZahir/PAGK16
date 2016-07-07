@@ -71,7 +71,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".categoryChoiceActivity" />
         <activity android:name=".questionActivity" />
-        <activity android:name=".resultActivity"></activity>
+        <activity android:name=".resultActivity" />
+        <activity android:name=".FacebookUsers.invitingFriendsActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs "com.example.michalzahir.pagk16://https://fb.me/1718891101713602"" -->
+            <data android:scheme="com.example.myApp" />
+        </intent-filter>
+        </activity>
+
+    <activity android:name=".FacebookUsers.fbFriendsListActivity"></activity>
     </application>
 
 </manifest>
