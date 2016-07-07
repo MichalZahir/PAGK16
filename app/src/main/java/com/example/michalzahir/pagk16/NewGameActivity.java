@@ -127,7 +127,7 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-
+            com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFrienList();
 
             }
         });
