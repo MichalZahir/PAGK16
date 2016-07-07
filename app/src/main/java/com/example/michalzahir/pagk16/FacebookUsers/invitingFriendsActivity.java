@@ -33,7 +33,7 @@ public class invitingFriendsActivity extends AppCompatActivity {
         appLinkUrl = "https://fb.me/1718891101713602";
         previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
 
-        
+
         if (AppInviteDialog.canShow()) {
             AppInviteContent content = new AppInviteContent.Builder()
                     .setApplinkUrl(appLinkUrl)

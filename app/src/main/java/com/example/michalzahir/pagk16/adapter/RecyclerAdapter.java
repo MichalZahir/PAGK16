@@ -154,6 +154,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 Random rn = new Random();
                 int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;
                 System.out.println(ID);
+
                 String whereClause = " ID=" + ID;
                 MainActivity.user.setQuestion_ID(ID);
                 BackendlessDataQuery dataQuery = new BackendlessDataQuery();
