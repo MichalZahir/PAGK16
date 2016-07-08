@@ -22,6 +22,7 @@ import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.categoryChoiceActivity;
 import com.example.michalzahir.pagk16.gameResult;
+import com.example.michalzahir.pagk16.playerObejtID;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import org.json.JSONArray;
@@ -85,6 +86,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
                     result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
                     result.setFirstUserResult(0);
                     result.setSecondtUserResult(0);
+                    playerObejtID.setUserObjectID(MainActivity.user.getUserObjectId());
                     Intent i = new Intent(getApplicationContext(),
                             categoryChoiceActivity.class);
                     startActivity(i);
