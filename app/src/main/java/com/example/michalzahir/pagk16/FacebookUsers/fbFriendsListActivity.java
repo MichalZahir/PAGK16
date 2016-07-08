@@ -20,6 +20,8 @@ import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.UsersDB.Users;
+import com.example.michalzahir.pagk16.categoryChoiceActivity;
+import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import org.json.JSONArray;
@@ -30,11 +32,12 @@ import java.util.ArrayList;
 public class fbFriendsListActivity extends AppCompatActivity {
     private static final String TAG = "fbFriendsListActivity ";
     private Button InviteFriendsButton;
-
+    public gameResult result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_friends_list);
+
         InviteFriendsButton = (Button) findViewById(R.id.inviteFriends);
         Intent intent = getIntent();
         String jsondata = intent.getStringExtra("jsondata");
@@ -76,7 +79,16 @@ public class fbFriendsListActivity extends AppCompatActivity {
             {
                 try {
                     Toast.makeText( fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name")+"      "+finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
+
+                     result = new gameResult();
                     FindUsersObjectID(finalFriendslist.getJSONObject(position).getString("name"));
+                    result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
+                    result.setFirstUserResult(0);
+                    result.setSecondtUserResult(0);
+                    Intent i = new Intent(getApplicationContext(),
+                            categoryChoiceActivity.class);
+                    startActivity(i);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -105,7 +117,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
                         @Override
                         public void handleResponse(Users response) {
                             Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
-
+                            result.setSecondUSerObjectID(response.getObjectId());
                         }
 
                         @Override
