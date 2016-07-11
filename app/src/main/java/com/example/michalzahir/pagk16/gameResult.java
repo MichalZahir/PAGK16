@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+
 /**
  * Created by zahirm on 2016-06-02.
  */
@@ -84,15 +86,17 @@ public class gameResult {
 //        }, 5000)
         i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
-
-        if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
-            com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
-
-        //context.startActivity(i);
-        if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
-
+        if (fbFriendsListActivity.FbGame)
             pushNotification.PublishNotification(context, bundle);
-        }
+            else{
+            if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
+                com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
+            //context.startActivity(i);
+            if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
+
+                pushNotification.PublishNotification(context, bundle);
+            }
+        }
     }
 }

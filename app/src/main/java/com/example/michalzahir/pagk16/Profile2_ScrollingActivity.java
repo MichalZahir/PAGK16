@@ -74,7 +74,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             });
         }
         String currentUserObjectId = Backendless.UserService.loggedInUser();
-        MainActivity.user.setUserObjectId(currentUserObjectId);
+        //MainActivity.user.setUserObjectId(currentUserObjectId);
          Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
         public void handleResponse(BackendlessUser backendlessUser )
         {
@@ -107,7 +107,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
         accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
-            String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
+           // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
             Intent intent = getIntent();
             wonGames =  intent.getIntExtra("wonGames",-1);
             lostGames = intent.getIntExtra("lostGames",-1);

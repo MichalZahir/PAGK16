@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -154,7 +156,7 @@ public class questionActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
-        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+        else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
             NewGameActivity.result.Increment2ndUserResult();
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -163,7 +165,25 @@ public class questionActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
+        else if (playerObejtID.getUserObjectID().equals(fbFriendsListActivity.result.getFirstUSerObjectID())){
+            fbFriendsListActivity.result.Increment1stUserResult();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                }
+            }, 3000);
+        }
+        else if(playerObejtID.getUserObjectID().equals(fbFriendsListActivity.result.getSecondUSerObjectID())){
+            fbFriendsListActivity.result.Increment2ndUserResult();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                }
+            }, 3000);
 
+        }
     }
 
     public void findTHeRightAnswer() {

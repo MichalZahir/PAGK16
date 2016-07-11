@@ -38,7 +38,7 @@ public class UserUpdatePushNotif {
                 public void handleResponse(BackendlessUser user) {
                     user.setProperty("Device_ID", Device_ID);
 
-                    Log.d(TAG, "The Device ID is updated succeffully for the user  :" + user.getUserId());
+                    Log.d(TAG, "The Device ID is updated successfully for the user  :" + user.getUserId());
                 }
 
                 public void handleFault(BackendlessFault fault) {

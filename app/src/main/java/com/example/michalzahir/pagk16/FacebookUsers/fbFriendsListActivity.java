@@ -33,12 +33,13 @@ import java.util.ArrayList;
 public class fbFriendsListActivity extends AppCompatActivity {
     private static final String TAG = "fbFriendsListActivity ";
     private Button InviteFriendsButton;
-    public gameResult result;
+    static public gameResult result;
+    static public boolean FbGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_friends_list);
-
+        FbGame =true;
         InviteFriendsButton = (Button) findViewById(R.id.inviteFriends);
         Intent intent = getIntent();
         String jsondata = intent.getStringExtra("jsondata");
@@ -81,7 +82,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
                 try {
                     Toast.makeText( fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name")+"      "+finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
 
-                     result = new gameResult();
+                    result = new gameResult();
                     FindUsersObjectID(finalFriendslist.getJSONObject(position).getString("name"));
                     result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
                     result.setFirstUserResult(0);
@@ -136,5 +137,10 @@ public class fbFriendsListActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        FbGame = false;
+        super.onBackPressed();
     }
 }
