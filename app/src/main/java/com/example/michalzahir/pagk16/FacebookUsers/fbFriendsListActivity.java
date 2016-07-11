@@ -14,15 +14,18 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.MainActivity;
+import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.categoryChoiceActivity;
 import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.playerObejtID;
+import com.example.michalzahir.pagk16.pushNotification;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import org.json.JSONArray;
@@ -34,12 +37,13 @@ public class fbFriendsListActivity extends AppCompatActivity {
     private static final String TAG = "fbFriendsListActivity ";
     private Button InviteFriendsButton;
     static public gameResult result;
-    static public boolean FbGame;
+    static public boolean FbGame = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb_friends_list);
-        FbGame =true;
+        FbGame = true;
         InviteFriendsButton = (Button) findViewById(R.id.inviteFriends);
         Intent intent = getIntent();
         String jsondata = intent.getStringExtra("jsondata");
@@ -49,7 +53,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
 
         try {
             friendslist = new JSONArray(jsondata);
-            for (int l=0; l < friendslist.length(); l++) {
+            for (int l = 0; l < friendslist.length(); l++) {
                 friends.add(friendslist.getJSONObject(l).getString("name"));
             }
         } catch (JSONException e) {
@@ -74,19 +78,39 @@ public class fbFriendsListActivity extends AppCompatActivity {
         });
 
         final JSONArray finalFriendslist = friendslist;
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
-            {
+            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 try {
-                    Toast.makeText( fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name")+"      "+finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name") + "      " + finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
 
                     result = new gameResult();
-                    FindUsersObjectID(finalFriendslist.getJSONObject(position).getString("name"));
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                FindUsersObjectID(finalFriendslist.getJSONObject(position).getString("name"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    });
+
+                    t.start(); // spawn thread
+                    try {
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
                     result.setFirstUserResult(0);
                     result.setSecondtUserResult(0);
+                    NewGameActivity.result = result;
+
+                    pushNotification.GetOpponentUserObjID();
+
                     playerObejtID.setUserObjectID(MainActivity.user.getUserObjectId());
                     Intent i = new Intent(getApplicationContext(),
                             categoryChoiceActivity.class);
@@ -97,47 +121,63 @@ public class fbFriendsListActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
     }
 
-    public void FindUsersObjectID(String name){
+    public void FindUsersObjectID(String name) {
 
-
+        String userObjectID = null;
+        final String[] UserObjcetID = new String[1];
         System.out.println(name);
-        String whereClause = " name='" + name+"'";
-         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        String whereClause = " name='" + name + "'";
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         dataQuery.setWhereClause(whereClause);
-
-
-        Backendless.Persistence.of (Users.class).find(dataQuery, new AsyncCallback<BackendlessCollection<Users>>() {
-            @Override
-            public void handleResponse(BackendlessCollection<Users> foundQuestions) {
-                for (Users q : foundQuestions.getData()) {
-                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
-                    Backendless.Persistence.of(Users.class).findById(q.getObjectId(), new AsyncCallback<Users>() {
-                        @Override
-                        public void handleResponse(Users response) {
-                            Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
-                            result.setSecondUSerObjectID(response.getObjectId());
-                        }
-
-                        @Override
-                        public void handleFault(BackendlessFault fault) {
-                            Log.d(TAG, "fault trying to fetch FB user object ID using hte name only" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-                        }
-                    });
-                }
+        try {
+            BackendlessCollection<Users> BU = Backendless.Persistence.of(Users.class).find(dataQuery);
+            for (Users q : BU.getData()) {
+                //Users Response = Backendless.Persistence.of(Users.class).findById(q.getObjectId());
+                userObjectID = q.getObjectId();
+                result.setSecondUSerObjectID(userObjectID);
             }
+        } catch (BackendlessException fault) {
+            Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-
-            }
-        });
+        }
+//        System.out.println(name);
+//        String whereClause = " name='" + name+"'";
+//         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+//        dataQuery.setWhereClause(whereClause);
+//
+//
+//        Backendless.Persistence.of (Users.class).find(dataQuery, new AsyncCallback<BackendlessCollection<Users>>() {
+//            @Override
+//            public void handleResponse(BackendlessCollection<Users> foundQuestions) {
+//                for (Users q : foundQuestions.getData()) {
+//                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
+//                    Backendless.Persistence.of(Users.class).findById(q.getObjectId(), new AsyncCallback<Users>() {
+//                        @Override
+//                        public void handleResponse(Users response) {
+//                            Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
+//                            result.setSecondUSerObjectID(response.getObjectId());
+//                        }
+//
+//                        @Override
+//                        public void handleFault(BackendlessFault fault) {
+//                            Log.d(TAG, "fault trying to fetch FB user object ID using hte name only" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void handleFault(BackendlessFault fault) {
+//                Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+//
+//            }
+//        });
     }
+
     @Override
     public void onBackPressed() {
         FbGame = false;

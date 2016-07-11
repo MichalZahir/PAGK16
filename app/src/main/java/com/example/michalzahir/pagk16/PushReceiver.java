@@ -19,6 +19,7 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.push.BackendlessBroadcastReceiver;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 
 
 public class PushReceiver extends BackendlessBroadcastReceiver {
@@ -33,6 +34,9 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
         String subtopic = intent.getStringExtra("message");
         Bundle bundle = intent.getExtras();
+
+        if (bundle.containsKey("FB_game"))
+            fbFriendsListActivity.FbGame = true;
         // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
         if (bundle.containsKey("Last Result")){
 

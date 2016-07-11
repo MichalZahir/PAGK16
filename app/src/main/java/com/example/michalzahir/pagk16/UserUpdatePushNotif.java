@@ -24,7 +24,7 @@ public class UserUpdatePushNotif {
 
     public static void UpdateUserWithDeviceID(final String Device_ID) {
 
-        String currentUserObjectId = Backendless.UserService.loggedInUser();
+        String currentUserObjectId = playerObejtID.getUserObjectID();
         System.out.println("the current user for fb users :    " + currentUserObjectId);
 
 

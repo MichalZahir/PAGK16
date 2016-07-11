@@ -86,16 +86,21 @@ public class gameResult {
 //        }, 5000)
         i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
-        if (fbFriendsListActivity.FbGame)
-            pushNotification.PublishNotification(context, bundle);
+            if (fbFriendsListActivity.FbGame){
+                if ( NewGameActivity.StopTheGame != 0 &&NewGameActivity.StopTheGame<ConstantsClass.QuestionsNumberToBeAsked)
+                     pushNotification.PublishNotification(context, bundle);
+                    else if (NewGameActivity.StopTheGame == 0 && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+                    pushNotification.PublishNotification(context, bundle);
+            }
+
             else{
-            if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
-                com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
+                if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
+                    com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
-            //context.startActivity(i);
-            if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
+                //context.startActivity(i);
+                if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
 
-                pushNotification.PublishNotification(context, bundle);
+                    pushNotification.PublishNotification(context, bundle);
             }
         }
     }
