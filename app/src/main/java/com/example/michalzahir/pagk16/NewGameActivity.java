@@ -1,9 +1,11 @@
 package com.example.michalzahir.pagk16;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +25,8 @@ import com.backendless.messaging.PushPolicyEnum;
 import com.example.michalzahir.pagk16.Helper.USERS_QUEUE;
 
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import weborb.client.Responder;
 
@@ -101,6 +105,10 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+               if (! MainActivity.LoggedInWithFB){
+                   SetDialogueForNotFbLoggedusr();
+               }
+                else
             com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
 //                Intent i = new Intent(getApplicationContext(),
 //                        com.example.michalzahir.pagk16.FacebookUsers.invitingFriendsActivity.class);
@@ -183,5 +191,22 @@ public class NewGameActivity extends AppCompatActivity {
 
 
    return AddUserToQueue; }
+    public void SetDialogueForNotFbLoggedusr(){
+
+        new AlertDialog.Builder(this)
+                .setTitle("You're not logged in With your Facebook account.")
+                .setMessage("Please click OK to go to Your profile, you can log out and sign in with your facebook account to be able to play with facebook friends.")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final Intent i = new Intent( getApplicationContext(), Profile2_ScrollingActivity.class);
+                         startActivity(i);
+
+
+                    }
+                })
+
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
 
     }

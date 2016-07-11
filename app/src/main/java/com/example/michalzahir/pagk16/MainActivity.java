@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     // Session Manager Class
     SessionManager session;
     public static User user;
+    public static boolean LoggedInWithFB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if( userToken != null && !userToken.equals( "" ) )
         {  // user login is available, skip the login activity/login form
             String s =Backendless.UserService.loggedInUser();
+            LoggedInWithFB = false;
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
             Intent i = new Intent(getApplicationContext(),
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         // token for fb login
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
+            LoggedInWithFB = true;
             System.out.println("access token user token faceboook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             //String a = AccessToken.getCurrentAccessToken().getUserId();
@@ -216,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private  void Login(final String name, final String password){
 
-
+        LoggedInWithFB = false;
         try
         {
             Backendless.UserService.login (name,password, new BackendlessCallback<BackendlessUser>() {
@@ -262,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void fbLogin(){
+        LoggedInWithFB = true;
         final Map<String, String> facebookFieldMappings = new HashMap<String, String>();
         facebookFieldMappings.put("name", "name");
 
