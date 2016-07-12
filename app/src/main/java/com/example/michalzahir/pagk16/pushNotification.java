@@ -161,8 +161,8 @@ public class pushNotification {
     }
 
     public static void GetOpponentUserObjID() {
-
-
+        // TODO: 2016-07-12 Getting the player object id when getting the game from the notification.
+        Log.d(TAG, " Logging the error where the app is off :  player object ID  " + playerObejtID.getUserObjectID() +"   result first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult()  );
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
             Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + NewGameActivity.result.getSecondUSerObjectID() );
             GetReceiverDeviceID(NewGameActivity.result.getSecondUSerObjectID());

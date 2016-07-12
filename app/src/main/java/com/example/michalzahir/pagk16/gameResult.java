@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.model.User;
 
 /**
  * Created by zahirm on 2016-06-02.
@@ -72,6 +73,7 @@ public class gameResult {
 
     public void publishResults(final Context context, Bundle bundle) {
         Bundle resultsBundle = new Bundle();
+        MainActivity.user = User.getInstance();
         MainActivity.user.setResult(getFirstUserResult());
         resultsBundle.putInt("1st user result", getFirstUserResult());
         resultsBundle.putInt("2nd user result", getSecondtUserResult());

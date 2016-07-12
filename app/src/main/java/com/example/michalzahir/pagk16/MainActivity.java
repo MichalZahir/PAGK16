@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
     SessionManager session;
     public static User user;
     public static boolean LoggedInWithFB;
+    int fbWon;
+    int fbLost;
+    int fbDraw;
+    int fbplayed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -97,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
             LoggedInWithFB = true;
-            System.out.println("access token user token faceboook : " + accessToken);
+            System.out.println("access token user token facebook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             //String a = AccessToken.getCurrentAccessToken().getUserId();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
-            System.out.println(" faceboook UserNameFb  : " + UserNameFb);
+            System.out.println(" facebook UserNameFb  : " + UserNameFb);
             user.setName(UserNameFb);
             final String[] UserObjectID = new String[1];
 
@@ -128,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
             RegisterDeviceUpdateUserDeviceID();
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
+            i.putExtra("wonGames",fbWon);
+            i.putExtra("lostGames",fbLost);
+            i.putExtra("drawGames",fbDraw);
+            i.putExtra("playedGames",fbplayed);
             startActivity(i);
 
         }
@@ -199,10 +207,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -400,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public String FindUsersObjectID(String name){
         String userObjectID = null;
-        final String[] UserObjcetID = new String[1];
+        //final String[] UserObjcetID = new String[1];
         System.out.println(name);
         String whereClause = " name='" + name+"'";
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
@@ -410,6 +429,11 @@ public class MainActivity extends AppCompatActivity {
             for (Users q : BU.getData()) {
                 //Users Response = Backendless.Persistence.of(Users.class).findById(q.getObjectId());
                 userObjectID = q.getObjectId();
+                fbWon = q.getWON();
+                fbDraw = q.getDRAW();
+                fbLost = q.getLOST();
+                fbplayed = fbDraw + fbLost + fbWon;
+
             }
         }
         catch (BackendlessException fault){
