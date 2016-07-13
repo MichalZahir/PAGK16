@@ -9,12 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.Helper.AutoResizeTextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class questionActivity extends AppCompatActivity {
-    private TextView QuestionTV;
+    private com.example.michalzahir.pagk16.Helper.AutoResizeTextView QuestionTV;
     private Button AnswerAButton;
     private Button AnswerBButton;
     private Button AnswerCButton;
@@ -30,7 +31,7 @@ public class questionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_question);
-        QuestionTV = (TextView) findViewById(R.id.QuestionTextView);
+        QuestionTV = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.QuestionTextView);
         AnswerAButton = (Button) findViewById(R.id.AnswerButtonA);
         AnswerBButton = (Button) findViewById(R.id.AnswerButtonB);
         AnswerCButton = (Button) findViewById(R.id.AnswerButtonC);
@@ -40,6 +41,7 @@ public class questionActivity extends AppCompatActivity {
 
         System.out.println("The Question bundle  " + bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
         QuestionTV.setText(bundle.getString("Question"));
+        QuestionTV.resizeText();
         AnswerAButton.setText(bundle.getString("Answer_A"));
         AnswerBButton.setText(bundle.getString("Answer_B"));
         AnswerCButton.setText(bundle.getString("Answer_C"));

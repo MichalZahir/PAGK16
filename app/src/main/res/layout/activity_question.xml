@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.michalzahir.pagk16.questionActivity">
 
-    <TextView
+    <com.example.michalzahir.pagk16.Helper.AutoResizeTextView
         android:layout_width="wrap_content"
         android:layout_height="160dp"
         android:layout_weight="0.5"
