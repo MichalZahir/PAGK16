@@ -30,7 +30,7 @@ import java.util.Random;
 public class UserQueueQuestionRetriever {
     public static final String TAG = "Ques Retriev 1 round";
 
-    public static void RetrieveQuestionForFirstRound(String QuestionIDArray, String Category, final Context context){
+    public static void RetrieveQuestionForFirstRound(String QuestionIDArray,   final Context context){
 
             String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
             int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];

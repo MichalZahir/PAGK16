@@ -43,6 +43,14 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             GetLastResultNotification(bundle, intent, context);
         }
         else {
+            if (bundle.containsKey("QuestionIDS")){
+
+                com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(bundle.getString("QuestionIDS"), context);
+            }
+            else {
+
+
+
             Bundle notificationBundle = new Bundle();
             GetFbGameAddToQueu(bundle,notificationBundle);
             notificationBundle.putString("Question", bundle.getString("Question"));
@@ -122,7 +130,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(0, notification);
-
+            }
 
             }
         }

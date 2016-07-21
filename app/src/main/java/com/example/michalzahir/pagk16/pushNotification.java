@@ -24,6 +24,7 @@ import com.example.michalzahir.pagk16.adapter.RecyclerAdapter;
 import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -57,6 +58,8 @@ public class pushNotification {
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");
         publishOptions.setSubtopic("Zahiiiir");
+        if (bundle.containsKey("QuestionIDS"))
+            publishOptions.putHeader("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
         if (fbFriendsListActivity.FbGame)
             publishOptions.putHeader("FB_game","FB_game");
         publishOptions.putHeader("Question", bundle.getString("Question"));

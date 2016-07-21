@@ -87,7 +87,7 @@ public class NewGameActivity extends AppCompatActivity {
 
 
                 if (!x[0]) {
-                    com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(QuestionsIDSArray, QuestionCategory, getApplicationContext());
+                    com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(QuestionsIDSArray , getApplicationContext());
 
                 } else if (x[0]) {
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());

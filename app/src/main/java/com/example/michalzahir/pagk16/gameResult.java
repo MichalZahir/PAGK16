@@ -9,6 +9,8 @@ import android.util.Log;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.model.User;
 
+import java.util.Arrays;
+
 /**
  * Created by zahirm on 2016-06-02.
  */
@@ -98,6 +100,7 @@ public class gameResult {
         Log.d("Question Counter", String.valueOf(gettingQuestions.QuestionsCounter));
         if (fbFriendsListActivity.FbGame){
             if (questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
+                bundle.putString("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
                 pushNotification.PublishNotification(context,bundle);
                 final Intent i = new Intent(context, resultActivity.class);
                 i.putExtras(resultsBundle);
