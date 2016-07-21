@@ -35,8 +35,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         String subtopic = intent.getStringExtra("message");
         Bundle bundle = intent.getExtras();
 
-        if (bundle.containsKey("FB_game"))
-            fbFriendsListActivity.FbGame = true;
+
+
         // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
         if (bundle.containsKey("Last Result")){
 
@@ -44,6 +44,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         }
         else {
             Bundle notificationBundle = new Bundle();
+            GetFbGameAddToQueu(bundle,notificationBundle);
             notificationBundle.putString("Question", bundle.getString("Question"));
             notificationBundle.putString("Answer_A", bundle.getString("Answer_A"));
             notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
@@ -134,6 +135,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         Bundle notificationBundle = new Bundle();
         //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
         //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
+        GetFbGameAddToQueu(bundle,notificationBundle);
         notificationBundle.putInt("1st user result", Integer.parseInt(bundle.getString("firstUserResult")));
         notificationBundle.putInt("2nd user result", Integer.parseInt(bundle.getString("secondtUserResult")));
         notificationBundle.putString("Last Result","Last Result");
@@ -174,6 +176,14 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
+
+        }
+    }
+    public void GetFbGameAddToQueu(Bundle bundle, Bundle NotificationBundle)
+    {
+        if (bundle.containsKey("FB_game")){
+            NotificationBundle.putBoolean("FB_game",true);
+            NotificationBundle.putBoolean("AddUserToQueue",false);
 
         }
     }

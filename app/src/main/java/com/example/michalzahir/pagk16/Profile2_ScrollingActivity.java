@@ -184,7 +184,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
@@ -192,7 +192,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+//        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
 
         // Logs 'app deactivate' App Event.

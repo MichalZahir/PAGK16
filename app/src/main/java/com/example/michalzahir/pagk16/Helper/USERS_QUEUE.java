@@ -15,19 +15,29 @@ public class USERS_QUEUE {
     private int User_Question_ID;
     private int Result;
     private String user_object_ID;
+    private String QuestionIDSArray;
 
     public USERS_QUEUE() {
     }
 
-    public USERS_QUEUE(String objectId, Date created, Date updated, String user_Device_ID, String user_Question_Category, int user_Question_ID, int result, String user_object_ID) {
+    public USERS_QUEUE(String objectId, Date created, Date updated, String user_Device_ID, String user_Question_Category, int user_Question_ID, int result, String user_object_ID, String questionIDSArray) {
         this.objectId = objectId;
         this.created = created;
         this.updated = updated;
         User_Device_ID = user_Device_ID;
         User_Question_Category = user_Question_Category;
         User_Question_ID = user_Question_ID;
-        this.Result = result;
+        Result = result;
         this.user_object_ID = user_object_ID;
+        QuestionIDSArray = questionIDSArray;
+    }
+
+    public String getQuestionIDSArray() {
+        return QuestionIDSArray;
+    }
+
+    public void setQuestionIDSArray(String questionIDSArray) {
+        QuestionIDSArray = questionIDSArray;
     }
 
     public String getUser_Device_ID() {

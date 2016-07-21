@@ -30,24 +30,18 @@ import java.util.Random;
 public class UserQueueQuestionRetriever {
     public static final String TAG = "Ques Retriev 1 round";
 
-    public static void RetrieveQuestionForFirstRound(int QuestionID, String Category, final Context context){
-        if (Category.equals("Sport") )
-            get_sport_questions(QuestionID, context);
-        else if (Category.equals( "History"))
-            get_history_questions(QuestionID, context);
-        else if (Category.equals("Chemistry"))
-            get_chemistry_questions(QuestionID, context);
-        else if (Category.equals("Geography"))
-            get_geography_questions(QuestionID, context);
-        else if (Category.equals( "Astronomy"))
-            get_astronomy_questions(QuestionID, context);
-        else if (Category .equals( "Literature"))
-            get_literature_questions(QuestionID,context);
-        else {
+    public static void RetrieveQuestionForFirstRound(String QuestionIDArray, String Category, final Context context){
 
+            String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
+            int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];
+            String[] strArray = helper.split(",");
 
-            String whereClause = " ID=" + QuestionID;
-            MainActivity.user.setQuestion_ID(QuestionID);
+                 for(int i = 0; i < strArray.length; i++) {
+                     strArray[i]= strArray[i].replaceAll(" ","");
+                     tab[i] = Integer.parseInt(strArray[i]);
+
+            String whereClause = " ID=" + tab[i];
+            //MainActivity.user.setQuestion_ID(tab[i]);
             BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             dataQuery.setWhereClause(whereClause);
 
@@ -105,9 +99,10 @@ public class UserQueueQuestionRetriever {
 
                 }
             });
+                 }
 
 
-        }
+
     }
     public static void get_sport_questions(int QuestionID, final Context context) {
 

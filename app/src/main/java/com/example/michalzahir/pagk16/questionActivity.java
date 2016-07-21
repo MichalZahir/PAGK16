@@ -1,6 +1,7 @@
 package com.example.michalzahir.pagk16;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.AutoResizeTextView;
+import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +32,7 @@ public class questionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startService(new Intent(this, MyService.class));
 
         setContentView(R.layout.activity_question);
         QuestionTV = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.QuestionTextView);
@@ -36,7 +40,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerBButton = (Button) findViewById(R.id.AnswerButtonB);
         AnswerCButton = (Button) findViewById(R.id.AnswerButtonC);
         AnswerDButton = (Button) findViewById(R.id.AnswerButtonD);
-        playerObejtID.SetUserObjectIDOnStart(getApplicationContext());
+        //playerObejtID.SetUserObjectIDOnStart(getApplicationContext());
         bundle = this.getIntent().getExtras();
 
         System.out.println("The Question bundle  " + bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
@@ -50,6 +54,10 @@ public class questionActivity extends AppCompatActivity {
         AnswerBBoolean = bundle.getBoolean("correct_B");
         AnswerCBoolean = bundle.getBoolean("correct_C");
         AnswerDBoolean = bundle.getBoolean("correct_D");
+        if (bundle.containsKey("FB_game")){
+            NewGameActivity.AddUserToQueue = bundle.getBoolean("AddUserToQueue");
+            fbFriendsListActivity.FbGame =  bundle.getBoolean("FB_game");
+        }
         if (bundle.containsKey("firstUSerObjectID")) {
 
             NewGameActivity.result = new gameResult(Integer.parseInt(bundle.getString("firstUserResult")), Integer.parseInt(bundle.getString("secondtUserResult")), bundle.getString("firstUSerObjectID"), bundle.getString("secondUSerObjectID"));
@@ -58,7 +66,7 @@ public class questionActivity extends AppCompatActivity {
             NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
             NewGameActivity.yourTurnToChooseCategory = true;
-            pushNotification.GetOpponentUserObjID();
+            pushNotification.GetOpponentUserObjID(getApplicationContext());
 
 
         }
@@ -158,7 +166,7 @@ public class questionActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    NewGameActivity.result.publishResults(getApplicationContext(), bundle);
+                    NewGameActivity.result.publishResults(questionActivity.this, bundle);
                 }
             }, 3000);
         }
@@ -167,7 +175,7 @@ public class questionActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    NewGameActivity.result.publishResults(getApplicationContext(), bundle);
+                    NewGameActivity.result.publishResults(questionActivity.this, bundle);
                 }
             }, 3000);
         }
@@ -177,7 +185,7 @@ public class questionActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                    fbFriendsListActivity.result.publishResults(questionActivity.this, bundle);
                 }
             }, 3000);
         }
@@ -186,7 +194,7 @@ public class questionActivity extends AppCompatActivity {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                    fbFriendsListActivity.result.publishResults(questionActivity.this, bundle);
                 }
             }, 3000);
 
@@ -207,11 +215,56 @@ public class questionActivity extends AppCompatActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                NewGameActivity.result.publishResults(getApplicationContext(), bundle);
+                NewGameActivity.result.publishResults(questionActivity.this, bundle);
             }
         }, 3000);
 
     }
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+        Log.e("onDetachedFromWindow", "activity dying");
+    }
+    @Override
+    protected void onPause(){
 
+        super.onPause();
+        if (this.isFinishing ())
+        {
+            //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+
+        }
+        else
+        {
+            // activity not dying just stopping
+        }
+    }
+    @Override
+    protected void onStop() {
+
+
+
+
+        super.onStop();
+       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+
+
+
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+    @Override
+    protected void onDestroy() {
+        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+
+        super.onDestroy();
+
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
 }
