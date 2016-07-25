@@ -20,6 +20,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
@@ -52,6 +53,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile2__scrolling);
         final String appVersion = "v1";
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
         wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);

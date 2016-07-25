@@ -124,7 +124,7 @@ public class resultActivity extends AppCompatActivity {
     protected void  onStop() {
         super.onStop();
         //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
-        com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }

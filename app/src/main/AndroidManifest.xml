@@ -73,20 +73,22 @@
         <activity android:name=".questionActivity" />
         <activity android:name=".resultActivity" />
         <activity android:name=".FacebookUsers.invitingFriendsActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <!-- Accepts URIs "com.example.michalzahir.pagk16://https://fb.me/1718891101713602"" -->
-            <data android:scheme="com.example.myApp" />
-        </intent-filter>
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-    <activity android:name=".FacebookUsers.fbFriendsListActivity"></activity>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs "com.example.michalzahir.pagk16://https://fb.me/1718891101713602"" -->
+                <data android:scheme="com.example.myApp" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FacebookUsers.fbFriendsListActivity" />
+
         <service
-            android:name="com.example.michalzahir.pagk16.ServiceAppOff.MyService"
-            android:label="My Service" >
-        </service>
+            android:name=".ServiceAppOff.MyService"
+            android:label="My Service"></service>
+
+        <activity android:name=".fakeActivity.ActivityFake"></activity>
     </application>
 
 </manifest>
