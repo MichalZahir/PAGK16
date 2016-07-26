@@ -74,6 +74,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                DisableButtonsAfterClick();
 //                Intent i = new Intent(getApplicationContext(),
 //                        resultActivity.class);
 //                startActivity(i);
@@ -96,6 +97,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerBButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                DisableButtonsAfterClick();
                 if (AnswerBBoolean == true) {
 
                     AnswerBButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
@@ -113,6 +115,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerCButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                DisableButtonsAfterClick();
                 if (AnswerCBoolean == true) {
 
                     AnswerCButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
@@ -134,6 +137,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerDButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                DisableButtonsAfterClick();
                 if (AnswerDBoolean == true) {
 
                     AnswerDButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
@@ -265,6 +269,21 @@ public class questionActivity extends AppCompatActivity {
         //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
+    }
+    void DisableButtonsAfterClick(){
+        AnswerAButton.setEnabled(false);
+        AnswerAButton.setClickable(false);
+
+        AnswerBButton.setEnabled(false);
+        AnswerBButton.setClickable(false);
+
+        AnswerCButton.setEnabled(false);
+        AnswerCButton.setClickable(false);
+
+        AnswerDButton.setEnabled(false);
+        AnswerDButton.setClickable(false);
+
+
     }
 
 }
