@@ -28,7 +28,7 @@ import java.util.Random;
  * Created by zahirm on 2016-07-05.
  */
 public class UserQueueQuestionRetriever {
-    public static final String TAG = "Ques Retriev 1 round";
+    public static final String TAG = "Ques Retrieve 1 round";
 
     public static void RetrieveQuestionForFirstRound(String QuestionIDArray,   final Context context){
 
@@ -39,10 +39,9 @@ public class UserQueueQuestionRetriever {
                  for(int i = 0; i < strArray.length; i++) {
                      strArray[i]= strArray[i].replaceAll(" ","");
                      tab[i] = Integer.parseInt(strArray[i]);
-
+                     Log.d(TAG, "The ids from the question passed with the bundle for the first round " + tab [i]);
             String whereClause = " ID=" + tab[i];
-            //MainActivity.user.setQuestion_ID(tab[i]);
-            BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+                     BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             dataQuery.setWhereClause(whereClause);
 
 

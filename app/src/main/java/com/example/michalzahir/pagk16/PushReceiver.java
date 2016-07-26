@@ -320,6 +320,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
         CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
         String subtopic = intent.getStringExtra("message");
+        final String appVersion = "v1";
+        Backendless.initApp(context.getApplicationContext(), "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         InitialiseGameResultWhenNull();
 
         Bundle notificationBundle = new Bundle();
