@@ -99,19 +99,19 @@ public class pushNotification {
 
         publishOptions.putHeader("android-ticker-text", "You just got a private push notification!");
         publishOptions.putHeader("android-content-title", "PAGK");
-        publishOptions.putHeader("android-content-text", "Your oponent just finished, It's your turn to play");
+        publishOptions.putHeader("android-content-text", "Your opponent just finished, It's your turn to play");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
             @Override
             public void handleResponse(MessageStatus messageStatus) {
-                Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
+                Log.d(TAG, "Push Notification  working. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
 
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Push Notification not workin .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                Log.d(TAG, "Push Notification not working .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
             }
         });
 

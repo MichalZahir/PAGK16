@@ -23,7 +23,8 @@ import com.backendless.push.BackendlessBroadcastReceiver;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 
-import android.content.BroadcastReceiver;
+
+import java.util.Random;
 
 public class PushReceiver extends BackendlessBroadcastReceiver {
     static Intent notificationIntent;
@@ -135,12 +136,14 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
 
                 Notification notification = notificationBuilder.build();
-                //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 
+                Random random = new Random();
+                int m = random.nextInt(9999 - 1000) + 1000;
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(0, notification);
+                notificationManager.notify(m, notification);
+
             }
 
             }
@@ -193,8 +196,11 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             Notification notification = notificationBuilder.build();
             //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
+            Random random = new Random();
+            int m = random.nextInt(9999 - 1000) + 1000;
+
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
+            notificationManager.notify(m, notification);
 
         }
     }
@@ -390,9 +396,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 
+        Random random = new Random();
+        int m = random.nextInt(9999 - 1000) + 1000;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(m, notification);
+        //notificationManager.notify(0, notification);
         BroadcastReceiver call_method = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

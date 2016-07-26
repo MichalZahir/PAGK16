@@ -138,20 +138,5 @@ public class gameResult {
         }
 
 
-        //        if (fbFriendsListActivity.FbGame) {
-        //            if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked)
-        //                pushNotification.PublishNotification(context, bundle);
-        //            else if (NewGameActivity.StopTheGame == 0 && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
-        //                pushNotification.PublishNotification(context, bundle);
-        //        } else {
-        //            if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
-        //                com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
-        //
-        //            //context.startActivity(i);
-        //            if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
-        //
-        //                pushNotification.PublishNotification(context, bundle);
-        //            }
-        //        }
     }
 }
