@@ -22,6 +22,7 @@ import com.backendless.messaging.MessageStatus;
 import com.backendless.messaging.PublishOptions;
 import com.backendless.messaging.PushBroadcastMask;
 import com.backendless.messaging.PushPolicyEnum;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.USERS_QUEUE;
 import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
 
@@ -70,6 +71,7 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                fbFriendsListActivity.FbGame = false;
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
