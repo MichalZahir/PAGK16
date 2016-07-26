@@ -12,7 +12,7 @@ public class ActivityFake extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_fake);
         Bundle bundle = this.getIntent().getExtras();
-        //finish();
+        finish();
 
         com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(bundle.getString("QuestionIDS"), this);
         //
