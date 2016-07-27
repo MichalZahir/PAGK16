@@ -28,6 +28,11 @@
                 android:text="@string/NewGame"
                 android:id="@+id/newGameButton"/>
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saved Games"
+                android:id="@+id/savedGamesButton" />
 
 
         </LinearLayout>

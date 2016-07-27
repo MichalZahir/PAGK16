@@ -34,7 +34,7 @@ import java.util.List;
 public class pushNotification {
     private static final String TAG = "Push Notification";
     static Bundle QuestionBundle = new Bundle();
-    static String OpponentDeviceID;
+    public static String OpponentDeviceID;
 
 
 

@@ -20,6 +20,7 @@ import com.example.michalzahir.pagk16.ConstantsClass;
 import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
+import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import java.util.Random;
@@ -39,6 +40,7 @@ public class UserQueueQuestionRetriever {
                  for(int i = 0; i < strArray.length; i++) {
                      strArray[i]= strArray[i].replaceAll(" ","");
                      tab[i] = Integer.parseInt(strArray[i]);
+                     gettingQuestions.QuestionsIDs[i] = tab[i] ;
                      Log.d(TAG, "The ids from the question passed with the bundle for the first round " + tab [i]);
             String whereClause = " ID=" + tab[i];
                      BackendlessDataQuery dataQuery = new BackendlessDataQuery();

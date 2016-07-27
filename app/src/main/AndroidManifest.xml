@@ -86,9 +86,10 @@
 
         <service
             android:name=".ServiceAppOff.MyService"
-            android:label="My Service"></service>
+            android:label="My Service" />
 
-        <activity android:name=".fakeActivity.ActivityFake"></activity>
+        <activity android:name=".fakeActivity.ActivityFake" />
+        <activity android:name=".SavedGames.SavedGamesActivity"></activity>
     </application>
 
 </manifest>

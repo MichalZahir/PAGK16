@@ -23,14 +23,15 @@ public class Saved_Games {
     private String secondUserDeviceID;
     private String Activity;
     private String WhosTurn;
+    private String QuestionsIDs;
+    private int QuestionsAnswered;
 
     public Saved_Games() {
     }
 
-    public Saved_Games(String objectId, int ID, Date updated, Date created, String firstUserID, int firstUserResult,
-                       int secondUserResult, String secondUserID, int stopTheGame, Boolean fbGame,
-                       String firstUserName, String secondUserName, String firstUserDeviceID,
-                       String secondUserDeviceID, String activity, String whosTurn) {
+    public Saved_Games(String objectId, int ID, Date updated, Date created, String firstUserID, int firstUserResult, int secondUserResult,
+                       String secondUserID, Boolean fbGame, int stopTheGame, String firstUserName, String firstUserDeviceID, String secondUserName,
+                       String secondUserDeviceID, String activity, String whosTurn, String questionsIDs, int questionsAnswered) {
         this.objectId = objectId;
         this.ID = ID;
         this.updated = updated;
@@ -39,14 +40,32 @@ public class Saved_Games {
         this.firstUserResult = firstUserResult;
         this.secondUserResult = secondUserResult;
         this.secondUserID = secondUserID;
-        this.stopTheGame = stopTheGame;
         this.fbGame = fbGame;
+        this.stopTheGame = stopTheGame;
         this.firstUserName = firstUserName;
-        this.secondUserName = secondUserName;
         this.firstUserDeviceID = firstUserDeviceID;
+        this.secondUserName = secondUserName;
         this.secondUserDeviceID = secondUserDeviceID;
         Activity = activity;
         WhosTurn = whosTurn;
+        QuestionsIDs = questionsIDs;
+        QuestionsAnswered = questionsAnswered;
+    }
+
+    public int getQuestionsAnswered() {
+        return QuestionsAnswered;
+    }
+
+    public void setQuestionsAnswered(int questionsAnswered) {
+        QuestionsAnswered = questionsAnswered;
+    }
+
+    public String getQuestionsIDs() {
+        return QuestionsIDs;
+    }
+
+    public void setQuestionsIDs(String questionsIDs) {
+        QuestionsIDs = questionsIDs;
     }
 
     public String getObjectId() {

@@ -3,35 +3,40 @@ package com.example.michalzahir.pagk16.SavedGames;
 import android.util.Log;
 
 import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
+import com.backendless.Messaging;
 import com.backendless.exceptions.BackendlessException;
-import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
-import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
+import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.playerObejtID;
+import com.example.michalzahir.pagk16.pushNotification;
+import com.example.michalzahir.pagk16.questionActivity;
+
+import java.util.Arrays;
 
 /**
  * Created by zahirm on 2016-07-18.
  */
 public class GamesSaving {
     private static final String TAG = " GameSaving";
+    public static int QuestionsAnswered  ;
+
 
     public static void SaveGame(String activity) {
         final Saved_Games saved_games = new Saved_Games();
         saved_games.setFirstUserResult(NewGameActivity.result.getFirstUserResult());
         saved_games.setActivity(activity);
         saved_games.setFbGame(fbFriendsListActivity.FbGame);
-        saved_games.setFirstUserDeviceID("asdasd");
         saved_games.setFirstUserID(NewGameActivity.result.getFirstUSerObjectID());
         saved_games.setSecondUserID(NewGameActivity.result.getSecondUSerObjectID());
-        saved_games.setSecondUserDeviceID("asd");
+        setDevicesIDS(saved_games);
+        SetWhosTurn(saved_games);
+        setOpponentDeviceID(saved_games);
+        saved_games.setQuestionsAnswered( QuestionsAnswered);
+        Log.d(TAG, "The Questions Answered : " +  QuestionsAnswered);
         saved_games.setSecondUserName("asd");
-
-        //saved_games.setWhosTurn(SetWhosTurn());
-
+        saved_games.setQuestionsIDs(Arrays.toString(gettingQuestions.QuestionsIDs));
         saved_games.setSecondUserResult(NewGameActivity.result.getSecondtUserResult());
-
         saved_games.setStopTheGame(NewGameActivity.StopTheGame);
         final Saved_Games[] response = {null};
 
@@ -72,17 +77,27 @@ public class GamesSaving {
 
     }
 
-    public static String SetWhosTurn() {
+    public static void SetWhosTurn(Saved_Games saved_games) {
         String WhosTurn = null;
-        if (NewGameActivity.yourTurnToChooseCategory && NewGameActivity.result.getFirstUSerObjectID().equals(playerObejtID.getUserObjectID()))
+        if ( NewGameActivity.result.getFirstUSerObjectID().equals(playerObejtID.getUserObjectID()))
             WhosTurn = "1st user";
-        else if (NewGameActivity.yourTurnToChooseCategory && NewGameActivity.result.getSecondUSerObjectID().equals(playerObejtID.getUserObjectID()))
-            WhosTurn = "2cnd user";
-        else if (!NewGameActivity.yourTurnToChooseCategory && NewGameActivity.result.getSecondUSerObjectID().equals(playerObejtID.getUserObjectID()))
-            WhosTurn = "1st user";
-        else if (!NewGameActivity.yourTurnToChooseCategory && NewGameActivity.result.getFirstUSerObjectID().equals(playerObejtID.getUserObjectID()))
-            WhosTurn = "2cnd user";
+        else if (  NewGameActivity.result.getSecondUSerObjectID().equals(playerObejtID.getUserObjectID()))
+            WhosTurn = "2nd user";
 
-        return WhosTurn;
+
+        saved_games.setWhosTurn(WhosTurn);
+    }
+    public static  void setDevicesIDS(Saved_Games saved_games){
+        if (NewGameActivity.result.getFirstUSerObjectID().equals(playerObejtID.getUserObjectID()))
+        saved_games.setFirstUserDeviceID(Messaging.DEVICE_ID);
+        else if (NewGameActivity.result.getSecondUSerObjectID().equals(playerObejtID.getUserObjectID()))
+        saved_games.setSecondUserDeviceID(Messaging.DEVICE_ID);
+    }
+    public static void setOpponentDeviceID(Saved_Games saved_games){
+        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+         saved_games.setSecondUserDeviceID(pushNotification.OpponentDeviceID);
+        else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
+            saved_games.setFirstUserDeviceID(pushNotification.OpponentDeviceID);
+
     }
 }

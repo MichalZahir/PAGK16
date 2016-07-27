@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.AutoResizeTextView;
+import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
 import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
 import com.facebook.appevents.AppEventsLogger;
 
@@ -28,7 +29,6 @@ public class questionActivity extends AppCompatActivity {
     Boolean AnswerCBoolean;
     Boolean AnswerDBoolean;
     Bundle bundle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +40,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerBButton = (Button) findViewById(R.id.AnswerButtonB);
         AnswerCButton = (Button) findViewById(R.id.AnswerButtonC);
         AnswerDButton = (Button) findViewById(R.id.AnswerButtonD);
-        //playerObejtID.SetUserObjectIDOnStart(getApplicationContext());
-        bundle = this.getIntent().getExtras();
+         bundle = this.getIntent().getExtras();
 
         System.out.println("The Question bundle  " + bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
         QuestionTV.setText(bundle.getString("Question"));
@@ -74,15 +73,14 @@ public class questionActivity extends AppCompatActivity {
         AnswerAButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                IncreaseQuesiotnsAnswered() ;
                 DisableButtonsAfterClick();
-//                Intent i = new Intent(getApplicationContext(),
-//                        resultActivity.class);
-//                startActivity(i);
+
                 if (AnswerABoolean == true) {
 
 
                     AnswerAButton.setBackgroundColor(getResources().getColor(R.color.goodAnswer));
-//                    SystemClock.sleep(4000);
+
 
                     incrementResultForGoodAnswer();
 
@@ -97,6 +95,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerBButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                IncreaseQuesiotnsAnswered() ;
                 DisableButtonsAfterClick();
                 if (AnswerBBoolean == true) {
 
@@ -115,6 +114,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerCButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                IncreaseQuesiotnsAnswered() ;
                 DisableButtonsAfterClick();
                 if (AnswerCBoolean == true) {
 
@@ -137,6 +137,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerDButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                IncreaseQuesiotnsAnswered() ;
                 DisableButtonsAfterClick();
                 if (AnswerDBoolean == true) {
 
@@ -224,52 +225,52 @@ public class questionActivity extends AppCompatActivity {
         }, 3000);
 
     }
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
-        Log.e("onDetachedFromWindow", "activity dying");
-    }
-    @Override
-    protected void onPause(){
-
-        super.onPause();
-        if (this.isFinishing ())
-        {
-            //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
-
-        }
-        else
-        {
-            // activity not dying just stopping
-        }
-    }
-    @Override
-    protected void onStop() {
-
-
-
-
-        super.onStop();
-       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
-
-
-
-        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
-        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
-        // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
-    }
-    @Override
-    protected void onDestroy() {
-        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
-
-        super.onDestroy();
-
-        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
-        // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
-    }
+//    @Override
+//    public void onDetachedFromWindow() {
+//        super.onDetachedFromWindow();
+//       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+//        Log.e("onDetachedFromWindow", "activity dying");
+//    }
+//    @Override
+//    protected void onPause(){
+//
+//        super.onPause();
+//        if (this.isFinishing ())
+//        {
+//            //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+//
+//        }
+//        else
+//        {
+//            // activity not dying just stopping
+//        }
+//    }
+//    @Override
+//    protected void onStop() {
+//
+//
+//
+//
+//        super.onStop();
+//       // com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+//
+//
+//
+//        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+//        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+//        // Logs 'app deactivate' App Event.
+//        AppEventsLogger.deactivateApp(this);
+//    }
+//    @Override
+//    protected void onDestroy() {
+//        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+//
+//        super.onDestroy();
+//
+//        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+//        // Logs 'app deactivate' App Event.
+//        AppEventsLogger.deactivateApp(this);
+//    }
     void DisableButtonsAfterClick(){
         AnswerAButton.setEnabled(false);
         AnswerAButton.setClickable(false);
@@ -285,5 +286,8 @@ public class questionActivity extends AppCompatActivity {
 
 
     }
+    static void IncreaseQuesiotnsAnswered(){
 
+        GamesSaving.QuestionsAnswered +=1;
+    }
 }

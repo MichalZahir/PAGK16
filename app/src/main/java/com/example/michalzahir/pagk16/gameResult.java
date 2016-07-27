@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
 import com.example.michalzahir.pagk16.model.User;
 
 import java.util.Arrays;
@@ -101,6 +102,7 @@ public class gameResult {
         if (fbFriendsListActivity.FbGame){
             if (questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
                 bundle.putString("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
+                GamesSaving.QuestionsAnswered =0;
                 pushNotification.PublishNotification(context,bundle);
                 final Intent i = new Intent(context, resultActivity.class);
                 i.putExtras(resultsBundle);
@@ -111,6 +113,7 @@ public class gameResult {
             }
             else if(questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
             {
+                GamesSaving.QuestionsAnswered =0;
                 pushNotification.PublishTheLastResultNotificaton(context, bundle);
 
 
@@ -120,7 +123,7 @@ public class gameResult {
 
 
         if (questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked) {
-
+            GamesSaving.QuestionsAnswered =0;
             final Intent i = new Intent(context, resultActivity.class);
             i.putExtras(resultsBundle);
             context.startActivity(i);

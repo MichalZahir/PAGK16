@@ -21,6 +21,7 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.push.BackendlessBroadcastReceiver;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 
 
@@ -329,6 +330,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         final String appVersion = "v1";
         Backendless.initApp(context.getApplicationContext(), "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         InitialiseGameResultWhenNull();
+        fbFriendsListActivity.FbGame = true;
 
         Bundle notificationBundle = new Bundle();
         GetFbGameAddToQueu(bundle,notificationBundle);
