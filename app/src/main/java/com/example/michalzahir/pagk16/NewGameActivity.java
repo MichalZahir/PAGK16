@@ -96,9 +96,7 @@ public class NewGameActivity extends AppCompatActivity {
                     result.setFirstUserResult(0);
                     result.setSecondtUserResult(0);
                     gettingQuestions.getQuestions(getApplicationContext());
-//                    Intent i = new Intent(getApplicationContext(),
-//                            categoryChoiceActivity.class);
-//                    startActivity(i);
+
 
                 }
 
