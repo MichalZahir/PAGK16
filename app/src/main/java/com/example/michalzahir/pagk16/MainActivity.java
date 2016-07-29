@@ -14,14 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.backendless.BackendlessCollection;
 import com.backendless.Messaging;
+import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 
 
@@ -31,11 +31,8 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.async.callback.BackendlessCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
-import com.facebook.LoggingBehavior;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
     // Session Manager Class
     SessionManager session;
     public static User user;
+    public static boolean LoggedInWithFB;
+    int fbWon;
+    int fbLost;
+    int fbDraw;
+    int fbplayed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         if( userToken != null && !userToken.equals( "" ) )
         {  // user login is available, skip the login activity/login form
             String s =Backendless.UserService.loggedInUser();
+            LoggedInWithFB = false;
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
             Intent i = new Intent(getApplicationContext(),
@@ -97,20 +100,42 @@ public class MainActivity extends AppCompatActivity {
         // token for fb login
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
-            System.out.println("access token user token faceboook : " + accessToken);
+            LoggedInWithFB = true;
+            System.out.println("access token user token facebook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             //String a = AccessToken.getCurrentAccessToken().getUserId();
-            String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
-            System.out.println(" faceboook UserNameFb  : " + UserNameFb);
+            final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
+            System.out.println(" facebook UserNameFb  : " + UserNameFb);
             user.setName(UserNameFb);
-            // TODO: 2016-06-14  save The user object ID when logged in from the fb token
-            // TODO: 2016-06-28 Take info about the lost games won games draw games
+            final String[] UserObjectID = new String[1];
+
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                      UserObjectID[0] = FindUsersObjectID(UserNameFb);
+
+                }});
+
+            t.start(); // spawn thread
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            user.setUserObjectId(UserObjectID[0]);
+            playerObejtID.setUserObjectID(UserObjectID[0]);
+             // TODO: 2016-06-28 Take info about the lost games won games draw games
 //            String s = Backendless.UserService.loggedInUser();
 //            playerObejtID.setUserObjectID(s);
 
             RegisterDeviceUpdateUserDeviceID();
             Intent i = new Intent(getApplicationContext(),
                     Profile2_ScrollingActivity.class);
+            i.putExtra("wonGames",fbWon);
+            i.putExtra("lostGames",fbLost);
+            i.putExtra("drawGames",fbDraw);
+            i.putExtra("playedGames",fbplayed);
             startActivity(i);
 
         }
@@ -182,10 +207,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -202,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private  void Login(final String name, final String password){
 
-
+        LoggedInWithFB = false;
         try
         {
             Backendless.UserService.login (name,password, new BackendlessCallback<BackendlessUser>() {
@@ -248,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void fbLogin(){
+        LoggedInWithFB = true;
         final Map<String, String> facebookFieldMappings = new HashMap<String, String>();
         facebookFieldMappings.put("name", "name");
 
@@ -380,6 +417,57 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public String FindUsersObjectID(String name){
+        String userObjectID = null;
+        //final String[] UserObjcetID = new String[1];
+        System.out.println(name);
+        String whereClause = " name='" + name+"'";
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        dataQuery.setWhereClause(whereClause);
+        try {
+            BackendlessCollection<Users> BU = Backendless.Persistence.of(Users.class).find(dataQuery);
+            for (Users q : BU.getData()) {
+                //Users Response = Backendless.Persistence.of(Users.class).findById(q.getObjectId());
+                userObjectID = q.getObjectId();
+                fbWon = q.getWON();
+                fbDraw = q.getDRAW();
+                fbLost = q.getLOST();
+                fbplayed = fbDraw + fbLost + fbWon;
 
+            }
+        }
+        catch (BackendlessException fault){
+            Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+
+        }
+//        Backendless.Persistence.of (Users.class).find(dataQuery, new AsyncCallback<BackendlessCollection<Users>>() {
+//            @Override
+//            public void handleResponse(BackendlessCollection<Users> foundQuestions) {
+//                for (Users q : foundQuestions.getData()) {
+//                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
+//                    Backendless.Persistence.of(Users.class).findById(q.getObjectId(), new AsyncCallback<Users>() {
+//                        @Override
+//                        public void handleResponse(Users response) {
+//                            Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
+//                            //result.setSecondUSerObjectID(response.getObjectId());
+//                            UserObjcetID[0] = response.getObjectId();
+//                        }
+//
+//                        @Override
+//                        public void handleFault(BackendlessFault fault) {
+//                            Log.d(TAG, "fault trying to fetch FB user object ID using hte name only" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void handleFault(BackendlessFault fault) {
+//                Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+//
+//            }
+//        });
+       return userObjectID;
+    }
 
 }

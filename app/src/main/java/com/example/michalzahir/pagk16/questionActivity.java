@@ -1,19 +1,21 @@
 package com.example.michalzahir.pagk16;
 
-import android.content.Intent;
-import android.os.SystemClock;
-import android.support.annotation.ColorInt;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.Helper.AutoResizeTextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class questionActivity extends AppCompatActivity {
-    private TextView QuestionTV;
+    private com.example.michalzahir.pagk16.Helper.AutoResizeTextView QuestionTV;
     private Button AnswerAButton;
     private Button AnswerBButton;
     private Button AnswerCButton;
@@ -29,15 +31,17 @@ public class questionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_question);
-        QuestionTV = (TextView) findViewById(R.id.QuestionTextView);
+        QuestionTV = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.QuestionTextView);
         AnswerAButton = (Button) findViewById(R.id.AnswerButtonA);
         AnswerBButton = (Button) findViewById(R.id.AnswerButtonB);
         AnswerCButton = (Button) findViewById(R.id.AnswerButtonC);
         AnswerDButton = (Button) findViewById(R.id.AnswerButtonD);
+        playerObejtID.SetUserObjectIDOnStart(getApplicationContext());
         bundle = this.getIntent().getExtras();
 
         System.out.println("The Question bundle  " + bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
         QuestionTV.setText(bundle.getString("Question"));
+        QuestionTV.resizeText();
         AnswerAButton.setText(bundle.getString("Answer_A"));
         AnswerBButton.setText(bundle.getString("Answer_B"));
         AnswerCButton.setText(bundle.getString("Answer_C"));
@@ -55,6 +59,7 @@ public class questionActivity extends AppCompatActivity {
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
             NewGameActivity.yourTurnToChooseCategory = true;
             pushNotification.GetOpponentUserObjID();
+
 
         }
 
@@ -145,6 +150,9 @@ public class questionActivity extends AppCompatActivity {
 
     public void incrementResultForGoodAnswer() {
         // TODO: 2016-06-27 Bug, users logged in with fb got no userobject ID wich leads to a null pointer exception in this palce.
+        Log.d("Bug fb user object id", " Logging the error where the app is off :  player object ID  " + playerObejtID.getUserObjectID() +" first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult() +
+                " bFriendsListActivity.result.getFirstUSerObjectID()");
+
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
             NewGameActivity.result.Increment1stUserResult();
             new Timer().schedule(new TimerTask() {
@@ -154,7 +162,7 @@ public class questionActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
-        if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+        else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
             NewGameActivity.result.Increment2ndUserResult();
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -164,6 +172,25 @@ public class questionActivity extends AppCompatActivity {
             }, 3000);
         }
 
+        else if (playerObejtID.getUserObjectID().equals(fbFriendsListActivity.result.getFirstUSerObjectID())){
+            fbFriendsListActivity.result.Increment1stUserResult();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                }
+            }, 3000);
+        }
+        else if(playerObejtID.getUserObjectID().equals(fbFriendsListActivity.result.getSecondUSerObjectID())){
+            fbFriendsListActivity.result.Increment2ndUserResult();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    fbFriendsListActivity.result.publishResults(getApplicationContext(), bundle);
+                }
+            }, 3000);
+
+        }
     }
 
     public void findTHeRightAnswer() {

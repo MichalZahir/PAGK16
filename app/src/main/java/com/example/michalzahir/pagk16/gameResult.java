@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.model.User;
+
 /**
  * Created by zahirm on 2016-06-02.
  */
@@ -70,6 +73,7 @@ public class gameResult {
 
     public void publishResults(final Context context, Bundle bundle) {
         Bundle resultsBundle = new Bundle();
+        MainActivity.user = User.getInstance();
         MainActivity.user.setResult(getFirstUserResult());
         resultsBundle.putInt("1st user result", getFirstUserResult());
         resultsBundle.putInt("2nd user result", getSecondtUserResult());
@@ -84,15 +88,22 @@ public class gameResult {
 //        }, 5000)
         i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
+            if (fbFriendsListActivity.FbGame){
+                if ( NewGameActivity.StopTheGame != 0 &&NewGameActivity.StopTheGame<ConstantsClass.QuestionsNumberToBeAsked)
+                     pushNotification.PublishNotification(context, bundle);
+                    else if (NewGameActivity.StopTheGame == 0 && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+                    pushNotification.PublishNotification(context, bundle);
+            }
 
-        if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
-            com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
+            else{
+                if (NewGameActivity.AddUserToQueue && NewGameActivity.StopTheGame == 0)
+                    com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
 
-        //context.startActivity(i);
-        if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
+                //context.startActivity(i);
+                if (NewGameActivity.StopTheGame != 0 && NewGameActivity.StopTheGame < ConstantsClass.QuestionsNumberToBeAsked) {
 
-            pushNotification.PublishNotification(context, bundle);
+                    pushNotification.PublishNotification(context, bundle);
+            }
         }
-
     }
 }

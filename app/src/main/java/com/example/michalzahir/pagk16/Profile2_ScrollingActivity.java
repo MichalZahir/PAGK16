@@ -21,6 +21,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView playedGamesTextView;
     private Button newGameButton;
 
-     int wonGames;
+    int wonGames;
     int lostGames;
     int drawGames;
     int playedGames;
@@ -74,7 +75,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             });
         }
         String currentUserObjectId = Backendless.UserService.loggedInUser();
-        MainActivity.user.setUserObjectId(currentUserObjectId);
+        //MainActivity.user.setUserObjectId(currentUserObjectId);
          Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
         public void handleResponse(BackendlessUser backendlessUser )
         {
@@ -107,20 +108,49 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
         accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
-            String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
+           // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
             Intent intent = getIntent();
             wonGames =  intent.getIntExtra("wonGames",-1);
             lostGames = intent.getIntExtra("lostGames",-1);
             drawGames = intent.getIntExtra("drawGames",-1);
             playedGames = intent.getIntExtra("playedGames",-1);
-            lostGamesTextView.setText(String.valueOf(lostGames));
-            drawGamesTextView.setText(String.valueOf(drawGames));
-            playedGamesTextView.setText(String.valueOf(playedGames));
-            wonGamesTextView.setText(String.valueOf(wonGames));
-
-            // TODO: 2016-06-28 Take the current user object id i find it in the db and update the info for the facebook account.
             Profile profile = Profile.getCurrentProfile();
-            String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
+            final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
+            if (wonGames ==-1 ){
+                final int[][] tab = new int[1][1];
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                       tab[0] =  com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+
+                    }});
+
+                t.start(); // spawn thread
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                wonGamesTextView.setText(String.valueOf(tab[0][0]));
+                drawGamesTextView.setText(String.valueOf(tab[0][1]));
+                lostGamesTextView.setText(String.valueOf(tab[0][2]));
+                playedGamesTextView.setText(String.valueOf(tab[0][3]));
+            }else {
+                lostGamesTextView.setText(String.valueOf(lostGames));
+                drawGamesTextView.setText(String.valueOf(drawGames));
+                playedGamesTextView.setText(String.valueOf(playedGames));
+                wonGamesTextView.setText(String.valueOf(wonGames));
+            }
+
+
+
+
+
             UserName =  UserNameFb;
             MainActivity.user.setName(UserNameFb);
             UserNameTectView.setText(UserName);
@@ -150,6 +180,23 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 
     public void logOut (){

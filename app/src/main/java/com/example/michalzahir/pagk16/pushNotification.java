@@ -19,6 +19,7 @@ import com.backendless.messaging.PushBroadcastMask;
 import com.backendless.messaging.PushPolicyEnum;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.adapter.RecyclerAdapter;
 
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class pushNotification {
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");
         publishOptions.setSubtopic("Zahiiiir");
+        if (fbFriendsListActivity.FbGame)
+            publishOptions.putHeader("FB_game","true");
         publishOptions.putHeader("Question", bundle.getString("Question"));
         publishOptions.putHeader("Answer_A", bundle.getString("Answer_A"));
         publishOptions.putHeader("Answer_B", bundle.getString("Answer_B"));
@@ -127,6 +130,8 @@ public class pushNotification {
         publishOptions.putHeader("1st user result", bundle.getString("1st user result"));
         publishOptions.putHeader("2nd user result", bundle.getString("2nd user result"));
         publishOptions.putHeader("Last Result", "Last Result");
+        if (fbFriendsListActivity.FbGame)
+            publishOptions.putHeader("FB_game","true");
 
         publishOptions.putHeader("firstUSerObjectID", NewGameActivity.result.getFirstUSerObjectID());
         publishOptions.putHeader("secondUSerObjectID", NewGameActivity.result.getSecondUSerObjectID());
@@ -156,8 +161,8 @@ public class pushNotification {
     }
 
     public static void GetOpponentUserObjID() {
-
-
+        // TODO: 2016-07-12 Getting the player object id when getting the game from the notification.
+        Log.d(TAG, " Logging the error where the app is off :  player object ID  " + playerObejtID.getUserObjectID() +"   result first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult()  );
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
             Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + NewGameActivity.result.getSecondUSerObjectID() );
             GetReceiverDeviceID(NewGameActivity.result.getSecondUSerObjectID());
@@ -171,39 +176,50 @@ public class pushNotification {
     }
 
     public static void GetReceiverDeviceID(final String OpponentUserObjectID) {
-        Thread thread = new Thread(new Runnable()
-        {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
-                    Backendless.UserService.findById  (OpponentUserObjectID, new AsyncCallback<BackendlessUser>() { @Override
-                                 public void handleResponse(BackendlessUser backendlessUser )
-                                 {
-                                    System.out.println(backendlessUser.getObjectId());
-                                    OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
-
-
-
-                                }
-
-                                    @Override
-                                    public void handleFault( BackendlessFault fault )
-                                    {
-                                        Log.d(TAG, "The device ID was Not found in the user table:   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
-                                    }});
-
-                }catch (BackendlessException e)
-                    {
-                        Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );                }
+            public void run() {
+                try {
+                    BackendlessUser user = Backendless.UserService.findById(OpponentUserObjectID);
+                     OpponentDeviceID = (String) user.getProperty("Device_ID");
+                } catch (BackendlessException e) {
+                    Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " + OpponentUserObjectID);
                 }
-            });
+            }
+//
+//        Thread thread = new Thread(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                try
+//                {
+//                    Backendless.UserService.findById  (OpponentUserObjectID, new AsyncCallback<BackendlessUser>() { @Override
+//                                 public void handleResponse(BackendlessUser backendlessUser )
+//                                 {
+//                                    System.out.println(backendlessUser.getObjectId());
+//                                    OpponentDeviceID = (String) backendlessUser.getProperty("Device_ID");
+//
+//
+//
+//                                }
+//
+//                                    @Override
+//                                    public void handleFault( BackendlessFault fault )
+//                                    {
+//                                        Log.d(TAG, "The device ID was Not found in the user table:   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+//                                    }});
+//
+//                }catch (BackendlessException e)
+//                    {
+//                        Log.d(TAG, "The device ID was Not found in the user table:   " + e.getMessage() + e.getDetail() + e.getCode() + "for the user object ID " +OpponentUserObjectID );                }
+//                }
+//            });
+//        thread.start();
+
+
+        });
         thread.start();
-
-
-
     }
-
 }
 
