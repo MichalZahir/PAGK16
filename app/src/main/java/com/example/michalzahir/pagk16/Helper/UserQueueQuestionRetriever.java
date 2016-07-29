@@ -20,6 +20,7 @@ import com.example.michalzahir.pagk16.ConstantsClass;
 import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
+import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import java.util.Random;
@@ -28,27 +29,21 @@ import java.util.Random;
  * Created by zahirm on 2016-07-05.
  */
 public class UserQueueQuestionRetriever {
-    public static final String TAG = "Ques Retriev 1 round";
+    public static final String TAG = "Ques Retrieve 1 round";
 
-    public static void RetrieveQuestionForFirstRound(int QuestionID, String Category, final Context context){
-        if (Category.equals("Sport") )
-            get_sport_questions(QuestionID, context);
-        else if (Category.equals( "History"))
-            get_history_questions(QuestionID, context);
-        else if (Category.equals("Chemistry"))
-            get_chemistry_questions(QuestionID, context);
-        else if (Category.equals("Geography"))
-            get_geography_questions(QuestionID, context);
-        else if (Category.equals( "Astronomy"))
-            get_astronomy_questions(QuestionID, context);
-        else if (Category .equals( "Literature"))
-            get_literature_questions(QuestionID,context);
-        else {
+    public static void RetrieveQuestionForFirstRound(String QuestionIDArray,   final Context context){
 
+            String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
+            int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];
+            String[] strArray = helper.split(",");
 
-            String whereClause = " ID=" + QuestionID;
-            MainActivity.user.setQuestion_ID(QuestionID);
-            BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+                 for(int i = 0; i < strArray.length; i++) {
+                     strArray[i]= strArray[i].replaceAll(" ","");
+                     tab[i] = Integer.parseInt(strArray[i]);
+                     gettingQuestions.QuestionsIDs[i] = tab[i] ;
+                     Log.d(TAG, "The ids from the question passed with the bundle for the first round " + tab [i]);
+            String whereClause = " ID=" + tab[i];
+                     BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             dataQuery.setWhereClause(whereClause);
 
 
@@ -105,9 +100,10 @@ public class UserQueueQuestionRetriever {
 
                 }
             });
+                 }
 
 
-        }
+
     }
     public static void get_sport_questions(int QuestionID, final Context context) {
 

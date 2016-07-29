@@ -22,7 +22,9 @@ import com.backendless.messaging.MessageStatus;
 import com.backendless.messaging.PublishOptions;
 import com.backendless.messaging.PushBroadcastMask;
 import com.backendless.messaging.PushPolicyEnum;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.USERS_QUEUE;
+import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
 
 import java.util.LinkedList;
 import java.util.Timer;
@@ -36,11 +38,13 @@ public class NewGameActivity extends AppCompatActivity {
     static public gameResult result;
     private static final String TAG = NewGameActivity.class.getSimpleName();
     public static Boolean yourTurnToChooseCategory = false;
-    public static int StopTheGame=0;
+    public static int StopTheGame = 0;
     public static String UserQueueObjectID;
     static Boolean AddUserToQueue;
     int QuestionID;
+    String QuestionsIDSArray;
     String QuestionCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +52,7 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton = (Button) findViewById(R.id.fbNewGameButton);
         newRandomGameButton = (Button) findViewById(R.id.RandomNewGameButton);
         result = new gameResult();
-        StopTheGame=0;
+        StopTheGame = 0;
         result.setFirstUserResult(0);
         result.setSecondtUserResult(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,11 +71,13 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                fbFriendsListActivity.FbGame = false;
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                   x[0] = SearchForAnOppenent();
-                    }});
+                        x[0] = SearchForAnOppenent();
+                    }
+                });
 
                 t.start(); // spawn thread
 
@@ -82,20 +88,17 @@ public class NewGameActivity extends AppCompatActivity {
                 }
 
 
-                if (!x[0]){
-                     com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(QuestionID,QuestionCategory, getApplicationContext());
+                if (!x[0]) {
+                    com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(QuestionsIDSArray , getApplicationContext());
 
-                }
-                else if (x[0]){
+                } else if (x[0]) {
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
                     result.setFirstUserResult(0);
                     result.setSecondtUserResult(0);
-                    Intent i = new Intent(getApplicationContext(),
-                            categoryChoiceActivity.class);
-                    startActivity(i);
+                    gettingQuestions.getQuestions(getApplicationContext());
+
 
                 }
-
 
 
             }
@@ -105,18 +108,15 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-               if (! MainActivity.LoggedInWithFB){
-                   SetDialogueForNotFbLoggedusr();
-               }
-                else
-            com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
-//                Intent i = new Intent(getApplicationContext(),
-//                        com.example.michalzahir.pagk16.FacebookUsers.invitingFriendsActivity.class);
-//                startActivity(i);
+                 if (!MainActivity.LoggedInWithFB) {
+                    SetDialogueForNotFbLoggedusr();
+                } else
+                    com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
+
 
             }
         });
-        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -126,29 +126,32 @@ public class NewGameActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
-    Boolean SearchForAnOppenent(){
+
+    Boolean SearchForAnOppenent() {
         //AddUserToQueue=true;
         USERS_QUEUE lastUserInQueue = null;
         try {
-             lastUserInQueue = Backendless.Persistence.of(USERS_QUEUE.class).findLast();
+            lastUserInQueue = Backendless.Persistence.of(USERS_QUEUE.class).findLast();
 
-        }catch (BackendlessException e) {
-            AddUserToQueue=true;
+        } catch (BackendlessException e) {
+            AddUserToQueue = true;
             e.printStackTrace();
         }
         //AddUserToQueue=false;
-        if (lastUserInQueue!=null) {
+        if (lastUserInQueue != null) {
             Log.d(TAG, "Fetching a user from the users queue was success  ");
             NewGameActivity.result.setFirstUSerObjectID(lastUserInQueue.getUser_object_ID());
             NewGameActivity.result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
             NewGameActivity.result.setFirstUserResult(lastUserInQueue.getResult());
             NewGameActivity.result.setSecondtUserResult(0);
             QuestionID = lastUserInQueue.getUser_Question_ID();
+
+            QuestionsIDSArray = lastUserInQueue.getQuestionIDSArray();
+            Log.d("Question IDS Array",QuestionsIDSArray);
             QuestionCategory = lastUserInQueue.getUser_Question_Category();
-            AddUserToQueue=false;
+            AddUserToQueue = false;
             com.example.michalzahir.pagk16.Helper.user_Queue_Deleter.DeleteOponent(lastUserInQueue);
-        }
-        else if (lastUserInQueue!= null )            AddUserToQueue=true;
+        } else if (lastUserInQueue != null) AddUserToQueue = true;
 
 //        Backendless.Persistence.of(USERS_QUEUE.class).find(  new AsyncCallback<BackendlessCollection<USERS_QUEUE>>() {
 //            @Override
@@ -190,16 +193,18 @@ public class NewGameActivity extends AppCompatActivity {
 //        });
 
 
-   return AddUserToQueue; }
-    public void SetDialogueForNotFbLoggedusr(){
+        return AddUserToQueue;
+    }
+
+    public void SetDialogueForNotFbLoggedusr() {
 
         new AlertDialog.Builder(this)
                 .setTitle("You're not logged in With your Facebook account.")
                 .setMessage("Please click OK to go to Your profile, you can log out and sign in with your facebook account to be able to play with facebook friends.")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        final Intent i = new Intent( getApplicationContext(), Profile2_ScrollingActivity.class);
-                         startActivity(i);
+                        final Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+                        startActivity(i);
 
 
                     }
@@ -209,4 +214,4 @@ public class NewGameActivity extends AppCompatActivity {
                 .show();
     }
 
-    }
+}

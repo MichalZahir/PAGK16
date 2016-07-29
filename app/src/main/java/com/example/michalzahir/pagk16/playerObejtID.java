@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.backendless.Backendless;
+import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.facebook.FacebookSdk;
 
 /**
@@ -28,6 +29,8 @@ public class playerObejtID {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.putString("playerObjectID", playerObejtID.getUserObjectID());
+        editor.putBoolean("FB_game", fbFriendsListActivity.FbGame );
+        if (NewGameActivity.AddUserToQueue!=null)editor.putBoolean("AddUserToQueue",NewGameActivity.AddUserToQueue);
         editor.apply();
     }
     public static void SetUserObjectIDOnStart( Context c){
@@ -37,9 +40,13 @@ public class playerObejtID {
         SharedPreferences prefs =  c.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if (prefs.contains("playerObjectID")) {
             String userObjID = prefs.getString("playerObjectID", "000");
-
-
             playerObejtID.setUserObjectID(userObjID);
+        }
+        if (prefs.contains("FB_game")) {
+            //fbFriendsListActivity.FbGame = prefs.getBoolean("FB_game",false);
+            }
+        if (prefs.contains("AddUserToQueue")) {
+            NewGameActivity.AddUserToQueue = prefs.getBoolean("AddUserToQueue",false);
         }
     }
 

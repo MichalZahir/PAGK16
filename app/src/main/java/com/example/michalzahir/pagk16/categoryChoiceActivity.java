@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.example.michalzahir.pagk16.adapter.RecyclerAdapter;
 import com.example.michalzahir.pagk16.model.Landscape;
+import com.facebook.appevents.AppEventsLogger;
 
 public class categoryChoiceActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
@@ -35,5 +36,13 @@ public class categoryChoiceActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+         com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 }

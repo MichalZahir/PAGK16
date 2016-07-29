@@ -7,6 +7,10 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.MainActivity;
+import com.example.michalzahir.pagk16.gameResult;
+import com.example.michalzahir.pagk16.gettingQuestions;
+
+import java.util.Arrays;
 
 /**
  * Created by zahirm on 2016-07-04.
@@ -26,8 +30,8 @@ public class user_Queue_Updater {
             users_queue.setUser_object_ID(MainActivity.user.getUserObjectId());
             users_queue.setResult(MainActivity.user.getResult());
             users_queue.setUser_Question_Category(MainActivity.user.getCategory());
-            users_queue.setUser_Question_ID(MainActivity.user.getQuestion_ID());
-
+            //users_queue.setUser_Question_ID(com.example.michalzahir.pagk16.gettingQuestions.QuestionsIDs);
+            users_queue.setQuestionIDSArray(Arrays.toString(gettingQuestions.QuestionsIDs));
 
 
             // save object asynchronously

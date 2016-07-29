@@ -14,6 +14,6 @@ public class ConstantsClass {
     public final static int GeographyQuestSize = 10;
     public final static int AstronomyQuestSize = 10;
     public final static int LiteratureQuestSize = 10;
-    public final static int QuestionsNumberToBeAsked = 2;
+    public final static int QuestionsNumberToBeAsked = 6;
 
 }

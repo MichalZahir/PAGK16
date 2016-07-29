@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+//        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
 
         // Logs 'app deactivate' App Event.
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
@@ -402,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleResponse(Void response) {
                 Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
-                String Device_ID = Backendless.Messaging.DEVICE_ID;
+                String Device_ID = Messaging.DEVICE_ID;
                 Log.d(TAG,"The Device ID is :  "+Device_ID);
                 UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
                 user.setDeviceID(Device_ID);

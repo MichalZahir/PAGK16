@@ -15,6 +15,8 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
+import com.facebook.appevents.AppEventsLogger;
 
 public class resultActivity extends AppCompatActivity {
     private static final String TAG = "result Activity";
@@ -36,56 +38,95 @@ public class resultActivity extends AppCompatActivity {
         intSecondResult = bundle.getInt("2nd user result");
         Log.d(TAG, "The result of the first user:" + intFirstResult);
         Log.d(TAG, "The result of the second user:" + intSecondResult);
+
+        //if (NewGameActivity.result==null)
+         // NewGameActivity.result = new gameResult(Integer.parseInt(bundle.getString("firstUserResult")), Integer.parseInt(bundle.getString("secondtUserResult")), bundle.getString("firstUSerObjectID"), bundle.getString("secondUSerObjectID"));
+
         NewGameActivity.result.setFirstUserResult(intFirstResult);
         NewGameActivity.result.setSecondtUserResult(intSecondResult);
 
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
+
         // the last result sent to the second user
         if (bundle.containsKey("Last Result")) {
 
             NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
 
             com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
-        } else {
-            NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
-            if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
-                endTheGame();
-            else if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
-                NewGameActivity.StopTheGame = 0;
-                new AlertDialog.Builder(this)
-                        .setTitle("Your part is done, It's turn for your oponent. ")
-                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
-                                startActivity(i);
-                            }
-                        })
-
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .show();
-            } else {
-
-                if (NewGameActivity.yourTurnToChooseCategory) {
-                    NewGameActivity.yourTurnToChooseCategory = false;
-                    Toast.makeText(getApplicationContext(),
-                            "It's your turn to pick a category. Just wait a second. ", Toast.LENGTH_LONG)
-                            .show();
-
-                    final Intent i = new Intent(getApplicationContext(), categoryChoiceActivity.class);
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            startActivity(i);
-                        }
-                    }, 5000);
-
-                } else SetDialogue();
-            }
         }
+        else {
+           if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())){
+
+               gameResult.questionsAnswered =0;
+               stopService(new Intent(this, MyService.class));
+
+            new AlertDialog.Builder(this)
+                       .setTitle("Your part is done, It's turn for your oponent. ")
+                       .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
+                       .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int which) {
+                               Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+                               startActivity(i);
+                           }
+                       })
+
+                       .setIcon(android.R.drawable.ic_dialog_info)
+                       .show();
+           }
+            else if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked&& playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())){
+               gameResult.questionsAnswered =0;
+               endTheGame();
+           }
+
+        }
+//        else {
+//            NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
+//            if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+//                endTheGame();
+//            else if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
+//                NewGameActivity.StopTheGame = 0;
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Your part is done, It's turn for your oponent. ")
+//                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
+//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+//                                startActivity(i);
+//                            }
+//                        })
+//
+//                        .setIcon(android.R.drawable.ic_dialog_info)
+//                        .show();
+//            } else {
+//
+//                if (NewGameActivity.yourTurnToChooseCategory) {
+//                    NewGameActivity.yourTurnToChooseCategory = false;
+//                    Toast.makeText(getApplicationContext(),
+//                            "It's your turn to pick a category. Just wait a second. ", Toast.LENGTH_LONG)
+//                            .show();
+//
+//                    final Intent i = new Intent(getApplicationContext(), categoryChoiceActivity.class);
+//
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            startActivity(i);
+//                        }
+//                    }, 5000);
+//
+//                } else SetDialogue();
+           // }
+      //  }
+    }
+    @Override
+    protected void  onStop() {
+        super.onStop();
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        //com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 
     @Override

@@ -18,8 +18,10 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.michalzahir.pagk16.SavedGames.SavedGamesActivity;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
@@ -37,7 +39,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView drawGamesTextView;
     private TextView playedGamesTextView;
     private Button newGameButton;
-
+    private Button SavedGamesButton;
     int wonGames;
     int lostGames;
     int drawGames;
@@ -50,6 +52,9 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
+        final String appVersion = "v1";
+        Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
@@ -57,7 +62,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
         drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
         playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
-
+        SavedGamesButton = (Button) findViewById(R.id.savedGamesButton );
         ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
         newGameButton = (Button) findViewById(R.id.newGameButton);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -177,6 +182,17 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
             }
         });
+        SavedGamesButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        SavedGamesActivity.class);
+                 startActivity(i);
+                finish();
+
+
+            }
+        });
 
 
 
@@ -184,7 +200,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+        //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
@@ -192,7 +208,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+//        playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
 
         // Logs 'app deactivate' App Event.

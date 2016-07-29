@@ -21,8 +21,10 @@ import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.adapter.RecyclerAdapter;
+import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -32,7 +34,7 @@ import java.util.List;
 public class pushNotification {
     private static final String TAG = "Push Notification";
     static Bundle QuestionBundle = new Bundle();
-    static String OpponentDeviceID;
+    public static String OpponentDeviceID;
 
 
 
@@ -56,8 +58,10 @@ public class pushNotification {
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");
         publishOptions.setSubtopic("Zahiiiir");
+        if (bundle.containsKey("QuestionIDS"))
+            publishOptions.putHeader("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
         if (fbFriendsListActivity.FbGame)
-            publishOptions.putHeader("FB_game","true");
+            publishOptions.putHeader("FB_game","FB_game");
         publishOptions.putHeader("Question", bundle.getString("Question"));
         publishOptions.putHeader("Answer_A", bundle.getString("Answer_A"));
         publishOptions.putHeader("Answer_B", bundle.getString("Answer_B"));
@@ -95,19 +99,19 @@ public class pushNotification {
 
         publishOptions.putHeader("android-ticker-text", "You just got a private push notification!");
         publishOptions.putHeader("android-content-title", "PAGK");
-        publishOptions.putHeader("android-content-text", "Your oponent just finished, It's your turn to play");
+        publishOptions.putHeader("android-content-text", "Your opponent just finished, It's your turn to play");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
             @Override
             public void handleResponse(MessageStatus messageStatus) {
-                Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
+                Log.d(TAG, "Push Notification  working. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
 
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Push Notification not workin .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                Log.d(TAG, "Push Notification not working .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
             }
         });
 
@@ -160,9 +164,18 @@ public class pushNotification {
 
     }
 
-    public static void GetOpponentUserObjID() {
+    public static void GetOpponentUserObjID(Context c) {
         // TODO: 2016-07-12 Getting the player object id when getting the game from the notification.
+        // TODO: 2016-07-18 The solution to that might be to chechk at the start of the Question Activity to check if the player object id is null. in that case to take it from the data base.
         Log.d(TAG, " Logging the error where the app is off :  player object ID  " + playerObejtID.getUserObjectID() +"   result first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult()  );
+        //a fix for the notification receiver on facebook game getting the first notification about the game
+        if (playerObejtID.getUserObjectID()==null){
+             playerObejtID.setUserObjectID(NewGameActivity.result.getSecondUSerObjectID());
+             final String appVersion = "v1";
+             Backendless.initApp(c, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+             FacebookSdk.sdkInitialize(c);
+        }
+        Log.d(TAG, "Checking after the fix player object ID " + playerObejtID.getUserObjectID() +"   result first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult()  );
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {
             Log.d(TAG, "searching for the device ID for the Following User Object ID  = :   " + NewGameActivity.result.getSecondUSerObjectID() );
             GetReceiverDeviceID(NewGameActivity.result.getSecondUSerObjectID());

@@ -109,12 +109,13 @@ public class fbFriendsListActivity extends AppCompatActivity {
                     result.setSecondtUserResult(0);
                     NewGameActivity.result = result;
 
-                    pushNotification.GetOpponentUserObjID();
+                    pushNotification.GetOpponentUserObjID(getApplicationContext());
 
                     playerObejtID.setUserObjectID(MainActivity.user.getUserObjectId());
-                    Intent i = new Intent(getApplicationContext(),
-                            categoryChoiceActivity.class);
-                    startActivity(i);
+                    com.example.michalzahir.pagk16.gettingQuestions.getQuestions(fbFriendsListActivity.this);
+//                    Intent i = new Intent(getApplicationContext(),
+//                            categoryChoiceActivity.class);
+//                    startActivity(i);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -144,38 +145,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
             Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
         }
-//        System.out.println(name);
-//        String whereClause = " name='" + name+"'";
-//         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-//        dataQuery.setWhereClause(whereClause);
-//
-//
-//        Backendless.Persistence.of (Users.class).find(dataQuery, new AsyncCallback<BackendlessCollection<Users>>() {
-//            @Override
-//            public void handleResponse(BackendlessCollection<Users> foundQuestions) {
-//                for (Users q : foundQuestions.getData()) {
-//                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
-//                    Backendless.Persistence.of(Users.class).findById(q.getObjectId(), new AsyncCallback<Users>() {
-//                        @Override
-//                        public void handleResponse(Users response) {
-//                            Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
-//                            result.setSecondUSerObjectID(response.getObjectId());
-//                        }
-//
-//                        @Override
-//                        public void handleFault(BackendlessFault fault) {
-//                            Log.d(TAG, "fault trying to fetch FB user object ID using hte name only" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//                Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//
-//            }
-//        });
+
     }
 
     @Override
