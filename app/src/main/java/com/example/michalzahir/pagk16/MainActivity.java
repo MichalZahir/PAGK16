@@ -339,8 +339,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void handleFault(BackendlessFault backendlessFault) {
-                // failed to log in
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Failed to loggin with Facebook .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
             }
         });
         //RegisterDeviceUpdateUserDeviceID();
