@@ -62,6 +62,8 @@ public class SavedGamesActivity extends AppCompatActivity {
                 NewGameActivity.result.setSecondUSerObjectID(GamesLoading.SavedGameslist.get(position).getSecondUserDeviceID());
                 fbFriendsListActivity.FbGame= (GamesLoading.SavedGameslist.get(position).getFbGame());
                 GamesSaving.QuestionsAnswered= GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
+                gameResult.questionsAnswered = GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
+                NewGameActivity.AddUserToQueue = GamesLoading.SavedGameslist.get(position).getAddUserToQueue();
 
             }});
 

@@ -25,31 +25,33 @@ public class Saved_Games {
     private String WhosTurn;
     private String QuestionsIDs;
     private int QuestionsAnswered;
+    private Boolean AddUserToQueue;
 
     public Saved_Games() {
     }
 
-    public Saved_Games(String objectId, int ID, Date updated, Date created, String firstUserID, int firstUserResult, int secondUserResult,
-                       String secondUserID, Boolean fbGame, int stopTheGame, String firstUserName, String firstUserDeviceID, String secondUserName,
-                       String secondUserDeviceID, String activity, String whosTurn, String questionsIDs, int questionsAnswered) {
+    public Saved_Games(String objectId, int ID, Date created, Date updated, String firstUserID, int firstUserResult, String secondUserID, int secondUserResult,
+                       int stopTheGame, Boolean fbGame, String firstUserName, String secondUserName, String firstUserDeviceID, String secondUserDeviceID,
+                       String activity, String whosTurn, String questionsIDs, int questionsAnswered, Boolean addUserToQueue) {
         this.objectId = objectId;
         this.ID = ID;
-        this.updated = updated;
         this.created = created;
+        this.updated = updated;
         this.firstUserID = firstUserID;
         this.firstUserResult = firstUserResult;
-        this.secondUserResult = secondUserResult;
         this.secondUserID = secondUserID;
-        this.fbGame = fbGame;
+        this.secondUserResult = secondUserResult;
         this.stopTheGame = stopTheGame;
+        this.fbGame = fbGame;
         this.firstUserName = firstUserName;
-        this.firstUserDeviceID = firstUserDeviceID;
         this.secondUserName = secondUserName;
+        this.firstUserDeviceID = firstUserDeviceID;
         this.secondUserDeviceID = secondUserDeviceID;
         Activity = activity;
         WhosTurn = whosTurn;
         QuestionsIDs = questionsIDs;
         QuestionsAnswered = questionsAnswered;
+        AddUserToQueue = addUserToQueue;
     }
 
     public int getQuestionsAnswered() {
@@ -194,5 +196,13 @@ public class Saved_Games {
 
     public void setWhosTurn(String whosTurn) {
         WhosTurn = whosTurn;
+    }
+
+    public Boolean getAddUserToQueue() {
+        return AddUserToQueue;
+    }
+
+    public void setAddUserToQueue(Boolean addUserToQueue) {
+        AddUserToQueue = addUserToQueue;
     }
 }

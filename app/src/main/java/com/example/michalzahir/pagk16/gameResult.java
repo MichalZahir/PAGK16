@@ -22,7 +22,7 @@ public class gameResult {
     int secondtUserResult;
     String firstUSerObjectID;
     String secondUSerObjectID;
-    static int questionsAnswered;
+    public static int questionsAnswered;
 
     public gameResult(int firstUserResult, int secondtUserResult, String firstUSerObjectID, String secondUSerObjectID) {
         this.firstUserResult = firstUserResult;

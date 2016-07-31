@@ -40,7 +40,7 @@ public class NewGameActivity extends AppCompatActivity {
     public static Boolean yourTurnToChooseCategory = false;
     public static int StopTheGame = 0;
     public static String UserQueueObjectID;
-    static Boolean AddUserToQueue;
+    public static Boolean AddUserToQueue;
     int QuestionID;
     String QuestionsIDSArray;
     String QuestionCategory;

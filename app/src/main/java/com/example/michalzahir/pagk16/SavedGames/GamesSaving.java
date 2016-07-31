@@ -35,6 +35,7 @@ public class GamesSaving {
         saved_games.setQuestionsAnswered( QuestionsAnswered);
         Log.d(TAG, "The Questions Answered : " +  QuestionsAnswered);
         saved_games.setSecondUserName("asd");
+        saved_games.setAddUserToQueue(NewGameActivity.AddUserToQueue);
         saved_games.setQuestionsIDs(Arrays.toString(gettingQuestions.QuestionsIDs));
         saved_games.setSecondUserResult(NewGameActivity.result.getSecondtUserResult());
         saved_games.setStopTheGame(NewGameActivity.StopTheGame);

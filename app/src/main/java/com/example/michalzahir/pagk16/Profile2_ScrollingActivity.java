@@ -79,14 +79,14 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 }
             });
         }
-        String currentUserObjectId = Backendless.UserService.loggedInUser();
+        final String currentUserObjectId = Backendless.UserService.loggedInUser();
         //MainActivity.user.setUserObjectId(currentUserObjectId);
          Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
         public void handleResponse(BackendlessUser backendlessUser )
         {
 
             Backendless.UserService.setCurrentUser(backendlessUser);
-
+            playerObejtID.setUserObjectID(currentUserObjectId);
             UserName = "" + backendlessUser.getProperty("name");
             wonGames = (int) backendlessUser.getProperty("WON");
             lostGames = (int) backendlessUser.getProperty("LOST");

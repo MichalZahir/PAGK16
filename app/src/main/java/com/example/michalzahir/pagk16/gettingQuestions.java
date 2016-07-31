@@ -104,10 +104,9 @@ public class gettingQuestions extends Application {
 
 
     public static   void  getQuestionsForSavedGames(final Context context, Saved_Games savedGame){
-        for  (QuestionsCounter =savedGame.getQuestionsAnswered() ; QuestionsCounter< ConstantsClass.QuestionsNumberToBeAsked ; QuestionsCounter++ ){
-            Random rn = new Random();
-            int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;
-            System.out.println(ID);
+
+
+
             String helper = savedGame.getQuestionsIDs().substring(1,savedGame.getQuestionsIDs().length()-1);
             int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];
             String[] strArray = helper.split(",");
@@ -169,7 +168,7 @@ public class gettingQuestions extends Application {
                 }});
 
 
-        }
+
         }
 
 
