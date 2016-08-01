@@ -7,6 +7,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.UsersDB.Users;
+import com.example.michalzahir.pagk16.playerObejtID;
 
 /**
  * Created by zahirm on 2016-07-12.
@@ -33,6 +34,8 @@ public class fbUsrStatistics {
                 tab[1] = q.getDRAW();
                 tab[2] = q.getLOST();
                 tab[3] = tab[0] + tab[1] + tab[2];
+                playerObejtID.setUserObjectID(q.getObjectId());
+
 
             }
         }

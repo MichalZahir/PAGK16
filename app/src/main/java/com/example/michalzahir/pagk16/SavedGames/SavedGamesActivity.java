@@ -54,16 +54,18 @@ public class SavedGamesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 Toast.makeText(SavedGamesActivity.this, "" + position  + GamesLoading.SavedGameslist.get(position).getQuestionsIDs()   , Toast.LENGTH_SHORT).show();
-                 gettingQuestions.getQuestionsForSavedGames(getApplicationContext(),GamesLoading.SavedGameslist.get(position));
-                NewGameActivity.result = new gameResult();
-                NewGameActivity.result.setFirstUserResult(GamesLoading.SavedGameslist.get(position).getFirstUserResult());
-                NewGameActivity.result.setSecondtUserResult(GamesLoading.SavedGameslist.get(position).getSecondUserResult());
-                NewGameActivity.result.setFirstUSerObjectID(GamesLoading.SavedGameslist.get(position).getFirstUserID());
-                NewGameActivity.result.setSecondUSerObjectID(GamesLoading.SavedGameslist.get(position).getSecondUserDeviceID());
-                fbFriendsListActivity.FbGame= (GamesLoading.SavedGameslist.get(position).getFbGame());
-                GamesSaving.QuestionsAnswered= GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
-                gameResult.questionsAnswered = GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
-                NewGameActivity.AddUserToQueue = GamesLoading.SavedGameslist.get(position).getAddUserToQueue();
+                if ( SetWhosTurn (GamesLoading.SavedGameslist.get(position) ).equals("It's your turn to play")) {
+                    gettingQuestions.getQuestionsForSavedGames(getApplicationContext(), GamesLoading.SavedGameslist.get(position));
+                    NewGameActivity.result = new gameResult();
+                    NewGameActivity.result.setFirstUserResult(GamesLoading.SavedGameslist.get(position).getFirstUserResult());
+                    NewGameActivity.result.setSecondtUserResult(GamesLoading.SavedGameslist.get(position).getSecondUserResult());
+                    NewGameActivity.result.setFirstUSerObjectID(GamesLoading.SavedGameslist.get(position).getFirstUserID());
+                    NewGameActivity.result.setSecondUSerObjectID(GamesLoading.SavedGameslist.get(position).getSecondUserID());
+                    fbFriendsListActivity.FbGame = (GamesLoading.SavedGameslist.get(position).getFbGame());
+                    GamesSaving.QuestionsAnswered = GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
+                    gameResult.questionsAnswered = GamesLoading.SavedGameslist.get(position).getQuestionsAnswered();
+                    NewGameActivity.AddUserToQueue = GamesLoading.SavedGameslist.get(position).getAddUserToQueue();
+                }
 
             }});
 
@@ -88,7 +90,7 @@ public class SavedGamesActivity extends AppCompatActivity {
         if (savedGames.getWhosTurn().equals("1st user") )
             WhosTurn = "Your Opponent is playing right now";
         else if(savedGames.getWhosTurn().equals("2nd user") )
-            WhosTurn = "It's your turn to play ";
+            WhosTurn = "It's your turn to play";
 
         }
 

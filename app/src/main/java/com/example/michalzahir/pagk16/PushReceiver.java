@@ -143,7 +143,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
                 int m = random.nextInt(9999 - 1000) + 1000;
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(m, notification);
+                notificationManager.notify(0, notification);
 
             }
 
@@ -201,7 +201,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             int m = random.nextInt(9999 - 1000) + 1000;
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(m, notification);
+            notificationManager.notify(0, notification);
 
         }
     }
@@ -402,7 +402,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         int m = random.nextInt(9999 - 1000) + 1000;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(m, notification);
+        notificationManager.notify(0, notification);
         //notificationManager.notify(0, notification);
         BroadcastReceiver call_method = new BroadcastReceiver() {
             @Override
