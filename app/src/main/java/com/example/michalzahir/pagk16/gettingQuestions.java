@@ -110,11 +110,14 @@ public class gettingQuestions extends Application {
             String helper = savedGame.getQuestionsIDs().substring(1,savedGame.getQuestionsIDs().length()-1);
             int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];
             String[] strArray = helper.split(",");
-
+            for (int i =0 ; i< strArray.length; i++) {
+                strArray[i] = strArray[i].replaceAll(" ", "");
+                QuestionsIDs[i] = Integer.parseInt(strArray[i]);
+            }
             for(int i = savedGame.getQuestionsAnswered(); i < strArray.length; i++) {
                 strArray[i]= strArray[i].replaceAll(" ","");
                 tab[i] = Integer.parseInt(strArray[i]);
-
+                
 
             //QuestionsIDs[QuestionsCounter] = Integer.parseInt(savedGame.getQuestionsIDs());
             String whereClause = " ID="+tab[i];
