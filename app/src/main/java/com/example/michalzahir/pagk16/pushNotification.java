@@ -123,16 +123,15 @@ public class pushNotification {
         final String appVersion = "v1";
         final DeliveryOptions deliveryOptions = new DeliveryOptions();
         deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
-         //deliveryOptions.addPushSinglecast("LGH440nce43a48f");
-        //deliveryOptions.addPushSinglecast("unknown");
+
         deliveryOptions.addPushSinglecast(OpponentDeviceID);
         deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
 
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");
         publishOptions.setSubtopic("Zahiiiir");
-        publishOptions.putHeader("1st user result", bundle.getString("1st user result"));
-        publishOptions.putHeader("2nd user result", bundle.getString("2nd user result"));
+        publishOptions.putHeader("1st user result", String.valueOf(bundle.getInt("1st user result")));
+        publishOptions.putHeader("2nd user result", String.valueOf(bundle.getInt("2nd user result")));
         publishOptions.putHeader("Last Result", "Last Result");
         if (fbFriendsListActivity.FbGame)
             publishOptions.putHeader("FB_game","true");

@@ -53,6 +53,7 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton = (Button) findViewById(R.id.RandomNewGameButton);
         result = new gameResult();
         StopTheGame = 0;
+        gameResult.questionsAnswered =0;
         result.setFirstUserResult(0);
         result.setSecondtUserResult(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,6 +91,8 @@ public class NewGameActivity extends AppCompatActivity {
 
                 if (!x[0]) {
                     com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(QuestionsIDSArray , getApplicationContext());
+                    pushNotification.GetOpponentUserObjID(getApplicationContext());
+
 
                 } else if (x[0]) {
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());

@@ -52,7 +52,7 @@ public class resultActivity extends AppCompatActivity {
         if (bundle.containsKey("Last Result")) {
 
             NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
-
+            gameResult.questionsAnswered = gameResult.questionsAnswered +1;
             com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
         }
         else {
@@ -62,7 +62,7 @@ public class resultActivity extends AppCompatActivity {
                stopService(new Intent(this, MyService.class));
 
             new AlertDialog.Builder(this)
-                       .setTitle("Your part is done, It's turn for your oponent. ")
+                       .setTitle("Your part is done, It's turn for your opponent. ")
                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int which) {

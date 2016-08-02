@@ -69,10 +69,10 @@ public class UserQueueQuestionRetriever {
                                 insideBundle.putBoolean("correct_B", response.getCORRECT_B());
                                 insideBundle.putBoolean("correct_C", response.getCORRECT_C());
                                 insideBundle.putBoolean("correct_D", response.getCORRECT_D());
-                                insideBundle.putString("firstUserResult", String.valueOf(NewGameActivity.result.getFirstUserResult()));
-                                insideBundle.putString("secondtUserResult", String.valueOf(NewGameActivity.result.getSecondtUserResult()));
-                                insideBundle.putString("firstUSerObjectID", NewGameActivity.result.getFirstUSerObjectID());
-                                insideBundle.putString("secondUSerObjectID", NewGameActivity.result.getSecondUSerObjectID());
+//                                insideBundle.putString("firstUserResult", String.valueOf(NewGameActivity.result.getFirstUserResult()));
+//                                insideBundle.putString("secondtUserResult", String.valueOf(NewGameActivity.result.getSecondtUserResult()));
+//                                insideBundle.putString("firstUSerObjectID", NewGameActivity.result.getFirstUSerObjectID());
+//                                insideBundle.putString("secondUSerObjectID", NewGameActivity.result.getSecondUSerObjectID());
 
                                 Log.d(TAG, " " + insideBundle);
                                 //StartActivity(bundle ,context);
