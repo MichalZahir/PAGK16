@@ -141,7 +141,7 @@ public class NewGameActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         //AddUserToQueue=false;
-        if (lastUserInQueue != null) {
+        if (lastUserInQueue != null && !lastUserInQueue.getUser_object_ID().equals(playerObejtID.getUserObjectID())) {
             Log.d(TAG, "Fetching a user from the users queue was success  ");
             NewGameActivity.result.setFirstUSerObjectID(lastUserInQueue.getUser_object_ID());
             NewGameActivity.result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
