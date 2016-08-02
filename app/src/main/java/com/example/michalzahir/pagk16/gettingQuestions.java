@@ -71,8 +71,8 @@ public class gettingQuestions extends Application {
                                 insideBundle.putString("Answer_D", response.getANSWER_D());
                                 insideBundle.putBoolean("correct_A", response.getCORRECT_A());
                                 insideBundle.putBoolean("correct_B", response.getCORRECT_B());
-                                insideBundle.putBoolean("correct_D", response.getCORRECT_C());
-                                insideBundle.putBoolean("correct_C", response.getCORRECT_D());
+                                insideBundle.putBoolean("correct_C", response.getCORRECT_C());
+                                insideBundle.putBoolean("correct_D", response.getCORRECT_D());
 
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " + insideBundle);
                                 //StartActivity(bundle ,context);
@@ -145,8 +145,8 @@ public class gettingQuestions extends Application {
                                 insideBundle.putString("Answer_D", response.getANSWER_D());
                                 insideBundle.putBoolean("correct_A", response.getCORRECT_A());
                                 insideBundle.putBoolean("correct_B", response.getCORRECT_B());
-                                insideBundle.putBoolean("correct_D", response.getCORRECT_C());
-                                insideBundle.putBoolean("correct_C", response.getCORRECT_D());
+                                insideBundle.putBoolean("correct_C", response.getCORRECT_C());
+                                insideBundle.putBoolean("correct_D", response.getCORRECT_D());
 
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " + insideBundle);
                                 //StartActivity(bundle ,context);
