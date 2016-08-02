@@ -75,6 +75,8 @@ public class resultActivity extends AppCompatActivity {
                        .show();
            }
             else if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked&& playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())){
+               stopService(new Intent(this, MyService.class));
+
                gameResult.questionsAnswered =0;
                endTheGame();
            }
