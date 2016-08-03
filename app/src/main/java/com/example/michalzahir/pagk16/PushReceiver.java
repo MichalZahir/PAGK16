@@ -173,7 +173,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             if (appIcon == 0)
                 appIcon = android.R.drawable.sym_def_app_icon;
 
-
+            Random random = new Random();
+            int m = random.nextInt(9999 - 1000) + 1000;
 //
 //                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
             LastResultIntent = new Intent(context, resultActivity.class);
@@ -181,7 +182,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             LastResultIntent.putExtras(notificationBundle);
 
             LastResultIntent.putExtra("subtopic", subtopic);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, LastResultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, m, LastResultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
             notificationBuilder.setSmallIcon(getNotificationIcon());
@@ -195,13 +196,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             notificationBuilder.setSound(uri);
 
             Notification notification = notificationBuilder.build();
-            //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
-            Random random = new Random();
-            int m = random.nextInt(9999 - 1000) + 1000;
+
+
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
+            notificationManager.notify(m, notification);
 
         }
     }

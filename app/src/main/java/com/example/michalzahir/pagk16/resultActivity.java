@@ -39,9 +39,11 @@ public class resultActivity extends AppCompatActivity {
         Log.d(TAG, "The result of the first user:" + intFirstResult);
         Log.d(TAG, "The result of the second user:" + intSecondResult);
 
-        //if (NewGameActivity.result==null)
-         // NewGameActivity.result = new gameResult(Integer.parseInt(bundle.getString("firstUserResult")), Integer.parseInt(bundle.getString("secondtUserResult")), bundle.getString("firstUSerObjectID"), bundle.getString("secondUSerObjectID"));
-
+        if (NewGameActivity.result==null) {
+            NewGameActivity.result = new gameResult( );
+            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+            NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
+        }
         NewGameActivity.result.setFirstUserResult(intFirstResult);
         NewGameActivity.result.setSecondtUserResult(intSecondResult);
 
