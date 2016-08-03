@@ -341,7 +341,7 @@ public class resultActivity extends AppCompatActivity {
 
 
         }
-        sendTheLastResultNotificationToscndUser();
+        //sendTheLastResultNotificationToscndUser();
         com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
 
 

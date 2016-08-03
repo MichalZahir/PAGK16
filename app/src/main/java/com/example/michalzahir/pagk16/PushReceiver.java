@@ -48,8 +48,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             GetLastResultNotification(bundle, intent, context);
         }
         else {
-            if(bundle.containsKey("QuestionIDS")&&bundle.containsKey("FB_game"))
+            if(bundle.containsKey("QuestionIDS")&&bundle.containsKey("FB_game")){
                 Get_FB_First_Round(bundle ,intent, context);
+                pushNotification.GetOpponentUserObjID(context);
+
+            }
+
            else  if (bundle.containsKey("QuestionIDS")){
 
                 InitialiseGameResultWhenNull();
@@ -120,9 +124,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
                 notificationIntent = new Intent(context, questionActivity.class);
                 System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
                 notificationIntent.putExtras(notificationBundle);
-
+                Random random = new Random();
+                int m = random.nextInt(9999 - 1000) + 1000;
                 notificationIntent.putExtra("subtopic", subtopic);
-                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, m, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
                 notificationBuilder.setSmallIcon(getNotificationIcon());
@@ -139,11 +144,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
                 Notification notification = notificationBuilder.build();
 
 
-                Random random = new Random();
-                int m = random.nextInt(9999 - 1000) + 1000;
+
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(0, notification);
+                notificationManager.notify(m, notification);
 
             }
 
@@ -173,14 +177,14 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             if (appIcon == 0)
                 appIcon = android.R.drawable.sym_def_app_icon;
 
-            Random random = new Random();
-            int m = random.nextInt(9999 - 1000) + 1000;
+
 //
 //                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
             LastResultIntent = new Intent(context, resultActivity.class);
             System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
             LastResultIntent.putExtras(notificationBundle);
-
+            Random random = new Random();
+            int m = random.nextInt(9999 - 1000) + 1000;
             LastResultIntent.putExtra("subtopic", subtopic);
             PendingIntent contentIntent = PendingIntent.getActivity(context, m, LastResultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -380,7 +384,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         notificationIntent = new Intent(context, ActivityFake.class);
         notificationIntent.putExtras(notificationBundle);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Random random = new Random();
+        int m = random.nextInt(9999 - 1000) + 1000;
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, m, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
         notificationBuilder.setSmallIcon(getNotificationIcon());
         notificationBuilder.setTicker(tickerText);
@@ -398,11 +405,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         //notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 
-        Random random = new Random();
-        int m = random.nextInt(9999 - 1000) + 1000;
+
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(m, notification);
         //notificationManager.notify(0, notification);
         BroadcastReceiver call_method = new BroadcastReceiver() {
             @Override
