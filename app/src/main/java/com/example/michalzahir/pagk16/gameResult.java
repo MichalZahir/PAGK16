@@ -115,6 +115,11 @@ public class gameResult {
             {
                 GamesSaving.QuestionsAnswered =0;
                 pushNotification.PublishTheLastResultNotificaton(context, bundle);
+                final Intent i = new Intent(context, resultActivity.class);
+                i.putExtras(resultsBundle);
+                context.startActivity(i);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
 
 
             }
