@@ -70,7 +70,8 @@
             android:label="@string/title_activity_profile2__scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".categoryChoiceActivity" />
-        <activity android:name=".questionActivity" />
+        <activity android:name=".questionActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".resultActivity" />
         <activity android:name=".FacebookUsers.invitingFriendsActivity">
             <intent-filter>
