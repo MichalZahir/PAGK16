@@ -116,11 +116,11 @@ public class gettingQuestions extends Application {
 
         String answeredq =gameResult.AnsweredQuestionsIDS =savedGame.getAnsweredQuestionsIDs();
         String[] answeQuestArray = answeredq.split(",");
-
+        gameResult.questionsAnswered = savedGame.getQuestionsAnswered();
 
         SavedGame = true;
         String helper = savedGame.getQuestionsIDs().substring(1, savedGame.getQuestionsIDs().length() - 1);
-        int tab[] = new int[ConstantsClass.QuestionsNumberToBeAsked];
+        final int tab[] = new int[ConstantsClass.QuestionsNumberToBeAsked];
         String[] strArray = helper.split(",");
         for (int i = 0; i < strArray.length; i++) {
             strArray[i] = strArray[i].replaceAll(" ", "");
@@ -146,6 +146,7 @@ public class gettingQuestions extends Application {
             BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             dataQuery.setWhereClause(whereClause);
 
+            final int finalI = i;
             Backendless.Persistence.of(QUESTIONS.class).find(dataQuery, new AsyncCallback<BackendlessCollection<QUESTIONS>>() {
                 @Override
                 public void handleResponse(BackendlessCollection<QUESTIONS> foundQuestions) {
@@ -167,7 +168,7 @@ public class gettingQuestions extends Application {
                                 insideBundle.putBoolean("correct_B", response.getCORRECT_B());
                                 insideBundle.putBoolean("correct_C", response.getCORRECT_C());
                                 insideBundle.putBoolean("correct_D", response.getCORRECT_D());
-
+                                insideBundle.putInt("QuestionID",tab[finalI]);
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " + insideBundle);
                                 //StartActivity(bundle ,context);
 //                                setBundle(insideBundle);
