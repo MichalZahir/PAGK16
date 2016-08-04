@@ -133,8 +133,9 @@ public class NewGameActivity extends AppCompatActivity {
     Boolean SearchForAnOppenent() {
         //AddUserToQueue=true;
         USERS_QUEUE lastUserInQueue = null;
+         
         try {
-            lastUserInQueue = Backendless.Persistence.of(USERS_QUEUE.class).findLast();
+            lastUserInQueue = Backendless.Persistence.of(USERS_QUEUE.class).findFirst();
 
         } catch (BackendlessException e) {
             AddUserToQueue = true;
