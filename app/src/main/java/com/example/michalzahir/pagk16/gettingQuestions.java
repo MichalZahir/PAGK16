@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
+
 import android.util.Log;
 
 import com.backendless.Backendless;
@@ -15,6 +15,10 @@ import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesDeleting;
 import com.example.michalzahir.pagk16.SavedGames.Saved_Games;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,6 +26,7 @@ import java.util.Random;
  */
 public class gettingQuestions extends Application {
     private static final String TAG = gettingQuestions.class.getSimpleName();
+
     Context context;
     private Bundle bundle;
     static int QuestionsCounter;
@@ -43,9 +48,10 @@ public class gettingQuestions extends Application {
     }
 
     public static void getQuestions(final Context context) {
+        gameResult.AnsweredQuestionsIDS ="";
         for (QuestionsCounter = 0; QuestionsCounter < ConstantsClass.QuestionsNumberToBeAsked; QuestionsCounter++) {
             Random rn = new Random();
-            int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;
+            final int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;
             System.out.println(ID);
             QuestionsIDs[QuestionsCounter] = ID;
             String whereClause = " ID=" + ID;
@@ -73,6 +79,7 @@ public class gettingQuestions extends Application {
                                 insideBundle.putBoolean("correct_B", response.getCORRECT_B());
                                 insideBundle.putBoolean("correct_C", response.getCORRECT_C());
                                 insideBundle.putBoolean("correct_D", response.getCORRECT_D());
+                                insideBundle.putInt("QuestionID",ID);
 
                                 Log.d(TAG, "trying to fetch questions from DB inside the handle Response method   " + insideBundle);
                                 //StartActivity(bundle ,context);
@@ -107,6 +114,9 @@ public class gettingQuestions extends Application {
 
     public static void getQuestionsForSavedGames(final Context context, Saved_Games savedGame) {
 
+        String answeredq =gameResult.AnsweredQuestionsIDS =savedGame.getAnsweredQuestionsIDs();
+        String[] answeQuestArray = answeredq.split(",");
+
 
         SavedGame = true;
         String helper = savedGame.getQuestionsIDs().substring(1, savedGame.getQuestionsIDs().length() - 1);
@@ -116,7 +126,17 @@ public class gettingQuestions extends Application {
             strArray[i] = strArray[i].replaceAll(" ", "");
             QuestionsIDs[i] = Integer.parseInt(strArray[i]);
         }
-        for (int i = savedGame.getQuestionsAnswered(); i < strArray.length; i++) {
+        List<String> list = new ArrayList<String>(Arrays.asList(strArray));
+        for(int i = 0; i < answeQuestArray.length; i++){
+            answeQuestArray[i] = answeQuestArray[i].replaceAll(" ", "");
+             list.remove(answeQuestArray[i]);
+
+
+
+        }
+        strArray = list.toArray(new String[list.size()]);
+
+        for (int i = 0; i < strArray.length; i++) {
             strArray[i] = strArray[i].replaceAll(" ", "");
             tab[i] = Integer.parseInt(strArray[i]);
 

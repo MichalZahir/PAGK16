@@ -26,13 +26,14 @@ public class Saved_Games {
     private String QuestionsIDs;
     private int QuestionsAnswered;
     private Boolean AddUserToQueue;
+    private String AnsweredQuestionsIDs;
 
     public Saved_Games() {
     }
 
     public Saved_Games(String objectId, int ID, Date created, Date updated, String firstUserID, int firstUserResult, String secondUserID, int secondUserResult,
-                       int stopTheGame, Boolean fbGame, String firstUserName, String secondUserName, String firstUserDeviceID, String secondUserDeviceID,
-                       String activity, String whosTurn, String questionsIDs, int questionsAnswered, Boolean addUserToQueue) {
+                       int stopTheGame, Boolean fbGame, String firstUserName, String firstUserDeviceID, String secondUserName, String secondUserDeviceID,
+                       String activity, String whosTurn, String questionsIDs, int questionsAnswered, Boolean addUserToQueue, String answeredQuestionsIDs) {
         this.objectId = objectId;
         this.ID = ID;
         this.created = created;
@@ -44,14 +45,23 @@ public class Saved_Games {
         this.stopTheGame = stopTheGame;
         this.fbGame = fbGame;
         this.firstUserName = firstUserName;
-        this.secondUserName = secondUserName;
         this.firstUserDeviceID = firstUserDeviceID;
+        this.secondUserName = secondUserName;
         this.secondUserDeviceID = secondUserDeviceID;
         Activity = activity;
         WhosTurn = whosTurn;
         QuestionsIDs = questionsIDs;
         QuestionsAnswered = questionsAnswered;
         AddUserToQueue = addUserToQueue;
+        AnsweredQuestionsIDs = answeredQuestionsIDs;
+    }
+
+    public String getAnsweredQuestionsIDs() {
+        return AnsweredQuestionsIDs;
+    }
+
+    public void setAnsweredQuestionsIDs(String answeredQuestionsIDs) {
+        AnsweredQuestionsIDs = answeredQuestionsIDs;
     }
 
     public int getQuestionsAnswered() {

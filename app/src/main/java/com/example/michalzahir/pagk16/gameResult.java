@@ -23,6 +23,8 @@ public class gameResult {
     String firstUSerObjectID;
     String secondUSerObjectID;
     public static int questionsAnswered;
+    public static String AnsweredQuestionsIDS;
+
 
     public gameResult(int firstUserResult, int secondtUserResult, String firstUSerObjectID, String secondUSerObjectID) {
         this.firstUserResult = firstUserResult;
@@ -82,6 +84,7 @@ public class gameResult {
         MainActivity.user.setResult(getFirstUserResult());
         resultsBundle.putInt("1st user result", getFirstUserResult());
         resultsBundle.putInt("2nd user result", getSecondtUserResult());
+        AnsweredQuestionsIDS = AnsweredQuestionsIDS +","+ String.valueOf(bundle.getInt("QuestionID"));
 //        final Intent i = new Intent(context, resultActivity.class);
 //        i.putExtras(resultsBundle);
 //        new Handler().postDelayed(new Runnable() {
@@ -93,6 +96,7 @@ public class gameResult {
 //        }, 5000);
 //        i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(i);
+
         ((questionActivity) context).finish();
         questionsAnswered++;
 

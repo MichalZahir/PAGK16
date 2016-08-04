@@ -7,6 +7,7 @@ import com.backendless.Messaging;
 import com.backendless.exceptions.BackendlessException;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
+import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.playerObejtID;
 import com.example.michalzahir.pagk16.pushNotification;
@@ -36,6 +37,7 @@ public class GamesSaving {
         Log.d(TAG, "The Questions Answered : " +  QuestionsAnswered);
         saved_games.setSecondUserName("asd");
         saved_games.setAddUserToQueue(NewGameActivity.AddUserToQueue);
+        saved_games.setAnsweredQuestionsIDs(gameResult.AnsweredQuestionsIDS);
         saved_games.setQuestionsIDs(Arrays.toString(gettingQuestions.QuestionsIDs));
         saved_games.setSecondUserResult(NewGameActivity.result.getSecondtUserResult());
         saved_games.setStopTheGame(NewGameActivity.StopTheGame);

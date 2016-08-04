@@ -29,6 +29,10 @@ public class questionActivity extends AppCompatActivity {
     Boolean AnswerCBoolean;
     Boolean AnswerDBoolean;
     Bundle bundle;
+    public int AnsweredQuestion;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +46,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerDButton = (Button) findViewById(R.id.AnswerButtonD);
          bundle = this.getIntent().getExtras();
 
-        System.out.println("The Question bundle  " + bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
+        System.out.println("The Question bundle  " + "QuestionID =" +bundle.getInt("QuestionID") +bundle.getString("Question") + bundle.getString("Answer_A") + bundle.getString("Answer_B") + bundle.getString("Answer_C") + bundle.getString("Answer_D"));
         QuestionTV.setText(bundle.getString("Question"));
         QuestionTV.resizeText();
         AnswerAButton.setText(bundle.getString("Answer_A"));
@@ -53,6 +57,7 @@ public class questionActivity extends AppCompatActivity {
         AnswerBBoolean = bundle.getBoolean("correct_B");
         AnswerCBoolean = bundle.getBoolean("correct_C");
         AnswerDBoolean = bundle.getBoolean("correct_D");
+
         if (bundle.containsKey("FB_game")){
             NewGameActivity.AddUserToQueue = bundle.getBoolean("AddUserToQueue");
             fbFriendsListActivity.FbGame =  bundle.getBoolean("FB_game");
