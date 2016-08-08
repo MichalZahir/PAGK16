@@ -67,6 +67,14 @@ public class pushNotification {
         publishOptions.putHeader("Answer_B", bundle.getString("Answer_B"));
         publishOptions.putHeader("Answer_C", bundle.getString("Answer_C"));
         publishOptions.putHeader("Answer_D", bundle.getString("Answer_D"));
+        publishOptions.putHeader("UserName",MainActivity.userName.getUserName());
+        publishOptions.putHeader("UserNameUSrObjectID",MainActivity.userName.getUserNameUSrObjectID());
+
+        if (MainActivity.userName.getOponnentUserObjectID()!=null){
+            publishOptions.putHeader("OpponentName",MainActivity.userName.getOponnentName());
+            publishOptions.putHeader( "OpponentUserObjectID",MainActivity.userName.getOponnentUserObjectID());
+        }
+
         String Correct_A = null;
         if (bundle.getBoolean("correct_A") == true)
             Correct_A = "1";
@@ -140,7 +148,13 @@ public class pushNotification {
         publishOptions.putHeader("secondUSerObjectID", NewGameActivity.result.getSecondUSerObjectID());
         publishOptions.putHeader("firstUserResult", String.valueOf(NewGameActivity.result.getFirstUserResult()));
         publishOptions.putHeader("secondtUserResult", String.valueOf(NewGameActivity.result.getSecondtUserResult()));
+        publishOptions.putHeader("UserName",MainActivity.userName.getUserName());
+        publishOptions.putHeader("UserNameUSrObjectID",MainActivity.userName.getUserNameUSrObjectID());
 
+        if (MainActivity.userName.getOponnentUserObjectID()!=null){
+            publishOptions.putHeader("OpponentName",MainActivity.userName.getOponnentName());
+            publishOptions.putHeader( "OpponentUserObjectID",MainActivity.userName.getOponnentUserObjectID());
+        }
 
         publishOptions.putHeader("android-ticker-text", "Your opponent just finished!");
         publishOptions.putHeader("android-content-title", "PAGK");

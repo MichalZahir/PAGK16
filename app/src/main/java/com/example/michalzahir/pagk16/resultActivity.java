@@ -22,6 +22,10 @@ public class resultActivity extends AppCompatActivity {
     private static final String TAG = "result Activity";
     private TextView firstUserResultTextView;
     private TextView secondUserResultTextView;
+    private  com.example.michalzahir.pagk16.Helper.AutoResizeTextView  firstUserNameTextView;
+
+    private com.example.michalzahir.pagk16.Helper.AutoResizeTextView secondUserNameTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class resultActivity extends AppCompatActivity {
 
         firstUserResultTextView = (TextView) findViewById(R.id.firstUserResult);
         secondUserResultTextView = (TextView) findViewById(R.id.secondUserResult);
+        firstUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.firstUserName);
+        secondUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.secondUserName);
         Bundle bundle = this.getIntent().getExtras();
         System.out.println("first result from bundle" + bundle.getInt("1st user result") + "      second result from bundle" + bundle.getInt("2nd user result"));
         int intFirstResult;
@@ -49,7 +55,8 @@ public class resultActivity extends AppCompatActivity {
 
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
-
+        SetUserNameoppName(bundle);
+        DeslpayUsersName();
         // the last result sent to the second user
         if (bundle.containsKey("Last Result")) {
 
@@ -354,4 +361,48 @@ public class resultActivity extends AppCompatActivity {
 
         pushNotification.PublishTheLastResultNotificaton(getApplicationContext(), resultsBundle);
     }
+    public void DeslpayUsersName(){
+        if (MainActivity.userName.getUserNameUSrObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
+        {
+            firstUserNameTextView.setText(MainActivity.userName.getUserName());
+            firstUserNameTextView.resizeText();
+            if(MainActivity.userName.getOponnentName()!=null){
+
+
+            secondUserNameTextView.setText(MainActivity.userName.getOponnentName());
+                secondUserNameTextView.resizeText();
+            }
+        }
+        else if (MainActivity.userName.getUserNameUSrObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())){
+            secondUserNameTextView.setText(MainActivity.userName.getUserName());
+            secondUserNameTextView.resizeText();
+
+            if(MainActivity.userName.getOponnentName()!=null) {
+                firstUserNameTextView.setText(MainActivity.userName.getOponnentName());
+                firstUserNameTextView.resizeText();
+
+            }
+
+        }
+
+
+
+
+    }
+    public static void SetUserNameoppName(Bundle bundle){
+        if (bundle.containsKey("UserName")){
+        MainActivity.userName = new UserName();
+        if (playerObejtID.getUserObjectID().equals(bundle.get("UserNameUSrObjectID"))){
+            MainActivity.userName.setUserName(bundle.getString("UserName"));
+            MainActivity.userName.setUserNameUSrObjectID(playerObejtID.getUserObjectID());
+            MainActivity.userName.setOponnentName(bundle.getString("OpponentName"));
+            MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
+        }
+        else if (playerObejtID.getUserObjectID().equals(bundle.get("OpponentUserObjectID"))){
+            MainActivity.userName.setUserName(bundle.getString("OpponentName"));
+            MainActivity.userName.setOponnentName(bundle.getString("UserName"));
+            MainActivity.userName.setUserNameUSrObjectID( bundle.getString("OpponentUserObjectID"));
+            MainActivity.userName.setOponnentUserObjectID(bundle.getString("UserNameUSrObjectID"));
+        }
+    }}
 }

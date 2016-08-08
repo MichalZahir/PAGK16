@@ -32,7 +32,7 @@ public class user_Queue_Updater {
             users_queue.setUser_Question_Category(MainActivity.user.getCategory());
             //users_queue.setUser_Question_ID(com.example.michalzahir.pagk16.gettingQuestions.QuestionsIDs);
             users_queue.setQuestionIDSArray(Arrays.toString(gettingQuestions.QuestionsIDs));
-
+            users_queue.setUserName(MainActivity.userName.getUserName());
 
             // save object asynchronously
             Backendless.Persistence.save( users_queue, new AsyncCallback<USERS_QUEUE>() {

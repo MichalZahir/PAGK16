@@ -33,7 +33,8 @@ public class UserUpdatePushNotif {
         {
             System.out.println(backendlessUser.getObjectId());
             backendlessUser.setProperty("Device_ID", Device_ID);
-
+            MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
+            MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
             Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                 public void handleResponse(BackendlessUser user) {
                     user.setProperty("Device_ID", Device_ID);

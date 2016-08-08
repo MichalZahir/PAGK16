@@ -40,7 +40,11 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         String subtopic = intent.getStringExtra("message");
         Bundle bundle = intent.getExtras();
 
+        if (bundle.containsKey("UserName")){
+            SetUserNameoppName( bundle);
 
+
+            }
 
         // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
         if (bundle.containsKey("Last Result")){
@@ -168,6 +172,13 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         notificationBundle.putString("Last Result","Last Result");
         notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
         notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
+        notificationBundle.putString("UserName",MainActivity.userName.getUserName());
+        notificationBundle.putString("UserNameUSrObjectID",MainActivity.userName.getUserNameUSrObjectID());
+
+        if (MainActivity.userName.getOponnentUserObjectID()!=null){
+            notificationBundle.putString("OpponentName",MainActivity.userName.getOponnentName());
+            notificationBundle.putString( "OpponentUserObjectID",MainActivity.userName.getOponnentUserObjectID());
+        }
         CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
         CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
         CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
@@ -343,7 +354,13 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
         notificationBundle.putString("Answer_C", bundle.getString("Answer_C"));
         notificationBundle.putString("Answer_D", bundle.getString("Answer_D"));
+        notificationBundle.putString("UserName",MainActivity.userName.getUserName());
+        notificationBundle.putString("UserNameUSrObjectID",MainActivity.userName.getUserNameUSrObjectID());
 
+        if (MainActivity.userName.getOponnentUserObjectID()!=null){
+            notificationBundle.putString("OpponentName",MainActivity.userName.getOponnentName());
+            notificationBundle.putString( "OpponentUserObjectID",MainActivity.userName.getOponnentUserObjectID());
+        }
         Boolean Correct_A = null;
         if (bundle.getString("correct_A").equals("1"))
             Correct_A = true;
@@ -438,5 +455,20 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
 
     }
+    public static void SetUserNameoppName(Bundle bundle){
+        MainActivity.userName = new UserName();
+        if (playerObejtID.getUserObjectID().equals(bundle.get("UserNameUSrObjectID"))){
+            MainActivity.userName.setUserName(bundle.getString("UserName"));
+            MainActivity.userName.setUserNameUSrObjectID(playerObejtID.getUserObjectID());
+            MainActivity.userName.setOponnentName(bundle.getString("OpponentName"));
+            MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
+            }
+        else if (playerObejtID.getUserObjectID().equals(bundle.get("OpponentUserObjectID"))){
+            MainActivity.userName.setUserName(bundle.getString("OpponentName"));
+            MainActivity.userName.setOponnentName(bundle.getString("UserName"));
+            MainActivity.userName.setUserNameUSrObjectID( bundle.getString("OpponentUserObjectID"));
+            MainActivity.userName.setOponnentUserObjectID(bundle.getString("UserNameUSrObjectID"));
+                    }
+                    }
 }
 

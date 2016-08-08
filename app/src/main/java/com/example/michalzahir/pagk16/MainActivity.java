@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     // Session Manager Class
     SessionManager session;
+    public static UserName userName;
     public static User user;
     public static boolean LoggedInWithFB;
     int fbWon;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         user = User.getInstance();
+        userName = new UserName();
         callbackManager  = CallbackManager.Factory.create();
         session = new SessionManager(getApplicationContext());
         setContentView(R.layout.activity_main);
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         {  // user login is available, skip the login activity/login form
             String s =Backendless.UserService.loggedInUser();
             LoggedInWithFB = false;
+
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
             Intent i = new Intent(getApplicationContext(),
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
             System.out.println(" facebook UserNameFb  : " + UserNameFb);
             user.setName(UserNameFb);
+            MainActivity.userName.setUserName(UserNameFb);
             final String[] UserObjectID = new String[1];
 
             Thread t = new Thread(new Runnable() {
@@ -246,8 +250,10 @@ public class MainActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     Log.i("Loggin in ", backendlessUser.getProperty("name") + " successfully logged in");
                     user.setName(name);
+                    MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
                    // session.createLoginSession(name, password);
                     playerObejtID.setUserObjectID(backendlessUser.getObjectId());
+                    MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                     Intent i = new Intent(getApplicationContext(),
                             Profile2_ScrollingActivity.class);
                     //makes the profile activity the home activity

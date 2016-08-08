@@ -16,11 +16,13 @@ public class USERS_QUEUE {
     private int Result;
     private String user_object_ID;
     private String QuestionIDSArray;
+    private String UserName;
 
     public USERS_QUEUE() {
     }
 
-    public USERS_QUEUE(String objectId, Date created, Date updated, String user_Device_ID, String user_Question_Category, int user_Question_ID, int result, String user_object_ID, String questionIDSArray) {
+    public USERS_QUEUE(String objectId, Date created, Date updated, String user_Device_ID, String user_Question_Category,
+                       int user_Question_ID, int result, String user_object_ID, String questionIDSArray, String userName) {
         this.objectId = objectId;
         this.created = created;
         this.updated = updated;
@@ -30,6 +32,7 @@ public class USERS_QUEUE {
         Result = result;
         this.user_object_ID = user_object_ID;
         QuestionIDSArray = questionIDSArray;
+        UserName = userName;
     }
 
     public String getQuestionIDSArray() {
@@ -109,5 +112,11 @@ public class USERS_QUEUE {
         this.updated = updated;
     }
 
+    public String getUserName() {
+        return UserName;
+    }
 
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
 }

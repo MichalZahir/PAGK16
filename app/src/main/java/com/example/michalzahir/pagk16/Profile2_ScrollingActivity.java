@@ -96,6 +96,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             playedGames = wonGames +lostGames+ drawGames;
 
             UserNameTectView.setText(UserName);
+            MainActivity.userName.setUserName(UserName);
+            MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
             lostGamesTextView.setText(String.valueOf(lostGames));
             drawGamesTextView.setText(String.valueOf(drawGames));
             playedGamesTextView.setText(String.valueOf(playedGames));
@@ -159,6 +161,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             UserName =  UserNameFb;
             MainActivity.user.setName(UserNameFb);
             UserNameTectView.setText(UserName);
+            MainActivity.userName.setUserName(UserName);
             try {
 
 

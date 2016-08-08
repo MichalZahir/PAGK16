@@ -133,7 +133,7 @@ public class NewGameActivity extends AppCompatActivity {
     Boolean SearchForAnOppenent() {
         //AddUserToQueue=true;
         USERS_QUEUE lastUserInQueue = null;
-         
+
         try {
             lastUserInQueue = Backendless.Persistence.of(USERS_QUEUE.class).findFirst();
 
@@ -143,6 +143,8 @@ public class NewGameActivity extends AppCompatActivity {
         }
         //AddUserToQueue=false;
         if (lastUserInQueue != null && !lastUserInQueue.getUser_object_ID().equals(playerObejtID.getUserObjectID())) {
+            MainActivity.userName.setOponnentName(lastUserInQueue.getUserName());
+            MainActivity.userName.setOponnentUserObjectID(lastUserInQueue.getUser_object_ID());
             Log.d(TAG, "Fetching a user from the users queue was success  ");
             NewGameActivity.result.setFirstUSerObjectID(lastUserInQueue.getUser_object_ID());
             NewGameActivity.result.setSecondUSerObjectID(playerObejtID.getUserObjectID());

@@ -83,7 +83,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 try {
                     Toast.makeText(fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name") + "      " + finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
-
+                    MainActivity.userName.setOponnentName(finalFriendslist.getJSONObject(position).getString("name"));
                     result = new gameResult();
                     Thread t = new Thread(new Runnable() {
                         @Override
@@ -139,6 +139,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
             for (Users q : BU.getData()) {
                 //Users Response = Backendless.Persistence.of(Users.class).findById(q.getObjectId());
                 userObjectID = q.getObjectId();
+                MainActivity.userName.setOponnentUserObjectID(userObjectID);
                 result.setSecondUSerObjectID(userObjectID);
             }
         } catch (BackendlessException fault) {
