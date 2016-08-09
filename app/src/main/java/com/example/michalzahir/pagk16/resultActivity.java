@@ -2,20 +2,17 @@ package com.example.michalzahir.pagk16;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
+import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 import com.facebook.appevents.AppEventsLogger;
 
 public class resultActivity extends AppCompatActivity {
@@ -55,6 +52,7 @@ public class resultActivity extends AppCompatActivity {
 
         firstUserResultTextView.setText(Integer.toString(intFirstResult) + ":");
         secondUserResultTextView.setText(Integer.toString(intSecondResult));
+        if(playerObejtID.getUserObjectID()==null)ActivityFake.InitializeObjectIDNotifStart(this);
         SetUserNameoppName(bundle);
         DeslpayUsersName();
         // the last result sent to the second user
@@ -91,45 +89,7 @@ public class resultActivity extends AppCompatActivity {
            }
 
         }
-//        else {
-//            NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
-//            if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
-//                endTheGame();
-//            else if (NewGameActivity.StopTheGame >= ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())) {
-//                NewGameActivity.StopTheGame = 0;
-//                new AlertDialog.Builder(this)
-//                        .setTitle("Your part is done, It's turn for your oponent. ")
-//                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
-//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
-//                                startActivity(i);
-//                            }
-//                        })
-//
-//                        .setIcon(android.R.drawable.ic_dialog_info)
-//                        .show();
-//            } else {
-//
-//                if (NewGameActivity.yourTurnToChooseCategory) {
-//                    NewGameActivity.yourTurnToChooseCategory = false;
-//                    Toast.makeText(getApplicationContext(),
-//                            "It's your turn to pick a category. Just wait a second. ", Toast.LENGTH_LONG)
-//                            .show();
-//
-//                    final Intent i = new Intent(getApplicationContext(), categoryChoiceActivity.class);
-//
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                            startActivity(i);
-//                        }
-//                    }, 5000);
-//
-//                } else SetDialogue();
-           // }
-      //  }
+
     }
     @Override
     protected void  onStop() {
@@ -362,6 +322,7 @@ public class resultActivity extends AppCompatActivity {
         pushNotification.PublishTheLastResultNotificaton(getApplicationContext(), resultsBundle);
     }
     public void DeslpayUsersName(){
+        Log.d(TAG, "DeslpayUsersName" + "UserNameUSrObjectID"+MainActivity.userName.getUserNameUSrObjectID() + "First user object ID" + NewGameActivity.result.getFirstUSerObjectID()   );
         if (MainActivity.userName.getUserNameUSrObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
         {
             firstUserNameTextView.setText(MainActivity.userName.getUserName());
@@ -392,6 +353,8 @@ public class resultActivity extends AppCompatActivity {
     public static void SetUserNameoppName(Bundle bundle){
         if (bundle.containsKey("UserName")){
         MainActivity.userName = new UserName();
+
+            Log.d(TAG, "playerObejtID.getUserObjectID" + playerObejtID.getUserObjectID() + " bundle.get UserNameUSrObjectID  : "+ bundle.get("UserNameUSrObjectID") );
         if (playerObejtID.getUserObjectID().equals(bundle.get("UserNameUSrObjectID"))){
             MainActivity.userName.setUserName(bundle.getString("UserName"));
             MainActivity.userName.setUserNameUSrObjectID(playerObejtID.getUserObjectID());

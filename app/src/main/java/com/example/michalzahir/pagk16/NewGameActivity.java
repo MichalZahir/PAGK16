@@ -139,6 +139,8 @@ public class NewGameActivity extends AppCompatActivity {
 
         } catch (BackendlessException e) {
             AddUserToQueue = true;
+            MainActivity.userName.setOponnentName("Unknown");
+            MainActivity.userName.setOponnentUserObjectID("");
             e.printStackTrace();
         }
         //AddUserToQueue=false;
@@ -157,7 +159,10 @@ public class NewGameActivity extends AppCompatActivity {
             QuestionCategory = lastUserInQueue.getUser_Question_Category();
             AddUserToQueue = false;
             com.example.michalzahir.pagk16.Helper.user_Queue_Deleter.DeleteOponent(lastUserInQueue);
-        } else if (lastUserInQueue != null) AddUserToQueue = true;
+        } else if (lastUserInQueue != null) {AddUserToQueue = true;
+            MainActivity.userName.setOponnentName("Unknown");
+            MainActivity.userName.setOponnentUserObjectID("");
+        }
 
 //        Backendless.Persistence.of(USERS_QUEUE.class).find(  new AsyncCallback<BackendlessCollection<USERS_QUEUE>>() {
 //            @Override

@@ -6,6 +6,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
+import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.playerObejtID;
 
@@ -22,6 +23,7 @@ public class fbUsrStatistics {
         String userObjectID = null;
         //final String[] UserObjcetID = new String[1];
         System.out.println(name);
+        MainActivity.userName.setUserName(name);
         String whereClause = " name='" + name+"'";
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         dataQuery.setWhereClause(whereClause);
@@ -35,7 +37,7 @@ public class fbUsrStatistics {
                 tab[2] = q.getLOST();
                 tab[3] = tab[0] + tab[1] + tab[2];
                 playerObejtID.setUserObjectID(q.getObjectId());
-
+                MainActivity.userName.setUserNameUSrObjectID(q.getObjectId());
 
             }
         }

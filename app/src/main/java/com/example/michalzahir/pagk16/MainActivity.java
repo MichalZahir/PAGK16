@@ -310,9 +310,11 @@ public class MainActivity extends AppCompatActivity {
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
                 wonGames = (int) backendlessUser.getProperty("WON");
+                MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
                 lostGames = (int) backendlessUser.getProperty("LOST");
                 drawGames = (int) backendlessUser.getProperty("DRAW");
                 user.setUserObjectId(backendlessUser.getObjectId());
+                MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
                 i.putExtra ( "wonGames", wonGames );
                 i.putExtra ( "lostGames", lostGames );
