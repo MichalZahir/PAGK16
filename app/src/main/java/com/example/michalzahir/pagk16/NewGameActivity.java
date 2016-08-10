@@ -161,7 +161,7 @@ public class NewGameActivity extends AppCompatActivity {
             QuestionCategory = lastUserInQueue.getUser_Question_Category();
             AddUserToQueue = false;
             com.example.michalzahir.pagk16.Helper.user_Queue_Deleter.DeleteOponent(lastUserInQueue);
-        } else if (lastUserInQueue == null) {AddUserToQueue = true;
+        } else if (lastUserInQueue!= null) {AddUserToQueue = true;
             MainActivity.userName.setOponnentName("Unknown");
             MainActivity.userName.setOponnentUserObjectID("");
         }

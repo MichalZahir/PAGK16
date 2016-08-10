@@ -47,6 +47,9 @@ public class resultActivity extends AppCompatActivity {
             NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
         }
+        if (NewGameActivity.result.getFirstUSerObjectID()==null)NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+        if (NewGameActivity.result.getSecondUSerObjectID()==null)NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
+
         NewGameActivity.result.setFirstUserResult(intFirstResult);
         NewGameActivity.result.setSecondtUserResult(intSecondResult);
 
@@ -322,8 +325,9 @@ public class resultActivity extends AppCompatActivity {
         pushNotification.PublishTheLastResultNotificaton(getApplicationContext(), resultsBundle);
     }
     public void DeslpayUsersName(){
-        Log.d(TAG, "DeslpayUsersName" + "UserNameUSrObjectID"+MainActivity.userName.getUserNameUSrObjectID() + "First user object ID" + NewGameActivity.result.getFirstUSerObjectID()   );
-        Log.d(TAG, "DeslpayUsersName" + "getUserName"+MainActivity.userName.getUserName() + "getOpponentName" + MainActivity.userName.getOponnentName());
+        Log.d(TAG, "DeslpayUsersName" + " UserNameUSrObjectID "+MainActivity.userName.getUserNameUSrObjectID() + "  getOponnentUserObjectID  " +MainActivity.userName.getOponnentUserObjectID()  );
+        Log.d(TAG, "DeslpayUsersName" + "   getUserName  "+MainActivity.userName.getUserName() + "  getOpponentName  " + MainActivity.userName.getOponnentName());
+        Log.d(TAG, "DeslpayUsersName"+"  getFirstUSerObjectID  "+NewGameActivity.result.getFirstUSerObjectID()+"  getSecondUSerObjectID  " +NewGameActivity.result.getSecondUSerObjectID());
         if (MainActivity.userName.getUserNameUSrObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
         {
             firstUserNameTextView.setText(MainActivity.userName.getUserName());
