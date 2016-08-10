@@ -41,18 +41,10 @@ public class ActivityFake extends AppCompatActivity {
         if (bundle.containsKey("UserName")){
             MainActivity.userName = new UserName();
             Log.d(TAG, "playerObejtID.getUserObjectID" + playerObejtID.getUserObjectID() + " bundle.get UserNameUSrObjectID  : "+ bundle.get("UserNameUSrObjectID") );
-            if (playerObejtID.getUserObjectID().equals(bundle.get("UserNameUSrObjectID"))){
-                MainActivity.userName.setUserName(bundle.getString("UserName"));
-                MainActivity.userName.setUserNameUSrObjectID(playerObejtID.getUserObjectID());
-                MainActivity.userName.setOponnentName(bundle.getString("OpponentName"));
-                MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
-            }
-            else if (playerObejtID.getUserObjectID().equals(bundle.get("OpponentUserObjectID"))){
-                MainActivity.userName.setUserName(bundle.getString("OpponentName"));
-                MainActivity.userName.setOponnentName(bundle.getString("UserName"));
-                MainActivity.userName.setUserNameUSrObjectID( bundle.getString("OpponentUserObjectID"));
-                MainActivity.userName.setOponnentUserObjectID(bundle.getString("UserNameUSrObjectID"));
-            }
+            MainActivity.userName.setUserName(bundle.getString("UserName"));
+            MainActivity.userName.setOponnentName(bundle.getString("OpponentName"));
+            MainActivity.userName.setUserNameUSrObjectID( bundle.getString("UserNameUSrObjectID"));
+            MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
         }}
     public static void  InitializeObjectIDNotifStart(Context x){
         final String appVersion = "v1";

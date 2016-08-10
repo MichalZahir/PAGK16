@@ -323,6 +323,7 @@ public class resultActivity extends AppCompatActivity {
     }
     public void DeslpayUsersName(){
         Log.d(TAG, "DeslpayUsersName" + "UserNameUSrObjectID"+MainActivity.userName.getUserNameUSrObjectID() + "First user object ID" + NewGameActivity.result.getFirstUSerObjectID()   );
+        Log.d(TAG, "DeslpayUsersName" + "getUserName"+MainActivity.userName.getUserName() + "getOpponentName" + MainActivity.userName.getOponnentName());
         if (MainActivity.userName.getUserNameUSrObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()))
         {
             firstUserNameTextView.setText(MainActivity.userName.getUserName());
@@ -355,17 +356,12 @@ public class resultActivity extends AppCompatActivity {
         MainActivity.userName = new UserName();
 
             Log.d(TAG, "playerObejtID.getUserObjectID" + playerObejtID.getUserObjectID() + " bundle.get UserNameUSrObjectID  : "+ bundle.get("UserNameUSrObjectID") );
-        if (playerObejtID.getUserObjectID().equals(bundle.get("UserNameUSrObjectID"))){
+
+
+
             MainActivity.userName.setUserName(bundle.getString("UserName"));
-            MainActivity.userName.setUserNameUSrObjectID(playerObejtID.getUserObjectID());
             MainActivity.userName.setOponnentName(bundle.getString("OpponentName"));
+            MainActivity.userName.setUserNameUSrObjectID( bundle.getString("UserNameUSrObjectID"));
             MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
-        }
-        else if (playerObejtID.getUserObjectID().equals(bundle.get("OpponentUserObjectID"))){
-            MainActivity.userName.setUserName(bundle.getString("OpponentName"));
-            MainActivity.userName.setOponnentName(bundle.getString("UserName"));
-            MainActivity.userName.setUserNameUSrObjectID( bundle.getString("OpponentUserObjectID"));
-            MainActivity.userName.setOponnentUserObjectID(bundle.getString("UserNameUSrObjectID"));
-        }
     }}
 }
