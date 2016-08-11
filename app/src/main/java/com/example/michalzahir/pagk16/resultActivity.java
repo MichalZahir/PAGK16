@@ -68,8 +68,9 @@ public class resultActivity extends AppCompatActivity {
             playerObejtID.setUserObjectID(NewGameActivity.result.getFirstUSerObjectID());
             com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
         }
-        else {
-           if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())){
+        else {Log.d(TAG, "Your part is done Screen: questions answered =" + gameResult.questionsAnswered + " UserObjectID " + playerObejtID.getUserObjectID()+ " FirstUSerObjectID "+NewGameActivity.result.getFirstUSerObjectID());
+            Log.d(TAG, "Your part is done Screen: for the second user the one that gonna end the game" +    " SecondUSerObjectID "+NewGameActivity.result.getSecondUSerObjectID());
+            if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked && playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())){
 
                gameResult.questionsAnswered =0;
                stopService(new Intent(this, MyService.class));
@@ -87,6 +88,7 @@ public class resultActivity extends AppCompatActivity {
                        .setIcon(android.R.drawable.ic_dialog_info)
                        .show();
            }
+
             else if (gameResult.questionsAnswered>=ConstantsClass.QuestionsNumberToBeAsked&& playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID())){
                stopService(new Intent(this, MyService.class));
 

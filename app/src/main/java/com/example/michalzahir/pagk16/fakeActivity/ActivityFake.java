@@ -29,8 +29,8 @@ public class ActivityFake extends AppCompatActivity {
         setContentView(R.layout.activity_activity_fake);
 
         Bundle bundle = this.getIntent().getExtras();
-//        if (NewGameActivity.result==null) {
-//            NewGameActivity.result = new gameResult( );}
+       if (NewGameActivity.result==null) {
+           NewGameActivity.result = new gameResult( );}
 
 
            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));

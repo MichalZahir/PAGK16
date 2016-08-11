@@ -130,12 +130,15 @@ public class gameResult {
             }
         else {
 
-
+            Log.d("Random Game result ",  "questionsAnswered " + questionsAnswered +" SecondUSerObjectID"+NewGameActivity.result.getSecondUSerObjectID()+" 1st user obj id"+NewGameActivity.result.getFirstUSerObjectID());
         if (questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked) {
             GamesSaving.QuestionsAnswered =0;
-            final Intent i = new Intent(context, resultActivity.class);
+            Intent i = new Intent(context, resultActivity.class);
             i.putExtras(resultsBundle);
+            Log.d("b4 starting Context =  ",context.toString());
+            Log.d("b4 starting"," the result activity");
             context.startActivity(i);
+
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
 

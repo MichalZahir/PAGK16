@@ -95,6 +95,9 @@ public class NewGameActivity extends AppCompatActivity {
 
 
                 } else if (x[0]) {
+                    Log.d(TAG, "user obj id when not found anybody in queue " +playerObejtID.getUserObjectID());
+                    gameResult.questionsAnswered =0;
+
                     result.setFirstUSerObjectID(playerObejtID.getUserObjectID());
                     result.setFirstUserResult(0);
                     result.setSecondtUserResult(0);
