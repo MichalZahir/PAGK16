@@ -8,8 +8,10 @@ import android.util.Log;
 import com.backendless.Backendless;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.example.michalzahir.pagk16.MainActivity;
+import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.UserName;
+import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.playerObejtID;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -27,12 +29,22 @@ public class ActivityFake extends AppCompatActivity {
         setContentView(R.layout.activity_activity_fake);
 
         Bundle bundle = this.getIntent().getExtras();
+        if (NewGameActivity.result==null) {
+            NewGameActivity.result = new gameResult( );}
+        int intFirstResult = bundle.getInt("1st user result");
+        int intSecondResult = bundle.getInt("2nd user result");
+            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+            NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
+        NewGameActivity.result.setFirstUserResult(intFirstResult);
+        NewGameActivity.result.setSecondtUserResult(intSecondResult);
         InitializeObjectIDNotifStart(getApplicationContext());
         SetUserNameoppName(bundle);
-        finish();
+        // the fb reciever is always the second player
+        if(playerObejtID.getUserObjectID()==null) playerObejtID.setUserObjectID(NewGameActivity.result.getSecondUSerObjectID());
 
         com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(bundle.getString("QuestionIDS"), this);
-        //
+        //finish();
+
 
 
     }
@@ -73,7 +85,20 @@ public class ActivityFake extends AppCompatActivity {
             Profile profile = Profile.getCurrentProfile();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
 
-            com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+
+                }});
+
+            t.start(); // spawn thread
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

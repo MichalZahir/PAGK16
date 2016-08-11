@@ -167,7 +167,7 @@ public class questionActivity extends AppCompatActivity {
     }
 
     public void incrementResultForGoodAnswer() {
-        // TODO: 2016-06-27 Bug, users logged in with fb got no userobject ID wich leads to a null pointer exception in this palce.
+
         Log.d("Bug fb user object id", " Logging the error where the app is off :  player object ID  " + playerObejtID.getUserObjectID() +" first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult() +
                 " bFriendsListActivity.result.getFirstUSerObjectID()");
 

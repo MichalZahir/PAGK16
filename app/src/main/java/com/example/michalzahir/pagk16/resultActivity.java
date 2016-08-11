@@ -63,6 +63,9 @@ public class resultActivity extends AppCompatActivity {
 
             NewGameActivity.StopTheGame = NewGameActivity.StopTheGame + 1;
             gameResult.questionsAnswered = gameResult.questionsAnswered +1;
+            //second result always sent to the first user
+            if(playerObejtID.getUserObjectID()== null ||  playerObejtID.getUserObjectID().isEmpty())
+            playerObejtID.setUserObjectID(NewGameActivity.result.getFirstUSerObjectID());
             com.example.michalzahir.pagk16.Helper.wonOrLost.CheckWhoWon(this);
         }
         else {

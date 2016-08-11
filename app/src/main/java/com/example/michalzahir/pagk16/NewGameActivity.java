@@ -166,44 +166,7 @@ public class NewGameActivity extends AppCompatActivity {
             MainActivity.userName.setOponnentUserObjectID("");
         }
 
-//        Backendless.Persistence.of(USERS_QUEUE.class).find(  new AsyncCallback<BackendlessCollection<USERS_QUEUE>>() {
-//            @Override
-//            public void handleResponse(BackendlessCollection<USERS_QUEUE> foundOponent) {
-//                for (USERS_QUEUE q : foundOponent.getData()) {
-//                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
-//                    Backendless.Persistence.of(USERS_QUEUE.class).findById(q.getObjectId(), new AsyncCallback<USERS_QUEUE>() {
-//
-//                        @Override
-//                        public void handleResponse(USERS_QUEUE response) {
-//
-//
-//                            Log.d(TAG, "Fetching a user from the users queue was success  " );
-//                            AddUserToQueue=false;
-//                            NewGameActivity.result.setFirstUSerObjectID(response.getUser_object_ID());
-//                            NewGameActivity.result.setSecondUSerObjectID(playerObejtID.getUserObjectID());
-//                            NewGameActivity.result.setFirstUserResult(response.getResult());
-//                            QuestionID = response.getUser_Question_ID();
-//                            QuestionCategory = response.getUser_Question_Category();
-//                            com.example.michalzahir.pagk16.Helper.user_Queue_Deleter.DeleteOponent(response);
-//
-//                        }
-//
-//                        @Override
-//                        public void handleFault(BackendlessFault fault) {
-//                            AddUserToQueue=true;
-//                            Log.d(TAG, "Found data in the user queue but was not able to retrieve info about a specific user" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//                AddUserToQueue=true;
-//                Log.d(TAG, "empty table : fault trying to fetch The user from the User Queue " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//
-//            }
-//        });
+
 
 
         return AddUserToQueue;

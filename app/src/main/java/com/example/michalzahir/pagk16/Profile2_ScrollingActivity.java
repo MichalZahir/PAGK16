@@ -115,6 +115,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
         accessToken = AccessToken.getCurrentAccessToken();
         if( accessToken != null){
+            MainActivity.LoggedInWithFB=true;
            // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
             Intent intent = getIntent();
             wonGames =  intent.getIntExtra("wonGames",-1);

@@ -394,6 +394,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         NewGameActivity.result.setFirstUserResult(Integer.parseInt(bundle.getString("firstUserResult")));
         NewGameActivity.result.setSecondtUserResult(Integer.parseInt(bundle.getString("secondtUserResult")));
         notificationIntent = new Intent(context, ActivityFake.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         notificationIntent.putExtras(notificationBundle);
 
         Random random = new Random();
