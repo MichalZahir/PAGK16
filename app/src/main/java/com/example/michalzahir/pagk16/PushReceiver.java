@@ -341,6 +341,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         Backendless.initApp(context.getApplicationContext(), "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         InitialiseGameResultWhenNull();
         fbFriendsListActivity.FbGame = true;
+        gameResult.questionsAnswered =0;
 
         Bundle notificationBundle = new Bundle();
         GetFbGameAddToQueu(bundle, notificationBundle);
