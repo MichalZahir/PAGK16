@@ -85,17 +85,7 @@ public class gameResult {
         resultsBundle.putInt("1st user result", getFirstUserResult());
         resultsBundle.putInt("2nd user result", getSecondtUserResult());
         AnsweredQuestionsIDS = AnsweredQuestionsIDS +","+ String.valueOf(bundle.getInt("QuestionID"));
-//        final Intent i = new Intent(context, resultActivity.class);
-//        i.putExtras(resultsBundle);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                context.startActivity(i);
-//            }
-//        }, 5000);
-//        i.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(i);
+
 
         ((questionActivity) context).finish();
         questionsAnswered++;
@@ -138,10 +128,13 @@ public class gameResult {
             Log.d("b4 starting Context =  ",context.toString());
             Log.d("b4 starting"," the result activity");
             context.startActivity(i);
-
+            Log.d("The activity",i.toString());
+            Log.d("after starting"," the result activity");
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+            Log.d("after adding the flag"," the result activity");
 
+            context.startActivity(i);
+            Log.d("after starting the ","  activity for the second time");
 
             if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
                 pushNotification.PublishTheLastResultNotificaton(context, bundle);
