@@ -79,7 +79,7 @@ public class resultActivity extends AppCompatActivity {
                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int which) {
-                               Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
+                               Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                startActivity(i);
                            }
                        })

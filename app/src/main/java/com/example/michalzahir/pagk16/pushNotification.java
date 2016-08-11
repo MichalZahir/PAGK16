@@ -53,7 +53,7 @@ public class pushNotification {
 
 
         deliveryOptions.addPushSinglecast(OpponentDeviceID);
-        //deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
+        deliveryOptions.setPushBroadcast(PushBroadcastMask.ANDROID);
 
         PublishOptions publishOptions = new PublishOptions();
         publishOptions.setPublisherId("michael");

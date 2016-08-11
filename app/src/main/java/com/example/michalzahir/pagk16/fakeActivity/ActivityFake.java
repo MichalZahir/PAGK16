@@ -29,14 +29,14 @@ public class ActivityFake extends AppCompatActivity {
         setContentView(R.layout.activity_activity_fake);
 
         Bundle bundle = this.getIntent().getExtras();
-        if (NewGameActivity.result==null) {
-            NewGameActivity.result = new gameResult( );}
-        int intFirstResult = bundle.getInt("1st user result");
-        int intSecondResult = bundle.getInt("2nd user result");
-            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+//        if (NewGameActivity.result==null) {
+//            NewGameActivity.result = new gameResult( );}
+
+
+           NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
-        NewGameActivity.result.setFirstUserResult(intFirstResult);
-        NewGameActivity.result.setSecondtUserResult(intSecondResult);
+       NewGameActivity.result.setFirstUserResult(Integer.parseInt(bundle.getString("firstUserResult")));
+        NewGameActivity.result.setSecondtUserResult(Integer.parseInt(bundle.getString("secondtUserResult")));
         InitializeObjectIDNotifStart(getApplicationContext());
         SetUserNameoppName(bundle);
         // the fb reciever is always the second player
