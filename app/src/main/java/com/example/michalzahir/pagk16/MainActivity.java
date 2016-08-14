@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
          }
         // token for fb login
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        Log.i("Fb access token  ", accessToken   +""  );
         if( accessToken != null){
             LoggedInWithFB = true;
             System.out.println("access token user token facebook : " + accessToken);
@@ -129,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
             user.setUserObjectId(UserObjectID[0]);
             playerObejtID.setUserObjectID(UserObjectID[0]);
-             // TODO: 2016-06-28 Take info about the lost games won games draw games
 //            String s = Backendless.UserService.loggedInUser();
 //            playerObejtID.setUserObjectID(s);
 
@@ -310,9 +310,11 @@ public class MainActivity extends AppCompatActivity {
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
                 wonGames = (int) backendlessUser.getProperty("WON");
+                MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
                 lostGames = (int) backendlessUser.getProperty("LOST");
                 drawGames = (int) backendlessUser.getProperty("DRAW");
                 user.setUserObjectId(backendlessUser.getObjectId());
+                MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
                 i.putExtra ( "wonGames", wonGames );
                 i.putExtra ( "lostGames", lostGames );
