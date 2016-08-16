@@ -158,7 +158,7 @@ public class pushNotification {
 
         publishOptions.putHeader("android-ticker-text", "Your opponent just finished!");
         publishOptions.putHeader("android-content-title", "PAGK");
-        publishOptions.putHeader("android-content-text", "We got the final result, check if you won or lost!");
+        publishOptions.putHeader("android-content-text"," Your game with "+MainActivity.userName.getOponnentName() + " just finished and We got the final result, check if you won or lost!");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
