@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     int fbLost;
     int fbDraw;
     int fbplayed;
+    int fbRanking;
+    int usersCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -146,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("lostGames",fbLost);
             i.putExtra("drawGames",fbDraw);
             i.putExtra("playedGames",fbplayed);
+            i.putExtra("Ranking",fbRanking);
+            i.putExtra("usersCount",  usersCount);
             startActivity(i);
 
         }
@@ -464,7 +468,8 @@ public class MainActivity extends AppCompatActivity {
                 fbDraw = q.getDRAW();
                 fbLost = q.getLOST();
                 fbplayed = fbDraw + fbLost + fbWon;
-
+                fbRanking = q.getRANKING();
+                usersCount = q.getUsersCount();
             }
         }
         catch (BackendlessException fault){

@@ -161,6 +161,14 @@ public class pushNotification {
         publishOptions.putHeader("android-content-text"," Your game with "+MainActivity.userName.getOponnentName() + " just finished and We got the final result, check if you won or lost!");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
+
+//        try {
+//            MessageStatus messageStatus =   Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions);
+//            Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
+//        } catch (BackendlessException fault) {
+//            Log.d(TAG, "Push Notification not workin .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+//        }
+
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
             @Override
             public void handleResponse(MessageStatus messageStatus) {

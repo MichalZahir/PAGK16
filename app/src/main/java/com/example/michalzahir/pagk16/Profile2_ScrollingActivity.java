@@ -18,6 +18,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.servercode.IBackendlessService;
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesActivity;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
@@ -38,12 +39,15 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView lostGamesTextView;
     private TextView drawGamesTextView;
     private TextView playedGamesTextView;
+    private TextView RankingTextView;
     private Button newGameButton;
     private Button SavedGamesButton;
     int wonGames;
     int lostGames;
     int drawGames;
     int playedGames;
+    int Ranking;
+    int usersCount;
     ImageView ProfilPicture;
     AccessToken accessToken;
 
@@ -65,6 +69,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         SavedGamesButton = (Button) findViewById(R.id.savedGamesButton );
         ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
         newGameButton = (Button) findViewById(R.id.newGameButton);
+        RankingTextView = (TextView) findViewById(R.id.tvNumber3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,6 +84,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 }
             });
         }
+
         final String currentUserObjectId = Backendless.UserService.loggedInUser();
         //MainActivity.user.setUserObjectId(currentUserObjectId);
          Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
@@ -91,6 +97,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             wonGames = (int) backendlessUser.getProperty("WON");
             lostGames = (int) backendlessUser.getProperty("LOST");
             drawGames = (int) backendlessUser.getProperty("DRAW");
+            Ranking = (int) backendlessUser.getProperty("RANKING");
+            usersCount = (int) backendlessUser.getProperty("usersCount");
             MainActivity.user.setName(UserName);
 
             playedGames = wonGames +lostGames+ drawGames;
@@ -103,6 +111,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             playedGamesTextView.setText(String.valueOf(playedGames));
             wonGamesTextView.setText(String.valueOf(wonGames));
 
+            RankingTextView.setText(String.valueOf(Ranking)+" from total "+usersCount+" users");
 
         }
 
@@ -122,6 +131,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             lostGames = intent.getIntExtra("lostGames",-1);
             drawGames = intent.getIntExtra("drawGames",-1);
             playedGames = intent.getIntExtra("playedGames",-1);
+            Ranking = intent.getIntExtra("Ranking",-1);
+            usersCount = intent.getIntExtra("usersCount",-1);
             Profile profile = Profile.getCurrentProfile();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
             if (wonGames ==-1 ){
@@ -148,11 +159,13 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 drawGamesTextView.setText(String.valueOf(tab[0][1]));
                 lostGamesTextView.setText(String.valueOf(tab[0][2]));
                 playedGamesTextView.setText(String.valueOf(tab[0][3]));
+                RankingTextView.setText(String.valueOf(tab[0][4])+ " from total "+tab[0][5]+" users");
             }else {
                 lostGamesTextView.setText(String.valueOf(lostGames));
                 drawGamesTextView.setText(String.valueOf(drawGames));
                 playedGamesTextView.setText(String.valueOf(playedGames));
                 wonGamesTextView.setText(String.valueOf(wonGames));
+                RankingTextView.setText(String.valueOf(Ranking) +" from total "+usersCount+" users");
             }
 
 
