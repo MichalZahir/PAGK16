@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.backendless.Backendless;
@@ -40,6 +41,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView drawGamesTextView;
     private TextView playedGamesTextView;
     private TextView RankingTextView;
+    private RelativeLayout RankingLayout;
     private Button newGameButton;
     private Button SavedGamesButton;
     int wonGames;
@@ -72,7 +74,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         RankingTextView = (TextView) findViewById(R.id.tvNumber3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +86,17 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 }
             });
         }
+        RankingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Profile2_ScrollingActivity.this,
+                        RankingActivity.class);
+
+                startActivity(i);
+                finish();
+
+            }
+        });
 
         final String currentUserObjectId = Backendless.UserService.loggedInUser();
         //MainActivity.user.setUserObjectId(currentUserObjectId);
