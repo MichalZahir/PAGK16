@@ -62,6 +62,8 @@ public class pushNotification {
             publishOptions.putHeader("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
         if (fbFriendsListActivity.FbGame)
             publishOptions.putHeader("FB_game","FB_game");
+        if(RankingActivity.RankingGame)
+            publishOptions.putHeader("RankingGame","RankingGame");
         publishOptions.putHeader("Question", bundle.getString("Question"));
         publishOptions.putHeader("Answer_A", bundle.getString("Answer_A"));
         publishOptions.putHeader("Answer_B", bundle.getString("Answer_B"));

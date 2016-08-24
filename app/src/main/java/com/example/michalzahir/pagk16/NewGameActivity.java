@@ -72,6 +72,7 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                RankingActivity.RankingGame =false;
                 fbFriendsListActivity.FbGame = false;
                 Thread t = new Thread(new Runnable() {
                     @Override
@@ -116,6 +117,7 @@ public class NewGameActivity extends AppCompatActivity {
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                RankingActivity.RankingGame =false;
                  if (!MainActivity.LoggedInWithFB) {
                     SetDialogueForNotFbLoggedusr();
                 } else

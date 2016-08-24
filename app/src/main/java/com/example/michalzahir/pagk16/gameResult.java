@@ -122,26 +122,42 @@ public class gameResult {
 
             Log.d("Random Game result ",  "questionsAnswered " + questionsAnswered +" SecondUSerObjectID"+NewGameActivity.result.getSecondUSerObjectID()+" 1st user obj id"+NewGameActivity.result.getFirstUSerObjectID());
         if (questionsAnswered >= ConstantsClass.QuestionsNumberToBeAsked) {
-            GamesSaving.QuestionsAnswered =0;
-            Intent i = new Intent(context, resultActivity.class);
-            i.putExtras(resultsBundle);
-            Log.d("b4 starting Context =  ",context.toString());
-            Log.d("b4 starting"," the result activity");
-            context.startActivity(i);
-            Log.d("The activity",i.toString());
-            Log.d("after starting"," the result activity");
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Log.d("after adding the flag"," the result activity");
+            if (RankingActivity.RankingGame) {
+                fbFriendsListActivity.FbGame=false;
 
-            context.startActivity(i);
-            Log.d("after starting the ","  activity for the second time");
+                bundle.putString("QuestionIDS", Arrays.toString(gettingQuestions.QuestionsIDs));
+                GamesSaving.QuestionsAnswered = 0;
+                pushNotification.PublishNotification(context, bundle);
+                final Intent i = new Intent(context, resultActivity.class);
+                i.putExtras(resultsBundle);
+                context.startActivity(i);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
 
-            if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
-                pushNotification.PublishTheLastResultNotificaton(context, bundle);
-            if (NewGameActivity.AddUserToQueue)
-                com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
+            } else {
 
 
+                GamesSaving.QuestionsAnswered = 0;
+                Intent i = new Intent(context, resultActivity.class);
+                i.putExtras(resultsBundle);
+                Log.d("b4 starting Context =  ", context.toString());
+                Log.d("b4 starting", " the result activity");
+                context.startActivity(i);
+                Log.d("The activity", i.toString());
+                Log.d("after starting", " the result activity");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Log.d("after adding the flag", " the result activity");
+
+                context.startActivity(i);
+                Log.d("after starting the ", "  activity for the second time");
+
+                if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
+                    pushNotification.PublishTheLastResultNotificaton(context, bundle);
+                if (NewGameActivity.AddUserToQueue)
+                    com.example.michalzahir.pagk16.Helper.user_Queue_Updater.saveNewPlayer();
+
+
+            }
         }
         }
 

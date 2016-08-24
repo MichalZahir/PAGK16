@@ -104,6 +104,13 @@ public class RegisterActivity extends Activity {
 
 
                 }
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Toast.makeText(getApplicationContext(),
+                             fault.getMessage() +" Try another user name", Toast.LENGTH_LONG)
+                            .show();
+                    Log.d(TAG, "User not registered :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                }
             });}
         catch( BackendlessException exception )
         {

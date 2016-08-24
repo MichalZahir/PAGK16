@@ -55,7 +55,12 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
                 Get_FB_First_Round(bundle, intent, context);
                 pushNotification.GetOpponentUserObjID(context);
 
-            } else if (bundle.containsKey("QuestionIDS")) {
+            } else if ( bundle.containsKey("RankingGame")){
+
+                Get_RankingGame_First_Round(bundle, intent, context);
+                pushNotification.GetOpponentUserObjID(context);
+            }
+            else if (bundle.containsKey("QuestionIDS")) {
 
                 InitialiseGameResultWhenNull();
                 NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
@@ -462,6 +467,111 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
         Log.d("push reciever", "getOpponentName :" + MainActivity.userName.getOponnentName());
         Log.d("push receiver", "getOpponentUserObjectID :" + MainActivity.userName.getOponnentUserObjectID());
+    }
+    public void Get_RankingGame_First_Round(final Bundle bundle, Intent intent, Context context) {
+        CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
+        CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
+        CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
+        String subtopic = intent.getStringExtra("message");
+        final String appVersion = "v1";
+        Backendless.initApp(context.getApplicationContext(), "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+        InitialiseGameResultWhenNull();
+        fbFriendsListActivity.FbGame = false;
+        gameResult.questionsAnswered =0;
+
+        Bundle notificationBundle = new Bundle();
+        GetFbGameAddToQueu(bundle, notificationBundle);
+        notificationBundle.putString("Question", bundle.getString("Question"));
+        notificationBundle.putString("Answer_A", bundle.getString("Answer_A"));
+        notificationBundle.putString("Answer_B", bundle.getString("Answer_B"));
+        notificationBundle.putString("Answer_C", bundle.getString("Answer_C"));
+        notificationBundle.putString("Answer_D", bundle.getString("Answer_D"));
+        notificationBundle.putString("UserName", MainActivity.userName.getUserName());
+        notificationBundle.putString("UserNameUSrObjectID", MainActivity.userName.getUserNameUSrObjectID());
+
+        if (MainActivity.userName.getOponnentUserObjectID() != null) {
+            notificationBundle.putString("OpponentName", MainActivity.userName.getOponnentName());
+            notificationBundle.putString("OpponentUserObjectID", MainActivity.userName.getOponnentUserObjectID());
+        }
+        Boolean Correct_A = null;
+        if (bundle.getString("correct_A").equals("1"))
+            Correct_A = true;
+        else if (bundle.getString("correct_A").equals("0"))
+            Correct_A = false;
+        Boolean Correct_B = null;
+        if (bundle.getString("correct_B").equals("1"))
+            Correct_B = true;
+        else if (bundle.getString("correct_B").equals("0"))
+            Correct_B = false;
+        Boolean Correct_C = null;
+        if (bundle.getString("correct_C").equals("1"))
+            Correct_C = true;
+        else if (bundle.getString("correct_C").equals("0"))
+            Correct_C = false;
+
+        Boolean Correct_D = null;
+        if (bundle.getString("correct_D").equals("1"))
+            Correct_D = true;
+        else if (bundle.getString("correct_D").equals("0"))
+            Correct_D = false;
+
+
+        notificationBundle.putBoolean("correct_A", Correct_A);
+        notificationBundle.putBoolean("correct_B", Correct_B);
+        notificationBundle.putBoolean("correct_C", Correct_C);
+        notificationBundle.putBoolean("correct_D", Correct_D);
+        NewGameActivity.AddUserToQueue = false;
+        notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
+        notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
+        notificationBundle.putString("firstUserResult", bundle.getString("firstUserResult"));
+        notificationBundle.putString("secondtUserResult", bundle.getString("secondtUserResult"));
+        notificationBundle.putString("QuestionIDS", bundle.getString("QuestionIDS"));
+        NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
+        NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));
+        NewGameActivity.result.setFirstUserResult(Integer.parseInt(bundle.getString("firstUserResult")));
+        NewGameActivity.result.setSecondtUserResult(Integer.parseInt(bundle.getString("secondtUserResult")));
+        notificationIntent = new Intent(context, ActivityFake.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notificationIntent.putExtras(notificationBundle);
+
+        Random random = new Random();
+        int m = random.nextInt(9999 - 1000) + 1000;
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, m, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+        notificationBuilder.setSmallIcon(getNotificationIcon());
+        notificationBuilder.setTicker(tickerText);
+        notificationBuilder.setWhen(System.currentTimeMillis());
+        notificationBuilder.setContentTitle(contentTitle);
+        notificationBuilder.setContentText(contentText);
+        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setContentIntent(contentIntent);
+
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        notificationBuilder.setSound(uri);
+
+
+        Notification notification = notificationBuilder.build();
+        //notification.defaults |= Notification.DEFAULT_VIBRATE;
+
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(m, notification);
+        //notificationManager.notify(0, notification);
+        BroadcastReceiver call_method = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action_name = intent.getAction();
+                if (action_name.equals("call_method")) {
+                    // call your method here and do what ever you want.
+                    com.example.michalzahir.pagk16.Helper.UserQueueQuestionRetriever.RetrieveQuestionForFirstRound(bundle.getString("QuestionIDS"), context);
+
+                }
+            }
+        };
+        context.getApplicationContext().registerReceiver(call_method, new IntentFilter("call_method"));
+
+
     }
 }
 

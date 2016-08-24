@@ -131,7 +131,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             @Override
             public void handleFault( BackendlessFault fault )
             {
-                System.err.println( "Error - " + fault );
+                System.err.println( "Error - Detail " + fault.getDetail() + " Message  "+ fault.getMessage() + fault.getCode() );
             }});
         System.out.println("user id from token " + currentUserObjectId );
 

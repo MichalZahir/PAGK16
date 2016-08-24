@@ -82,7 +82,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 try {
-                    Toast.makeText(fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name") + "      " + finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name") + "      " + finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
                     MainActivity.userName.setOponnentName(finalFriendslist.getJSONObject(position).getString("name"));
                     result = new gameResult();
                     Thread t = new Thread(new Runnable() {
