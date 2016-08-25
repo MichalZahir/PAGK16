@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     int fbplayed;
     int fbRanking;
     int usersCount;
+    int Points;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -150,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("playedGames",fbplayed);
             i.putExtra("Ranking",fbRanking);
             i.putExtra("usersCount",  usersCount);
+            i.putExtra("points",Points);
             startActivity(i);
 
         }
@@ -342,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
                 drawGames = (int) backendlessUser.getProperty("DRAW");
                 fbRanking = (int) backendlessUser.getProperty("RANKING");
                 usersCount = (int) backendlessUser.getProperty("usersCount");
+                Points = (int)  backendlessUser.getProperty("POINTS");
                 user.setUserObjectId(backendlessUser.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
@@ -351,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra ( "playedGames", playedGames );
                 i.putExtra("Ranking",fbRanking);
                 i.putExtra("usersCount",  usersCount);
+                i.putExtra("points",  Points);
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
                 final String currentUserObjectId = backendlessUser.getObjectId();
@@ -474,6 +479,7 @@ public class MainActivity extends AppCompatActivity {
                 fbplayed = fbDraw + fbLost + fbWon;
                 fbRanking = q.getRANKING();
                 usersCount = q.getUsersCount();
+                Points = q.getPOINTS();
             }
         }
         catch (BackendlessException fault){

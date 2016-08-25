@@ -41,6 +41,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private TextView drawGamesTextView;
     private TextView playedGamesTextView;
     private TextView RankingTextView;
+    private TextView pointsTextView;
     private RelativeLayout RankingLayout;
     private Button newGameButton;
     private Button SavedGamesButton;
@@ -50,6 +51,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     int playedGames;
     int Ranking;
     int usersCount;
+    int points;
     ImageView ProfilPicture;
     AccessToken accessToken;
 
@@ -69,6 +71,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
         playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
         SavedGamesButton = (Button) findViewById(R.id.savedGamesButton );
+        pointsTextView = (TextView) findViewById(R.id.PointsTextView);
         ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
         newGameButton = (Button) findViewById(R.id.newGameButton);
         RankingTextView = (TextView) findViewById(R.id.tvNumber3);
@@ -112,6 +115,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             drawGames = (int) backendlessUser.getProperty("DRAW");
             Ranking = (int) backendlessUser.getProperty("RANKING");
             usersCount = (int) backendlessUser.getProperty("usersCount");
+            points  = (int) backendlessUser.getProperty("POINTS");
             MainActivity.user.setName(UserName);
 
             playedGames = wonGames +lostGames+ drawGames;
@@ -125,6 +129,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             wonGamesTextView.setText(String.valueOf(wonGames));
 
             RankingTextView.setText(String.valueOf(Ranking)+" from total "+usersCount+" users");
+            pointsTextView.setText(String.valueOf(points));
 
         }
 
@@ -146,6 +151,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             playedGames = intent.getIntExtra("playedGames",-1);
             Ranking = intent.getIntExtra("Ranking",-1);
             usersCount = intent.getIntExtra("usersCount",-1);
+            points = intent.getIntExtra("points",-1);
             Profile profile = Profile.getCurrentProfile();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
             if (wonGames ==-1 ){
@@ -173,12 +179,14 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 lostGamesTextView.setText(String.valueOf(tab[0][2]));
                 playedGamesTextView.setText(String.valueOf(tab[0][3]));
                 RankingTextView.setText(String.valueOf(tab[0][4])+ " from total "+tab[0][5]+" users");
+                pointsTextView.setText(String.valueOf(tab[0][5]));
             }else {
                 lostGamesTextView.setText(String.valueOf(lostGames));
                 drawGamesTextView.setText(String.valueOf(drawGames));
                 playedGamesTextView.setText(String.valueOf(playedGames));
                 wonGamesTextView.setText(String.valueOf(wonGames));
                 RankingTextView.setText(String.valueOf(Ranking) +" from total "+usersCount+" users");
+                pointsTextView.setText(String.valueOf(points));
             }
 
 

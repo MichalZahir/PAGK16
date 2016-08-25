@@ -17,11 +17,13 @@ public class Users {
     private int LOST;
     private int RANKING;
     private int usersCount;
+    private int POINTS;
+
 
     public Users() {
     }
 
-    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING, int usersCount) {
+    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING, int usersCount, int POINTS) {
         this.objectId = objectId;
         this.ID = ID;
         this.created = created;
@@ -33,6 +35,15 @@ public class Users {
         this.LOST = LOST;
         this.RANKING=RANKING;
         this.usersCount=usersCount;
+        this.POINTS = POINTS;
+    }
+
+    public int getPOINTS() {
+        return POINTS;
+    }
+
+    public void setPOINTS(int POINTS) {
+        this.POINTS = POINTS;
     }
 
     public int getUsersCount() {

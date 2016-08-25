@@ -391,11 +391,11 @@ public class resultActivity extends AppCompatActivity {
     }}
     public static void ShowFbShareDialog(String Description, final Context c){
         // TODO: 2016-08-25 Add a link to the app in the store, or to the app itself if it's installed.  have to read this https://developers.facebook.com/docs/applinks/hosting-api
+        // TODO: 2016-08-25 Add the app icon to the share dialog.
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(Description)
-                    .setContentDescription("PLAY AND GET KNOWLEDGE  the game name "
-                           )
+                    .setContentDescription("PLAY AND GET KNOWLEDGE  the game name ")
                     .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
                     .setImageUrl(Uri.parse("https://s4.postimg.org/n005j33v1/cup.png"))
                     .build();
