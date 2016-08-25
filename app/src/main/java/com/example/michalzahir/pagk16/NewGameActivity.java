@@ -2,6 +2,7 @@ package com.example.michalzahir.pagk16;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,9 @@ import com.backendless.messaging.PushPolicyEnum;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.USERS_QUEUE;
 import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import java.util.LinkedList;
 import java.util.Timer;
@@ -116,7 +120,9 @@ public class NewGameActivity extends AppCompatActivity {
 
         newFBGameButton.setOnClickListener(new View.OnClickListener() {
 
+
             public void onClick(View view) {
+
                 RankingActivity.RankingGame =false;
                  if (!MainActivity.LoggedInWithFB) {
                     SetDialogueForNotFbLoggedusr();
@@ -125,7 +131,11 @@ public class NewGameActivity extends AppCompatActivity {
 
 
             }
-        });
+
+
+        }
+        );
+
     }
 
     @Override

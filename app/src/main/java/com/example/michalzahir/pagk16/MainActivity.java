@@ -340,6 +340,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
                 lostGames = (int) backendlessUser.getProperty("LOST");
                 drawGames = (int) backendlessUser.getProperty("DRAW");
+                fbRanking = (int) backendlessUser.getProperty("RANKING");
+                usersCount = (int) backendlessUser.getProperty("usersCount");
                 user.setUserObjectId(backendlessUser.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
@@ -347,6 +349,8 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra ( "lostGames", lostGames );
                 i.putExtra ( "drawGames", drawGames );
                 i.putExtra ( "playedGames", playedGames );
+                i.putExtra("Ranking",fbRanking);
+                i.putExtra("usersCount",  usersCount);
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
                 final String currentUserObjectId = backendlessUser.getObjectId();

@@ -1,7 +1,9 @@
 package com.example.michalzahir.pagk16;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +15,13 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
+import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class resultActivity extends AppCompatActivity {
     private static final String TAG = "result Activity";
@@ -22,6 +30,10 @@ public class resultActivity extends AppCompatActivity {
     private  com.example.michalzahir.pagk16.Helper.AutoResizeTextView  firstUserNameTextView;
 
     private com.example.michalzahir.pagk16.Helper.AutoResizeTextView secondUserNameTextView;
+    static ShareDialog shareDialog;
+    CallbackManager callbackManager;
+
+
 
 
     @Override
@@ -33,6 +45,10 @@ public class resultActivity extends AppCompatActivity {
         secondUserResultTextView = (TextView) findViewById(R.id.secondUserResult);
         firstUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.firstUserName);
         secondUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.secondUserName);
+        shareDialog = new ShareDialog(this);
+        callbackManager  = CallbackManager.Factory.create();
+
+
         Bundle bundle = this.getIntent().getExtras();
         System.out.println("first result from bundle" + bundle.getInt("1st user result") + "      second result from bundle" + bundle.getInt("2nd user result"));
         int intFirstResult;
@@ -373,4 +389,36 @@ public class resultActivity extends AppCompatActivity {
             MainActivity.userName.setUserNameUSrObjectID( bundle.getString("UserNameUSrObjectID"));
             MainActivity.userName.setOponnentUserObjectID(bundle.getString("OpponentUserObjectID"));
     }}
+    public static void ShowFbShareDialog(String Description, final Context c){
+        // TODO: 2016-08-25 Add a link to the app in the store, or to the app itself if it's installed.  have to read this https://developers.facebook.com/docs/applinks/hosting-api
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(Description)
+                    .setContentDescription("PLAY AND GET KNOWLEDGE  the game name "
+                           )
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .setImageUrl(Uri.parse("https://s4.postimg.org/n005j33v1/cup.png"))
+                    .build();
+
+            shareDialog.show(linkContent);
+
+        }
+
+
+    }
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         callbackManager.onActivityResult(requestCode, resultCode, data);
+        final Intent i = new Intent(resultActivity.this, MainActivity.class);
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                resultActivity.this.startActivity(i);
+            }
+        }, 2000);
+
+    }
+
 }
