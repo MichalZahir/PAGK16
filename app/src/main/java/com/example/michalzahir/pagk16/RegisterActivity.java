@@ -25,7 +25,6 @@ public class RegisterActivity extends Activity {
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
-    private EditText inputEmail;
     private EditText inputPassword;
     private ProgressDialog pDialog;
 
@@ -37,7 +36,6 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.activity_register);
 
         inputFullName = (EditText) findViewById(R.id.name);
-        inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
@@ -46,7 +44,6 @@ public class RegisterActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String name = inputFullName.getText().toString().trim();
-                String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 ///Test code backendless register one user
 
