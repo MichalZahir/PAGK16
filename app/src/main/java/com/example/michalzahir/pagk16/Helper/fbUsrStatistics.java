@@ -7,6 +7,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.MainActivity;
+import com.example.michalzahir.pagk16.RankingActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.playerObejtID;
 
@@ -17,7 +18,7 @@ public class fbUsrStatistics {
 
 
     private static final String TAG = "fbUsrStatistics ";
-
+    public static String RankingArrow;
     static public int [ ] GetFbUsrStatistics(String name){
         int tab [] =  new int [7];
         String userObjectID = null;
@@ -39,6 +40,7 @@ public class fbUsrStatistics {
                 tab[4] = q.getRANKING();
                 tab[5] = q.getUsersCount();
                 tab[6] = q.getPOINTS();
+                RankingArrow= q.getRANKINGARROW();
                 playerObejtID.setUserObjectID(q.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(q.getObjectId());
 

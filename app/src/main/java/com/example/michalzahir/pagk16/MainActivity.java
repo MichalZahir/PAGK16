@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("Ranking",fbRanking);
                 i.putExtra("usersCount",  usersCount);
                 i.putExtra("points",  Points);
+                i.putExtra("RANKINGARROW", (String) backendlessUser.getProperty("RANKINGARROW"));
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
                 final String currentUserObjectId = backendlessUser.getObjectId();

@@ -20,6 +20,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.servercode.IBackendlessService;
+import com.example.michalzahir.pagk16.Helper.fbUsrStatistics;
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesActivity;
 import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.model.User;
@@ -46,6 +47,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private RelativeLayout RankingLayout;
     private Button newGameButton;
     private Button SavedGamesButton;
+    private ImageView RankingArrowImaView;
     int wonGames;
     int lostGames;
     int drawGames;
@@ -53,6 +55,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     int Ranking;
     int usersCount;
     int points;
+    String RankingArrow;
     ImageView ProfilPicture;
     AccessToken accessToken;
 
@@ -77,6 +80,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         newGameButton = (Button) findViewById(R.id.newGameButton);
         RankingTextView = (TextView) findViewById(R.id.tvNumber3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
         setSupportActionBar(toolbar);
         RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -124,7 +128,15 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             usersCount = (int) backendlessUser.getProperty("usersCount");
             points  = (int) backendlessUser.getProperty("POINTS");
             MainActivity.user.setName(UserName);
+            String RANKINGARROW = String.valueOf(backendlessUser.getProperty("RANKINGARROW"));
 
+            if (RANKINGARROW.equals("Red")) {
+                RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+            }
+            else if (RANKINGARROW.equals("Green"))
+                RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+            else if (RANKINGARROW.equals("-"))
+                RankingArrowImaView.setBackgroundResource(R.drawable.same);
             playedGames = wonGames +lostGames+ drawGames;
 
             UserNameTectView.setText(UserName);
@@ -158,6 +170,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             Ranking = intent.getIntExtra("Ranking",-1);
             usersCount = intent.getIntExtra("usersCount",-1);
             points = intent.getIntExtra("points",-1);
+            RankingArrow = intent.getStringExtra("RANKINGARROW");
             Profile profile = Profile.getCurrentProfile();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
             if (wonGames ==-1 ){
@@ -186,6 +199,14 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 playedGamesTextView.setText(String.valueOf(tab[0][3]));
                 RankingTextView.setText(String.valueOf(tab[0][4])+ " from total "+tab[0][5]+" users");
                 pointsTextView.setText(String.valueOf(tab[0][5]));
+                if (fbUsrStatistics.RankingArrow.equals("Red")) {
+                    RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+                }
+                else if (fbUsrStatistics.RankingArrow.equals("Green"))
+                    RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+                else if (fbUsrStatistics.RankingArrow.equals("-"))
+                    RankingArrowImaView.setBackgroundResource(R.drawable.same);
+
             }else {
                 lostGamesTextView.setText(String.valueOf(lostGames));
                 drawGamesTextView.setText(String.valueOf(drawGames));
@@ -193,6 +214,13 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 wonGamesTextView.setText(String.valueOf(wonGames));
                 RankingTextView.setText(String.valueOf(Ranking) +" from total "+usersCount+" users");
                 pointsTextView.setText(String.valueOf(points));
+                if (RankingArrow.equals("Red")) {
+                    RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+                }
+                else if (RankingArrow.equals("Green"))
+                    RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+                else if (RankingArrow.equals("-"))
+                    RankingArrowImaView.setBackgroundResource(R.drawable.same);
             }
 
 
