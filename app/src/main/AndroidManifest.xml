@@ -92,7 +92,12 @@
 
         <activity android:name=".fakeActivity.ActivityFake" />
         <activity android:name=".SavedGames.SavedGamesActivity" />
-        <activity android:name=".RankingActivity"></activity>
+        <activity android:name=".RankingActivity" />
+        <activity android:name=".splashScreenActivity" />
+        <activity android:name=".Splashes.splashFbLoginActivity"
+            android:theme="@style/SplashTheme">
+
+        </activity>
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.Messaging;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
@@ -335,7 +336,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleResponse(BackendlessUser backendlessUser) {
                 // user logged in successfully
-
+                Toast.makeText(MainActivity.this, "Please wait a second, we are contacting with your Facebook account =)",
+                        Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();
@@ -361,6 +363,12 @@ public class MainActivity extends AppCompatActivity {
                 final String currentUserObjectId = backendlessUser.getObjectId();
                 playerObejtID.setUserObjectID(currentUserObjectId);
                 String ProjectNumberNotification = "687259024455";
+                String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
+                i.putExtra ( "name", UserNameFb );
+                //startActivity(i);
+                startActivityForResult(i, 1);
+                finish();
+
                 // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
                 // TODO: 2016-06-14 Add the user object id to the playerObjectID when logging in with facebook or when loggin in with the token of facebook.
                 Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
@@ -411,11 +419,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
                     }
                 });
-                String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
-                 i.putExtra ( "name", UserNameFb );
-                //startActivity(i);
-                startActivityForResult(i, 1);
-                finish();
 
             }
 

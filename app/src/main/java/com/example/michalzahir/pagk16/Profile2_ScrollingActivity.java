@@ -21,6 +21,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.servercode.IBackendlessService;
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesActivity;
+import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -79,6 +80,12 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Intent intent = getIntent();
+        if ( intent.hasExtra("caller")) {
+            splashFbLoginActivity.splash.finish();
+
+        }
+
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -144,7 +151,6 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         if( accessToken != null){
             MainActivity.LoggedInWithFB=true;
            // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
-            Intent intent = getIntent();
             wonGames =  intent.getIntExtra("wonGames",-1);
             lostGames = intent.getIntExtra("lostGames",-1);
             drawGames = intent.getIntExtra("drawGames",-1);
