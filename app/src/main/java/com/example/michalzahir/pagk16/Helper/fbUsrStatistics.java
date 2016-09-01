@@ -20,7 +20,7 @@ public class fbUsrStatistics {
     private static final String TAG = "fbUsrStatistics ";
     public static String RankingArrow;
     static public int [ ] GetFbUsrStatistics(String name){
-        int tab [] =  new int [7];
+        int tab [] =  new int [8];
         String userObjectID = null;
         //final String[] UserObjcetID = new String[1];
         System.out.println(name);
@@ -40,6 +40,7 @@ public class fbUsrStatistics {
                 tab[4] = q.getRANKING();
                 tab[5] = q.getUsersCount();
                 tab[6] = q.getPOINTS();
+                tab[7] = q.getOLDRANKING();
                 RankingArrow= q.getRANKINGARROW();
                 playerObejtID.setUserObjectID(q.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(q.getObjectId());

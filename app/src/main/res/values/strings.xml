@@ -21,6 +21,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_profile2_scrolling">Profile2ScrollingActivity</string>
     <string name="large_text">
+
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -110,6 +111,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_profile2__scrolling">Profile2_ScrollingActivity</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="NewGame">New Game</string>
     <string name="invite_other_friends">Invite Other Friends</string>
     <string name="title_activity_activity_saved_games">ActivitySavedGames</string>

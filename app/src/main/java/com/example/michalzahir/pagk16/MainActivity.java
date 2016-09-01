@@ -38,6 +38,7 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.ads.MobileAds;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     int fbRanking;
     int usersCount;
     int Points;
+    int OldRanking;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         final String appVersion = "v1";
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         String ProjectNumberNotification = "687259024455";
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+
         // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
         RegisterDeviceUpdateUserDeviceID();
 
@@ -154,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("Ranking",fbRanking);
             i.putExtra("usersCount",  usersCount);
             i.putExtra("points",Points);
+            i.putExtra("OLDRANKING",OldRanking);
             startActivity(i);
 
         }
@@ -348,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 fbRanking = (int) backendlessUser.getProperty("RANKING");
                 usersCount = (int) backendlessUser.getProperty("usersCount");
                 Points = (int)  backendlessUser.getProperty("POINTS");
+                OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
                 user.setUserObjectId(backendlessUser.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
@@ -358,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("Ranking",fbRanking);
                 i.putExtra("usersCount",  usersCount);
                 i.putExtra("points",  Points);
+                i.putExtra("OLDRANKING",OldRanking);
                 i.putExtra("RANKINGARROW", (String) backendlessUser.getProperty("RANKINGARROW"));
                 System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
                 Backendless.UserService.setCurrentUser(backendlessUser);
@@ -484,6 +492,7 @@ public class MainActivity extends AppCompatActivity {
                 fbRanking = q.getRANKING();
                 usersCount = q.getUsersCount();
                 Points = q.getPOINTS();
+                OldRanking = q.getOLDRANKING();
             }
         }
         catch (BackendlessException fault){

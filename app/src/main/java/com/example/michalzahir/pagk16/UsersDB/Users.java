@@ -19,11 +19,12 @@ public class Users {
     private int usersCount;
     private int POINTS;
     private String RANKINGARROW;
+    private int OLDRANKING;
 
     public Users() {
     }
 
-    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING, int usersCount, int POINTS, String RANKINGARROW) {
+    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING, int usersCount, int POINTS, String RANKINGARROW, int OLDRANKING) {
         this.objectId = objectId;
         this.ID = ID;
         this.created = created;
@@ -37,6 +38,15 @@ public class Users {
         this.usersCount=usersCount;
         this.POINTS = POINTS;
         this.RANKINGARROW = RANKINGARROW;
+        this.OLDRANKING = OLDRANKING;
+    }
+
+    public int getOLDRANKING() {
+        return OLDRANKING;
+    }
+
+    public void setOLDRANKING(int OLDRANKING) {
+        this.OLDRANKING = OLDRANKING;
     }
 
     public String getRANKINGARROW() {
