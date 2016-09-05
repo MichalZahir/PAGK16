@@ -1,10 +1,12 @@
 package com.example.michalzahir.pagk16;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private Button newGameButton;
     private Button SavedGamesButton;
     private ImageView RankingArrowImaView;
+    static public ProgressDialog RankingProgreessDialogue;
     int wonGames;
     int lostGames;
     int drawGames;
@@ -77,6 +80,12 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+
+          //if ( RegisterActivity.RegisterProgreessDialogue!= null)
+            RegisterActivity.RegisterProgreessDialogue.dismiss();
+
+
+
         MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
         wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);
@@ -94,10 +103,10 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Intent intent = getIntent();
-        if ( intent.hasExtra("caller")) {
-            splashFbLoginActivity.splash.finish();
-
-        }
+//        if ( intent.hasExtra("caller")) {
+//            splashFbLoginActivity.splash.finish();
+//
+//        }
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +121,11 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         RankingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
+                RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait a second until we load data ",true);
+
+
                 Intent i = new Intent(Profile2_ScrollingActivity.this,
                         RankingActivity.class);
 
@@ -210,8 +224,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 playedGamesTextView.setText(String.valueOf(tab[0][3]));
                 RankingTextView.setText(String.valueOf(tab[0][4])+ " from total "+tab[0][5]+" users");
                 Ranking = tab[0][4];
-                pointsTextView.setText(String.valueOf(tab[0][5]));
-                OldRanking = tab[0][6];
+                pointsTextView.setText(String.valueOf(tab[0][6]));
+                OldRanking = tab[0][7];
                 if (OldRanking<Ranking) {
                     RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
                 }
@@ -270,6 +284,9 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         SavedGamesButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this );
+                RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait a second until we load data ",true);
                 Intent i = new Intent(getApplicationContext(),
                         SavedGamesActivity.class);
                  startActivity(i);

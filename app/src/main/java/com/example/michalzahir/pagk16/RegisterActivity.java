@@ -27,6 +27,8 @@ public class RegisterActivity extends Activity {
     private EditText inputFullName;
     private EditText inputPassword;
     private ProgressDialog pDialog;
+    static public ProgressDialog RegisterProgreessDialogue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,9 @@ public class RegisterActivity extends Activity {
 
     }
     private void Register(final String name, final String password){
+        RegisterProgreessDialogue = new ProgressDialog(RegisterActivity.this);
+        RegisterProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        RegisterProgreessDialogue = ProgressDialog.show(RegisterActivity.this,"the user registration is being processed... ","Please wait a second ",true);
 
         BackendlessUser user = new BackendlessUser();
         user.setProperty("name", name);

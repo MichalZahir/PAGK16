@@ -160,7 +160,7 @@ public class RankingActivity extends AppCompatActivity {
             }
         }; // simple textview for list item
         listView.setAdapter(adapter);
-
+        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
 
 

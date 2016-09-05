@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     int usersCount;
     int Points;
     int OldRanking;
+    static public ProgressDialog FBLoginProgreessDialogue;
+
 
 
     @Override
@@ -201,7 +203,9 @@ public class MainActivity extends AppCompatActivity {
         FBLOGIN.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+
                fbLogin();
+
             }
         });
 
@@ -336,14 +340,15 @@ public class MainActivity extends AppCompatActivity {
         permissions.add( "user_friends");
         permissions.add("public_profile");
         permissions.add("user_about_me");
-
+        FBLoginProgreessDialogue = new ProgressDialog(MainActivity.this);
+        FBLoginProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
         Backendless.UserService.loginWithFacebookSdk(this,  facebookFieldMappings, permissions, callbackManager,
         new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser backendlessUser) {
                 // user logged in successfully
-                Toast.makeText(MainActivity.this, "Please wait a second, we are contacting with your Facebook account =)",
-                        Toast.LENGTH_LONG).show();
+
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
                 Profile profile = Profile.getCurrentProfile();

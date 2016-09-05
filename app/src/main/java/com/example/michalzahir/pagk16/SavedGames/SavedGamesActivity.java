@@ -68,9 +68,10 @@ public class SavedGamesActivity extends AppCompatActivity {
                 }
 
             }});
+        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
 
-     }
+    }
     @Override
     public void onBackPressed() {
         Intent i = new Intent(getApplicationContext(),
