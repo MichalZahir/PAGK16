@@ -248,6 +248,9 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        FBLoginProgreessDialogue = new ProgressDialog(MainActivity.this);
+        FBLoginProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
     }
     @Override
     protected void onPause() {
@@ -340,15 +343,14 @@ public class MainActivity extends AppCompatActivity {
         permissions.add( "user_friends");
         permissions.add("public_profile");
         permissions.add("user_about_me");
-        FBLoginProgreessDialogue = new ProgressDialog(MainActivity.this);
-        FBLoginProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+
         Backendless.UserService.loginWithFacebookSdk(this,  facebookFieldMappings, permissions, callbackManager,
         new AsyncCallback<BackendlessUser>() {
 
             @Override
             public void handleResponse(BackendlessUser backendlessUser) {
                 // user logged in successfully
-                FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
 
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
@@ -447,6 +449,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     public void RegisterDeviceUpdateUserDeviceID(){
 
