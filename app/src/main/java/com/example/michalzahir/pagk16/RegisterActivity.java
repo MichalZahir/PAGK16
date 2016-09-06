@@ -82,8 +82,8 @@ public class RegisterActivity extends Activity {
 
     }
     private void Register(final String name, final String password){
-        RegisterProgreessDialogue = new ProgressDialog(RegisterActivity.this);
-        RegisterProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // RegisterProgreessDialogue = new ProgressDialog(RegisterActivity.this);
+       // RegisterProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         RegisterProgreessDialogue = ProgressDialog.show(RegisterActivity.this,"the user registration is being processed... ","Please wait a second ",true);
 
         BackendlessUser user = new BackendlessUser();
@@ -101,13 +101,13 @@ public class RegisterActivity extends Activity {
 
 
                     Login(name,password);
-                    finish();
 
 
 
                 }
                 @Override
                 public void handleFault(BackendlessFault fault) {
+                    RegisterProgreessDialogue.dismiss();
                     Toast.makeText(getApplicationContext(),
                              fault.getMessage() +" Try another user name", Toast.LENGTH_LONG)
                             .show();
@@ -163,6 +163,8 @@ public class RegisterActivity extends Activity {
             Toast.makeText(getApplicationContext(),
                     "Login Failed! " + exception.getCause()+"  "+ exception.getMessage(), Toast.LENGTH_LONG)
                     .show();
+            RegisterProgreessDialogue.dismiss();
+
         }
 
     }

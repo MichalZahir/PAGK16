@@ -81,7 +81,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
 
 
-          //if ( RegisterActivity.RegisterProgreessDialogue!= null)
+           if ( RegisterActivity.RegisterProgreessDialogue!= null)
             RegisterActivity.RegisterProgreessDialogue.dismiss();
 
 
@@ -123,7 +123,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                 RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait a second until we load data ",true);
+                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait, it might take a minute to load the data ",true);
 
 
                 Intent i = new Intent(Profile2_ScrollingActivity.this,

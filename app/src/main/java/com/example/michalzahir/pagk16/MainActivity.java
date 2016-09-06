@@ -342,12 +342,13 @@ public class MainActivity extends AppCompatActivity {
         permissions.add("user_about_me");
         FBLoginProgreessDialogue = new ProgressDialog(MainActivity.this);
         FBLoginProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
         Backendless.UserService.loginWithFacebookSdk(this,  facebookFieldMappings, permissions, callbackManager,
         new AsyncCallback<BackendlessUser>() {
+
             @Override
             public void handleResponse(BackendlessUser backendlessUser) {
                 // user logged in successfully
+                FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
 
                 Intent i = new Intent(getApplicationContext(),
                         Profile2_ScrollingActivity.class);
@@ -406,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                                 public void handleResponse(BackendlessUser user) {
-                                    Log.d(TAG, "The Device ID is updated succeffully for the user  :" + user.getUserId());
+                                    Log.d(TAG, "The Device ID is updated successfully for the user  :" + user.getUserId());
                                 }
 
                                 public void handleFault(BackendlessFault fault) {
@@ -438,22 +439,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Failed to loggin with Facebook .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                Log.d(TAG, "Failed to logging with Facebook .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                FBLoginProgreessDialogue.dismiss();
             }
         });
         //RegisterDeviceUpdateUserDeviceID();
 
 
     }
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }
     public void RegisterDeviceUpdateUserDeviceID(){
 
 
