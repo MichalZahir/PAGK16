@@ -17,7 +17,6 @@ import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.playerObejtID;
-import com.example.michalzahir.pagk16.questionActivity;
 
 public class SavedGamesActivity extends AppCompatActivity {
     private static final String TAG = "SavedGamesActivity";

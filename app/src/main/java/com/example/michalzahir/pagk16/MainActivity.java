@@ -38,6 +38,8 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.security.MessageDigest;
@@ -92,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
         FBLOGIN = (Button) findViewById(R.id.fbLogin);
+        AdView LoginAdView = (AdView) findViewById(R.id.adViewLogin);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        LoginAdView.loadAd(adRequest);
         //backendless namiary na apke
         final String appVersion = "v1";
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
@@ -264,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
 
         // Logs 'app deactivate' App Event.
@@ -384,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra ( "name", UserNameFb );
                 //startActivity(i);
                 startActivityForResult(i, 1);
-                finish();
+                //finish();
 
                 // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
                 // TODO: 2016-06-14 Add the user object id to the playerObjectID when logging in with facebook or when loggin in with the token of facebook.

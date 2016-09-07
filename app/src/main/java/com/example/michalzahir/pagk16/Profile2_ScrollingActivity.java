@@ -77,14 +77,16 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
         AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        ProfileAdView.loadAd(adRequest);
 
 
            if ( RegisterActivity.RegisterProgreessDialogue!= null)
             RegisterActivity.RegisterProgreessDialogue.dismiss();
-
-
+            if (MainActivity.FBLoginProgreessDialogue!=null)
+                MainActivity.FBLoginProgreessDialogue.dismiss();
 
         MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
@@ -303,6 +305,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //playerObejtID.SaveUserObjectIDOnDestroy(getApplicationContext());
+
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);

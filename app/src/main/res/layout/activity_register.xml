@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+
     android:background="@color/bg_register"
     android:gravity="center"
     android:orientation="vertical"
@@ -66,6 +68,16 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp" />
-    </LinearLayout>
 
+
+    </LinearLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>
