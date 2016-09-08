@@ -17,6 +17,8 @@ import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.playerObejtID;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class SavedGamesActivity extends AppCompatActivity {
     private static final String TAG = "SavedGamesActivity";
@@ -26,11 +28,14 @@ public class SavedGamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_games);
+        AdView LoginAdView = (AdView) findViewById(R.id.adViewSavedGame);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        LoginAdView.loadAd(adRequest);
         GamesLoading.loadSavedGames();
         int i =1;
         int d =0;
         final String [] SavedGamesArray = new String[GamesLoading.SavedGameslist.size()];
-        Log.d(TAG, "THe moment before going into the loop for after loading the games");
+        Log.d(TAG, "The moment before going into the loop for after loading the games");
          for (Saved_Games sg :GamesLoading.SavedGameslist){
           SavedGamesArray[d]= "Game " +i +": " +SetWhosTurn(sg);
              Log.d(TAG, "The saved Games Array object ID = " + sg.getObjectId() + "who's turn" +sg.getWhosTurn());
@@ -48,6 +53,9 @@ public class SavedGamesActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.mobile_list);
         listView.setAdapter(adapter);
+        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,7 +75,6 @@ public class SavedGamesActivity extends AppCompatActivity {
                 }
 
             }});
-        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
 
     }

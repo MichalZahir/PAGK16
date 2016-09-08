@@ -27,6 +27,8 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,10 +47,14 @@ public class RankingActivity extends AppCompatActivity {
     JSONArray Friends;
     public static Boolean RankingGame = false ;
     View wantedView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
+        AdView LoginAdView = (AdView) findViewById(R.id.adViewRanking);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        LoginAdView.loadAd(adRequest);
 
        if (MainActivity.LoggedInWithFB) {
              Friends = getFriendList(this);
