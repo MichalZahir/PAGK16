@@ -31,6 +31,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import java.io.IOException;
@@ -77,6 +78,13 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
         AdView mAdView = (AdView) findViewById(R.id.adView);
+        if(resultActivity.mInterstitialAd==null) {
+            resultActivity.mInterstitialAd = new InterstitialAd(this);
+            resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        }
+        if (resultActivity.mInterstitialAd != null &&!resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
+        resultActivity.loadInterstitialAd(this);}
         AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
