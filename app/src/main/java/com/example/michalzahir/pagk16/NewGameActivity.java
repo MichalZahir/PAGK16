@@ -31,7 +31,9 @@ import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -123,6 +125,9 @@ public class NewGameActivity extends AppCompatActivity {
 
 
             public void onClick(View view) {
+
+
+
 
                 RankingActivity.RankingGame =false;
                  if (!MainActivity.LoggedInWithFB) {

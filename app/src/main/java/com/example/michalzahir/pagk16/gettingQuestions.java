@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by zahirm on 2016-05-30.
@@ -50,10 +51,15 @@ public class gettingQuestions extends Application {
 
     public static void getQuestions(final Context context) {
         gameResult.AnsweredQuestionsIDS ="";
+        Set<Integer> AnsweredQuestions =com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.RetrievingQuesIDs.RetrieveAnsQuesIDS(Profile2_ScrollingActivity.AnsweredQuestonsIds);
         for (QuestionsCounter = 0; QuestionsCounter < ConstantsClass.QuestionsNumberToBeAsked; QuestionsCounter++) {
             Random rn = new Random();
             final int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;
             System.out.println(ID);
+            if(AnsweredQuestions.contains(ID)){
+                QuestionsCounter--;
+                continue;
+            }
             QuestionsIDs[QuestionsCounter] = ID;
             String whereClause = " ID=" + ID;
             BackendlessDataQuery dataQuery = new BackendlessDataQuery();

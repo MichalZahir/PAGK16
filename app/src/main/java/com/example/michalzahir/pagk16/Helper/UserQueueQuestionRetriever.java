@@ -20,11 +20,13 @@ import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SPORT_QUESTIONS;
 import com.example.michalzahir.pagk16.ConstantsClass;
 import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
+import com.example.michalzahir.pagk16.Profile2_ScrollingActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.gettingQuestions;
 import com.example.michalzahir.pagk16.questionActivity;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by zahirm on 2016-07-05.
@@ -34,6 +36,7 @@ public class UserQueueQuestionRetriever {
 
     public static void RetrieveQuestionForFirstRound(String QuestionIDArray,   final Context context){
         com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs.AnsweredQuesIDs = QuestionIDArray;
+
 
         String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
             int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];

@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
                 usersCount = (int) backendlessUser.getProperty("usersCount");
                 Points = (int)  backendlessUser.getProperty("POINTS");
                 OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
+                Profile2_ScrollingActivity.AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
                 user.setUserObjectId(backendlessUser.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                 playedGames = wonGames +lostGames+ drawGames;
