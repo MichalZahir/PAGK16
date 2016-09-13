@@ -15,6 +15,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs;
 import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 import com.facebook.CallbackManager;
@@ -173,8 +174,9 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     System.out.println(backendlessUser.getObjectId());
                     int wonGames = (int) backendlessUser.getProperty("WON");
-                    backendlessUser.setProperty("WON", wonGames + 1);
 
+                    backendlessUser.setProperty("WON", wonGames + 1);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
                             Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
@@ -203,6 +205,8 @@ public class resultActivity extends AppCompatActivity {
                     int lostGames = (int) backendlessUser.getProperty("LOST");
 
                     backendlessUser.setProperty("LOST", lostGames + 1);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
@@ -236,6 +240,8 @@ public class resultActivity extends AppCompatActivity {
                     System.out.println(backendlessUser.getObjectId());
                     int wonGames = (int) backendlessUser.getProperty("WON");
                     backendlessUser.setProperty("WON", wonGames + 1);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
@@ -265,6 +271,8 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     //System.out.println(backendlessUser.getObjectId());
                     int lostGames = (int) backendlessUser.getProperty("LOST");
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+
 
                     backendlessUser.setProperty("LOST", lostGames + 1);
 
@@ -296,6 +304,8 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     int drawGames = (int) backendlessUser.getProperty("DRAW");
                     backendlessUser.setProperty("DRAW", drawGames + 1);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
@@ -322,6 +332,8 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     int drawGames = (int) backendlessUser.getProperty("DRAW");
                     backendlessUser.setProperty("DRAW", drawGames + 1);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {

@@ -26,6 +26,7 @@ import com.backendless.messaging.PushPolicyEnum;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.USERS_QUEUE;
 import com.example.michalzahir.pagk16.SavedGames.GamesSaving;
+import com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs;
 import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -172,7 +173,9 @@ public class NewGameActivity extends AppCompatActivity {
             QuestionID = lastUserInQueue.getUser_Question_ID();
 
             QuestionsIDSArray = lastUserInQueue.getQuestionIDSArray();
+            QuestionsIDs.AnsweredQuesIDs= QuestionsIDSArray;
             Log.d("Question IDS Array",QuestionsIDSArray);
+
             QuestionCategory = lastUserInQueue.getUser_Question_Category();
             AddUserToQueue = false;
             com.example.michalzahir.pagk16.Helper.user_Queue_Deleter.DeleteOponent(lastUserInQueue);

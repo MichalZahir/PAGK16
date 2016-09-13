@@ -7,6 +7,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.MainActivity;
+import com.example.michalzahir.pagk16.Profile2_ScrollingActivity;
 import com.example.michalzahir.pagk16.RankingActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.playerObejtID;
@@ -44,7 +45,7 @@ public class fbUsrStatistics {
                 RankingArrow= q.getRANKINGARROW();
                 playerObejtID.setUserObjectID(q.getObjectId());
                 MainActivity.userName.setUserNameUSrObjectID(q.getObjectId());
-
+                Profile2_ScrollingActivity.AnsweredQuestonsIds= q.getAnsweredQuestionsIDs();
             }
         }
         catch (BackendlessException fault){

@@ -502,6 +502,7 @@ public class MainActivity extends AppCompatActivity {
                 usersCount = q.getUsersCount();
                 Points = q.getPOINTS();
                 OldRanking = q.getOLDRANKING();
+                Profile2_ScrollingActivity.AnsweredQuestonsIds= q.getAnsweredQuestionsIDs();
             }
         }
         catch (BackendlessException fault){

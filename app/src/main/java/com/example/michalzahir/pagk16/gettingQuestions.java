@@ -14,6 +14,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesDeleting;
 import com.example.michalzahir.pagk16.SavedGames.Saved_Games;
+import com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs;
 
 
 import java.util.ArrayList;
@@ -66,6 +67,9 @@ public class gettingQuestions extends Application {
                         Backendless.Persistence.of(QUESTIONS.class).findById(q.getObjectId(), new AsyncCallback<QUESTIONS>() {
                             @Override
                             public void handleResponse(QUESTIONS response) {
+                                com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs.AnsweredQuesIDs =
+                                        com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs.AnsweredQuesIDs +response.getID();
+
                                 // a Contact instance has been found by ObjectId
                                 Bundle insideBundle = new Bundle();
                                 System.out.println("this is the question from the backendless DB  " + response.getQuestion()

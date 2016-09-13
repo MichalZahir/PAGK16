@@ -33,8 +33,9 @@ public class UserQueueQuestionRetriever {
     public static final String TAG = "Ques Retrieve 1 round";
 
     public static void RetrieveQuestionForFirstRound(String QuestionIDArray,   final Context context){
+        com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs.AnsweredQuesIDs = QuestionIDArray;
 
-            String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
+        String helper = QuestionIDArray.substring(1,QuestionIDArray.length()-1);
             int tab [] = new int[ConstantsClass.QuestionsNumberToBeAsked];
             String[] strArray = helper.split(",");
 

@@ -67,6 +67,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     String RankingArrow;
     ImageView ProfilPicture;
     AccessToken accessToken;
+    public static String AnsweredQuestonsIds;
 
     // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override
@@ -161,6 +162,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             OldRanking =(int) backendlessUser.getProperty("OLDRANKING");
             usersCount = (int) backendlessUser.getProperty("usersCount");
             points  = (int) backendlessUser.getProperty("POINTS");
+            AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
             MainActivity.user.setName(UserName);
             String RANKINGARROW = String.valueOf(backendlessUser.getProperty("RANKINGARROW"));
 
@@ -206,6 +208,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             points = intent.getIntExtra("points",-1);
             RankingArrow = intent.getStringExtra("RANKINGARROW");
             OldRanking = intent.getIntExtra("OLDRANKING",-1);
+
             Profile profile = Profile.getCurrentProfile();
             final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
             if (wonGames ==-1 ){
