@@ -19,6 +19,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
+import com.example.michalzahir.pagk16.Profile2_ScrollingActivity;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.R;
 import com.example.michalzahir.pagk16.UsersDB.Users;
@@ -141,6 +142,7 @@ public class fbFriendsListActivity extends AppCompatActivity {
                 userObjectID = q.getObjectId();
                 MainActivity.userName.setOponnentUserObjectID(userObjectID);
                 result.setSecondUSerObjectID(userObjectID);
+                Profile2_ScrollingActivity.OpponentAnsweredQuestonsIds = q.getAnsweredQuestionsIDs();
             }
         } catch (BackendlessException fault) {
             Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());

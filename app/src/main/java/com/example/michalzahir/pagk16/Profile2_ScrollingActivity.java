@@ -68,6 +68,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     ImageView ProfilPicture;
     AccessToken accessToken;
     public static String AnsweredQuestonsIds;
+    public static String OpponentAnsweredQuestonsIds ="";
 
     // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override

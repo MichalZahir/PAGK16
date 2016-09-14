@@ -51,7 +51,7 @@ public class gettingQuestions extends Application {
 
     public static void getQuestions(final Context context) {
         gameResult.AnsweredQuestionsIDS ="";
-        Set<Integer> AnsweredQuestions =com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.RetrievingQuesIDs.RetrieveAnsQuesIDS(Profile2_ScrollingActivity.AnsweredQuestonsIds);
+        Set<Integer> AnsweredQuestions =com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.RetrievingQuesIDs.RetrieveAnsQuesIDS(Profile2_ScrollingActivity.AnsweredQuestonsIds+Profile2_ScrollingActivity.OpponentAnsweredQuestonsIds);
         for (QuestionsCounter = 0; QuestionsCounter < ConstantsClass.QuestionsNumberToBeAsked; QuestionsCounter++) {
             Random rn = new Random();
             final int ID = rn.nextInt(ConstantsClass.QuestionsQuestSize) + 1;

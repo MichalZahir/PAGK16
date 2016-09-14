@@ -44,6 +44,7 @@ public class RankingActivity extends AppCompatActivity {
     String UsrsobjIDsTab [];
     String UsrsDeviceIDsTab [];
     String UsrsNamesTab [];
+    String AnsweredQuestionsIds [];
     JSONArray Friends;
     public static Boolean RankingGame = false ;
     View wantedView = null;
@@ -82,7 +83,7 @@ public class RankingActivity extends AppCompatActivity {
                   UsrsobjIDsTab  = new String[users.getTotalObjects()];
                   UsrsDeviceIDsTab   = new String[users.getTotalObjects()];
                   UsrsNamesTab  = new String[users.getTotalObjects()];
-
+                AnsweredQuestionsIds = new String[users.getTotalObjects()];
                 while (users.getCurrentPage().size() > 0)
                 {
 
@@ -111,6 +112,7 @@ public class RankingActivity extends AppCompatActivity {
                         UsrsobjIDsTab[i-1] = user.getObjectId();
                         UsrsNamesTab[i-1] = (String) user.getProperty("name");
                         UsrsDeviceIDsTab[i-1] = (String) user.getProperty("Device_ID");
+                        AnsweredQuestionsIds[i-1] = (String) user.getProperty("AnsweredQuestionsIDs");
                         i++;
                     }
                     System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
@@ -182,6 +184,7 @@ public class RankingActivity extends AppCompatActivity {
                     result = new gameResult();
                     MainActivity.userName.setOponnentUserObjectID(UsrsobjIDsTab[position]);
                     result.setSecondUSerObjectID(UsrsobjIDsTab[position]);
+                    Profile2_ScrollingActivity.OpponentAnsweredQuestonsIds = AnsweredQuestionsIds[position];
 
                     result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
                     result.setFirstUserResult(0);
