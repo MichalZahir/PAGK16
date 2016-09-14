@@ -87,10 +87,10 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         }
         if (resultActivity.mInterstitialAd != null &&!resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
         resultActivity.loadInterstitialAd(this);}
-        AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
+        //AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        ProfileAdView.loadAd(adRequest);
+        //ProfileAdView.loadAd(adRequest);
 
 
            if ( RegisterActivity.RegisterProgreessDialogue!= null)
