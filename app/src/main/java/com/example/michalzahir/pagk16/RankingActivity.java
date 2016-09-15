@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.GpsStatus;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,9 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.QueryOptions;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.Helper.EndlessScrollListener;
 import com.example.michalzahir.pagk16.Helper.myArrayAdapter;
+import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -47,6 +50,7 @@ public class RankingActivity extends AppCompatActivity {
     String AnsweredQuestionsIds [];
     JSONArray Friends;
     public static Boolean RankingGame = false ;
+    String UserName;
     View wantedView = null;
 
     @Override
@@ -75,22 +79,23 @@ public class RankingActivity extends AppCompatActivity {
 
                 QueryOptions queryOptions = new QueryOptions();
                 queryOptions.addSortByOption( "POINTS DESC" );
-                queryOptions.setPageSize(10);
+                queryOptions.setPageSize(100);
                 dataQuery.setQueryOptions( queryOptions );
 
                 BackendlessCollection<BackendlessUser> users = Backendless.Data.of( BackendlessUser.class ).find( dataQuery );
                 int i =1;
-                  UsrsobjIDsTab  = new String[users.getTotalObjects()];
-                  UsrsDeviceIDsTab   = new String[users.getTotalObjects()];
-                  UsrsNamesTab  = new String[users.getTotalObjects()];
-                AnsweredQuestionsIds = new String[users.getTotalObjects()];
+                int TableSize = users.getTotalObjects();
+                  UsrsobjIDsTab  = new String[TableSize];
+                  UsrsDeviceIDsTab   = new String[TableSize];
+                  UsrsNamesTab  = new String[TableSize];
+                AnsweredQuestionsIds = new String[TableSize];
                 while (users.getCurrentPage().size() > 0)
                 {
 
                     System.out.println( "b4 the for loop size: " + users.getCurrentPage().size()  );
                     for (BackendlessUser user : users.getCurrentPage()) {
-
-                        RankingList.add(+i + " : " + user.getProperty("name") + " points : " + user.getProperty("POINTS"));
+                        UserName = (String) user.getProperty("name");
+                        RankingList.add(+i + " : " + UserName + " points : " + user.getProperty("POINTS"));
 //                        TextView tv=new TextView(getApplicationContext());
 //                        tv.setText(+i + " : " + user.getProperty("name") + " points : " + user.getProperty("POINTS"));
 //                            RankingList.add(i-1,tv);
@@ -99,9 +104,9 @@ public class RankingActivity extends AppCompatActivity {
 
                                for (int l = 0; l < Friends.length(); l++) {
 
-                                   if (Friends.getJSONObject(l).getString("name").equals(user.getProperty("name"))) {
+                                   if (Friends.getJSONObject(l).getString("name").equals(UserName)) {
                                        Highlighted.add(i - 1);
-                                       System.out.println("Friends names = " + user.getProperty("name"));
+                                       System.out.println("Friends names = " + UserName);
 
                                    }
                                }
@@ -109,8 +114,9 @@ public class RankingActivity extends AppCompatActivity {
                                e.printStackTrace();
                            }
                        }
+
                         UsrsobjIDsTab[i-1] = user.getObjectId();
-                        UsrsNamesTab[i-1] = (String) user.getProperty("name");
+                        UsrsNamesTab[i-1] = UserName;
                         UsrsDeviceIDsTab[i-1] = (String) user.getProperty("Device_ID");
                         AnsweredQuestionsIds[i-1] = (String) user.getProperty("AnsweredQuestionsIDs");
                         i++;
@@ -167,6 +173,17 @@ public class RankingActivity extends AppCompatActivity {
                 return view;
             }
         }; // simple textview for list item
+        listView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
+
         listView.setAdapter(adapter);
         Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
@@ -209,8 +226,13 @@ public class RankingActivity extends AppCompatActivity {
 
     });
 
-    }
 
+    }
+    public void customLoadMoreDataFromApi(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
+    }
     @Override
     public void onBackPressed() {
         Intent i = new Intent(getApplicationContext(),
@@ -274,5 +296,6 @@ public class RankingActivity extends AppCompatActivity {
             return listView.getChildAt(childIndex);
         }
     }
+
 
 }
