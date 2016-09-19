@@ -15,7 +15,8 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp"
+        android:layout_weight="0.73">
 
         <EditText
             android:id="@+id/name"
@@ -71,6 +72,12 @@
 
 
     </LinearLayout>
+    <RelativeLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="60dip"
+        android:gravity = "bottom"
+
+
+        >
     <com.google.android.gms.ads.AdView
         android:id="@+id/adViewRegister"
         android:layout_width="match_parent"
@@ -80,4 +87,5 @@
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
+</RelativeLayout>
 </LinearLayout>

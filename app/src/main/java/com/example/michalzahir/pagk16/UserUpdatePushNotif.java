@@ -24,7 +24,7 @@ public class UserUpdatePushNotif {
 
     public static void UpdateUserWithDeviceID(final String Device_ID) {
 
-        String currentUserObjectId = playerObejtID.getUserObjectID();
+        final String currentUserObjectId = playerObejtID.getUserObjectID();
         System.out.println("the current user for fb users :    " + currentUserObjectId);
 
 
@@ -33,7 +33,7 @@ public class UserUpdatePushNotif {
         {
             System.out.println(backendlessUser.getObjectId());
             backendlessUser.setProperty("Device_ID", Device_ID);
-            MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
+            MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
             MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
             Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                 public void handleResponse(BackendlessUser user) {
