@@ -37,7 +37,9 @@ import com.google.android.gms.ads.MobileAds;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -68,35 +70,44 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     ImageView ProfilPicture;
     AccessToken accessToken;
     public static String AnsweredQuestonsIds;
-    public static String OpponentAnsweredQuestonsIds ="";
+    public static String OpponentAnsweredQuestonsIds = "";
 
     // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
+        //new Thread(runnable).start();
         final String appVersion = "v1";
+
         Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        if (!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(getApplicationContext());
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
         AdView mAdView = (AdView) findViewById(R.id.adView);
-        if(resultActivity.mInterstitialAd==null) {
+        if (resultActivity.mInterstitialAd == null) {
             resultActivity.mInterstitialAd = new InterstitialAd(this);
             resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
         }
-        if (resultActivity.mInterstitialAd != null &&!resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
-        resultActivity.loadInterstitialAd(this);}
+        if (resultActivity.mInterstitialAd != null && !resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
+            resultActivity.loadInterstitialAd(this);
+        }
         //AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         //ProfileAdView.loadAd(adRequest);
 
 
-           if ( RegisterActivity.RegisterProgreessDialogue!= null)
+        if (RegisterActivity.RegisterProgreessDialogue != null)
             RegisterActivity.RegisterProgreessDialogue.dismiss();
-            if (MainActivity.FBLoginProgreessDialogue!=null)
-                MainActivity.FBLoginProgreessDialogue.dismiss();
+        if (MainActivity.FBLoginProgreessDialogue != null)
+            MainActivity.FBLoginProgreessDialogue.dismiss();
 
         MainActivity.user = User.getInstance();
         UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
@@ -104,7 +115,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
         drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
         playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
-        SavedGamesButton = (Button) findViewById(R.id.savedGamesButton );
+        SavedGamesButton = (Button) findViewById(R.id.savedGamesButton);
         pointsTextView = (TextView) findViewById(R.id.PointsTextView);
         ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
         newGameButton = (Button) findViewById(R.id.newGameButton);
@@ -135,7 +146,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                 RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait, it might take a minute to load the data ",true);
+                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait, it might take a minute to load the data ", true);
 
 
                 Intent i = new Intent(Profile2_ScrollingActivity.this,
@@ -149,79 +160,79 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
         final String currentUserObjectId = Backendless.UserService.loggedInUser();
         //MainActivity.user.setUserObjectId(currentUserObjectId);
-         Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-        public void handleResponse(BackendlessUser backendlessUser )
-        {
+        if (currentUserObjectId != null&& !currentUserObjectId.equals(""))
+            Backendless.UserService.findById(currentUserObjectId, new AsyncCallback<BackendlessUser>() {
+                @Override
+                public void handleResponse(BackendlessUser backendlessUser) {
 
-            Backendless.UserService.setCurrentUser(backendlessUser);
-            playerObejtID.setUserObjectID(currentUserObjectId);
-            UserName = "" + backendlessUser.getProperty("name");
-            wonGames = (int) backendlessUser.getProperty("WON");
-            lostGames = (int) backendlessUser.getProperty("LOST");
-            drawGames = (int) backendlessUser.getProperty("DRAW");
-            Ranking = (int) backendlessUser.getProperty("RANKING");
-            OldRanking =(int) backendlessUser.getProperty("OLDRANKING");
-            usersCount = (int) backendlessUser.getProperty("usersCount");
-            points  = (int) backendlessUser.getProperty("POINTS");
-            AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
-            MainActivity.user.setName(UserName);
-            String RANKINGARROW = String.valueOf(backendlessUser.getProperty("RANKINGARROW"));
+                    Backendless.UserService.setCurrentUser(backendlessUser);
+                    playerObejtID.setUserObjectID(currentUserObjectId);
+                    UserName = "" + backendlessUser.getProperty("name");
+                    wonGames = (int) backendlessUser.getProperty("WON");
+                    lostGames = (int) backendlessUser.getProperty("LOST");
+                    drawGames = (int) backendlessUser.getProperty("DRAW");
+                    Ranking = (int) backendlessUser.getProperty("RANKING");
+                    OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
+                    usersCount = (int) backendlessUser.getProperty("usersCount");
+                    points = (int) backendlessUser.getProperty("POINTS");
+                    AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
+                    MainActivity.user.setName(UserName);
 
-            if (OldRanking<Ranking) {
-                RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
-            }
-            else if (OldRanking>Ranking)
-                RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
-            else if (OldRanking==Ranking)
-                RankingArrowImaView.setBackgroundResource(R.drawable.same);
-            playedGames = wonGames +lostGames+ drawGames;
+                    if (OldRanking < Ranking) {
+                        RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+                    } else if (OldRanking > Ranking)
+                        RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+                    else if (OldRanking == Ranking)
+                        RankingArrowImaView.setBackgroundResource(R.drawable.same);
+                    playedGames = wonGames + lostGames + drawGames;
 
-            UserNameTectView.setText(UserName);
-            MainActivity.userName.setUserName(UserName);
-            MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
-            lostGamesTextView.setText(String.valueOf(lostGames));
-            drawGamesTextView.setText(String.valueOf(drawGames));
-            playedGamesTextView.setText(String.valueOf(playedGames));
-            wonGamesTextView.setText(String.valueOf(wonGames));
+                    UserNameTectView.setText(UserName);
+                    MainActivity.userName.setUserName(UserName);
+                    MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
+                    lostGamesTextView.setText(String.valueOf(lostGames));
+                    drawGamesTextView.setText(String.valueOf(drawGames));
+                    playedGamesTextView.setText(String.valueOf(playedGames));
+                    wonGamesTextView.setText(String.valueOf(wonGames));
 
-            RankingTextView.setText(String.valueOf(Ranking)+" from total "+usersCount+" users");
-            pointsTextView.setText(String.valueOf(points));
+                    RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
+                    pointsTextView.setText(String.valueOf(points));
 
-        }
+                }
 
-            @Override
-            public void handleFault( BackendlessFault fault )
-            {
-                System.err.println( "Error - Detail " + fault.getDetail() + " Message  "+ fault.getMessage() + fault.getCode() );
-            }});
-        System.out.println("user id from token " + currentUserObjectId );
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    System.err.println("Error - Detail " + fault.getDetail() + " Message  " + fault.getMessage() + fault.getCode());
+                }
+            });
+        System.out.println("user id from token " + currentUserObjectId);
 
         accessToken = AccessToken.getCurrentAccessToken();
-        if( accessToken != null){
-            MainActivity.LoggedInWithFB=true;
-           // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
-            wonGames =  intent.getIntExtra("wonGames",-1);
-            lostGames = intent.getIntExtra("lostGames",-1);
-            drawGames = intent.getIntExtra("drawGames",-1);
-            playedGames = intent.getIntExtra("playedGames",-1);
-            Ranking = intent.getIntExtra("Ranking",-1);
-            usersCount = intent.getIntExtra("usersCount",-1);
-            points = intent.getIntExtra("points",-1);
+        if (accessToken != null) {
+            MainActivity.LoggedInWithFB = true;
+            // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
+            wonGames = intent.getIntExtra("wonGames", -1);
+            lostGames = intent.getIntExtra("lostGames", -1);
+            drawGames = intent.getIntExtra("drawGames", -1);
+            playedGames = intent.getIntExtra("playedGames", -1);
+            Ranking = intent.getIntExtra("Ranking", -1);
+            usersCount = intent.getIntExtra("usersCount", -1);
+            points = intent.getIntExtra("points", -1);
             RankingArrow = intent.getStringExtra("RANKINGARROW");
-            OldRanking = intent.getIntExtra("OLDRANKING",-1);
+            OldRanking = intent.getIntExtra("OLDRANKING", -1);
 
             Profile profile = Profile.getCurrentProfile();
-            final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
-            if (wonGames ==-1 ){
+            final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
+            if (wonGames == -1) {
                 final int[][] tab = new int[1][1];
 
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
 
-                       tab[0] =  com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+                        tab[0] = com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
 
-                    }});
+                    }
+                });
 
                 t.start(); // spawn thread
                 try {
@@ -231,56 +242,50 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 }
 
 
-
                 wonGamesTextView.setText(String.valueOf(tab[0][0]));
                 drawGamesTextView.setText(String.valueOf(tab[0][1]));
                 lostGamesTextView.setText(String.valueOf(tab[0][2]));
                 playedGamesTextView.setText(String.valueOf(tab[0][3]));
-                RankingTextView.setText(String.valueOf(tab[0][4])+ " from total "+tab[0][5]+" users");
+                RankingTextView.setText(String.valueOf(tab[0][4]) + " from total " + tab[0][5] + " users");
                 Ranking = tab[0][4];
                 pointsTextView.setText(String.valueOf(tab[0][6]));
                 OldRanking = tab[0][7];
-                if (OldRanking<Ranking) {
+                if (OldRanking < Ranking) {
                     RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
-                }
-                else if (OldRanking>Ranking)
+                } else if (OldRanking > Ranking)
                     RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
-                else if (OldRanking==Ranking)
+                else if (OldRanking == Ranking)
                     RankingArrowImaView.setBackgroundResource(R.drawable.same);
 
-            }else {
+            } else {
                 lostGamesTextView.setText(String.valueOf(lostGames));
                 drawGamesTextView.setText(String.valueOf(drawGames));
                 playedGamesTextView.setText(String.valueOf(playedGames));
                 wonGamesTextView.setText(String.valueOf(wonGames));
-                RankingTextView.setText(String.valueOf(Ranking) +" from total "+usersCount+" users");
+                RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
                 pointsTextView.setText(String.valueOf(points));
-                if (OldRanking<Ranking) {
+                if (OldRanking < Ranking) {
                     RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
-                }
-                else if (OldRanking>Ranking)
+                } else if (OldRanking > Ranking)
                     RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
-                else if (OldRanking==Ranking)
+                else if (OldRanking == Ranking)
                     RankingArrowImaView.setBackgroundResource(R.drawable.same);
             }
 
 
-
-
-
-            UserName =  UserNameFb;
+            UserName = UserNameFb;
             MainActivity.user.setName(UserNameFb);
             UserNameTectView.setText(UserName);
             MainActivity.userName.setUserName(UserName);
-            try {
-
-
-                ProfilPicture.setImageBitmap(new FacebookProfPicture().execute(profile.getId()).get()); //getFacebookProfilePicture(profile.getId()));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+//            try {
+//
+//
+//                ProfilPicture.setImageBitmap(new FacebookProfPicture().execute(profile.getId()).get()); //getFacebookProfilePicture(profile.getId()));
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
 
         }
         newGameButton.setOnClickListener(new View.OnClickListener() {
@@ -298,12 +303,12 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         SavedGamesButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this );
+                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                 RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this,"Loading data.... ","Please wait a second until we load data ",true);
+                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait a second until we load data ", true);
                 Intent i = new Intent(getApplicationContext(),
                         SavedGamesActivity.class);
-                 startActivity(i);
+                startActivity(i);
                 finish();
 
 
@@ -311,8 +316,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -322,6 +327,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -332,8 +338,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         AppEventsLogger.deactivateApp(this);
     }
 
-    public void logOut (){
-        if( accessToken != null){
+    public void logOut() {
+        if (accessToken != null) {
 
             LoginManager.getInstance().logOut();
             Intent i = new Intent(getApplicationContext(),
@@ -360,8 +366,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     @Override
     public void onBackPressed() {
     }

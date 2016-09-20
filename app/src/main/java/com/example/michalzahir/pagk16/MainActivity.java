@@ -1,6 +1,7 @@
 package com.example.michalzahir.pagk16;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageInfo;
@@ -22,6 +23,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.Messaging;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.example.michalzahir.pagk16.Splashes.SplashScreenActivity;
 import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
@@ -41,6 +43,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.nearby.bootstrap.Device;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputPassword;
     private ProgressDialog pDialog;
     CallbackManager callbackManager;
-    // Session Manager Class
-    SessionManager session;
+
     public static UserName userName;
     public static User user;
     public static boolean LoggedInWithFB;
@@ -79,59 +81,49 @@ public class MainActivity extends AppCompatActivity {
     static public ProgressDialog FBLoginProgreessDialogue;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
+
+        Context AppContext = getApplicationContext();
+        if (!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(AppContext);
         user = User.getInstance();
         userName = new UserName();
-        callbackManager  = CallbackManager.Factory.create();
-        session = new SessionManager(getApplicationContext());
-        setContentView(R.layout.activity_main);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-        FBLOGIN = (Button) findViewById(R.id.fbLogin);
-        AdView LoginAdView = (AdView) findViewById(R.id.adViewLogin);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        LoginAdView.loadAd(adRequest);
+
+        callbackManager = CallbackManager.Factory.create();
+
+
         //backendless namiary na apke
         final String appVersion = "v1";
-        Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-        String ProjectNumberNotification = "687259024455";
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        Backendless.initApp(MainActivity.this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+        //String ProjectNumberNotification = "687259024455";
 
-        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
-        RegisterDeviceUpdateUserDeviceID();
-
-
-
-
+        MobileAds.initialize(AppContext, "ca-app-pub-3940256099942544~3347511713");
+        //RegisterDeviceUpdateUserDeviceID();
         String userToken = UserTokenStorageFactory.instance().getStorage().get();
 
-        if( userToken != null && !userToken.equals( "" ) )
-        {  // user login is available, skip the login activity/login form
-            String s =Backendless.UserService.loggedInUser();
+        if (userToken != null && !userToken.equals("")) {  // user login is available, skip the login activity/login form
+            String s = Backendless.UserService.loggedInUser();
             LoggedInWithFB = false;
 
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
-            Intent i = new Intent(getApplicationContext(),
+            Intent i = new Intent(AppContext,
                     Profile2_ScrollingActivity.class);
-             startActivity(i);
-
-         }
+            startActivity(i);
+            finish();
+            return;
+        }
         // token for fb login
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        Log.i("Fb access token  ", accessToken   +""  );
-        if( accessToken != null){
+        Log.i("Fb access token  ", accessToken + "");
+        if (accessToken != null) {
             LoggedInWithFB = true;
             System.out.println("access token user token facebook : " + accessToken);
             Profile profile = Profile.getCurrentProfile();
             //String a = AccessToken.getCurrentAccessToken().getUserId();
-            final String UserNameFb = profile.getFirstName()+" "+profile.getLastName();
+            final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
             System.out.println(" facebook UserNameFb  : " + UserNameFb);
             user.setName(UserNameFb);
             MainActivity.userName.setUserName(UserNameFb);
@@ -140,9 +132,10 @@ public class MainActivity extends AppCompatActivity {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                      UserObjectID[0] = FindUsersObjectID(UserNameFb);
+                    UserObjectID[0] = FindUsersObjectID(UserNameFb);
 
-                }});
+                }
+            });
 
             t.start(); // spawn thread
             try {
@@ -156,20 +149,35 @@ public class MainActivity extends AppCompatActivity {
 //            String s = Backendless.UserService.loggedInUser();
 //            playerObejtID.setUserObjectID(s);
 
-            RegisterDeviceUpdateUserDeviceID();
-            Intent i = new Intent(getApplicationContext(),
+            //RegisterDeviceUpdateUserDeviceID();
+            Intent i = new Intent(AppContext,
                     Profile2_ScrollingActivity.class);
-            i.putExtra("wonGames",fbWon);
-            i.putExtra("lostGames",fbLost);
-            i.putExtra("drawGames",fbDraw);
-            i.putExtra("playedGames",fbplayed);
-            i.putExtra("Ranking",fbRanking);
-            i.putExtra("usersCount",  usersCount);
-            i.putExtra("points",Points);
-            i.putExtra("OLDRANKING",OldRanking);
+            i.putExtra("wonGames", fbWon);
+            i.putExtra("lostGames", fbLost);
+            i.putExtra("drawGames", fbDraw);
+            i.putExtra("playedGames", fbplayed);
+            i.putExtra("Ranking", fbRanking);
+            i.putExtra("usersCount", usersCount);
+            i.putExtra("points", Points);
+            i.putExtra("OLDRANKING", OldRanking);
             startActivity(i);
-
+            finish();
+            return;
         }
+
+
+        setContentView(R.layout.activity_main);
+
+
+        inputEmail = (EditText) findViewById(R.id.email);
+        inputPassword = (EditText) findViewById(R.id.password);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        FBLOGIN = (Button) findViewById(R.id.fbLogin);
+
+        AdView LoginAdView = (AdView) findViewById(R.id.adViewLogin);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        LoginAdView.loadAd(adRequest);
 
 
         // end of token for fb login
@@ -183,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 // Check for empty data in the form
                 if (!name.isEmpty() && !password.isEmpty()) {
                     // Login user
-                    Login(name ,  password);
+                    Login(name, password);
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -209,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View view) {
 
-               fbLogin();
+                fbLogin();
 
             }
         });
@@ -217,21 +225,21 @@ public class MainActivity extends AppCompatActivity {
 
         // hash key for fb
 
-        try {
-            PackageInfo info =   getApplicationContext().getPackageManager().getPackageInfo(
-                    "com.example.michalzahir.pagk16",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            PackageInfo info =   getApplicationContext().getPackageManager().getPackageInfo(
+//                    "com.example.michalzahir.pagk16",
+//                    PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -241,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -248,15 +257,16 @@ public class MainActivity extends AppCompatActivity {
         // Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
+
     @Override
-    public void onActivityResult( int requestCode, int resultCode, Intent data )
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         FBLoginProgreessDialogue = new ProgressDialog(MainActivity.this);
         FBLoginProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this,"Loading Facebook Profile information... ","Please wait a second until we load data ",true);
+        FBLoginProgreessDialogue = ProgressDialog.show(MainActivity.this, "Loading Facebook Profile information... ", "Please wait a second until we load data ", true);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -266,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -290,25 +301,32 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private  void Login(final String name, final String password){
+
+    private void Login(final String name, final String password) {
 
         LoggedInWithFB = false;
-        try
-        {
-            Backendless.UserService.login (name,password, new BackendlessCallback<BackendlessUser>() {
+        try {
+            Backendless.UserService.login(name, password, new BackendlessCallback<BackendlessUser>() {
                 @Override
                 public void handleResponse(BackendlessUser backendlessUser) {
                     Log.i("Loggin in ", backendlessUser.getProperty("name") + " successfully logged in");
                     user.setName(name);
                     MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
-                   // session.createLoginSession(name, password);
+                    // session.createLoginSession(name, password);
                     playerObejtID.setUserObjectID(backendlessUser.getObjectId());
                     MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
                     Intent i = new Intent(getApplicationContext(),
                             Profile2_ScrollingActivity.class);
                     //makes the profile activity the home activity
                     //i.setFlags(16384);
-                    RegisterDeviceUpdateUserDeviceID();
+                    String DeviceID = null;
+                    try {
+                        DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                    } catch (BackendlessException e) {
+                        RegisterDeviceUpdateUserDeviceID();
+                    }
+                    if (DeviceID == null || DeviceID == "")
+                        RegisterDeviceUpdateUserDeviceID();
 
                     i.putExtra("name", name);
                     startActivity(i);
@@ -317,177 +335,137 @@ public class MainActivity extends AppCompatActivity {
                     finish();
 
 
-
                 }
-                public void handleFault( BackendlessFault fault )
-                {
+
+                public void handleFault(BackendlessFault fault) {
                     // login failed, to get the error code call fault.getCode()
                     Log.d(TAG, "The login failed because : " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
                     Toast.makeText(getApplicationContext(),
-                            fault.getMessage()+"           Please enter the correct credentials! " +
+                            fault.getMessage() + "           Please enter the correct credentials! " +
                                     "Or click the Not a member? Sign me up now, button if you don't have an account.", Toast.LENGTH_LONG)
                             .show();
                 }
-            },true);}
-        catch( BackendlessException exception )
-        {
-            String fault = exception.getCause().toString()+exception.getCode()+exception.getMessage();
-            Log.i("Log in Error",fault);
+            }, true);
+        } catch (BackendlessException exception) {
+            String fault = exception.getCause().toString() + exception.getCode() + exception.getMessage();
+            Log.i("Log in Error", fault);
             Toast.makeText(getApplicationContext(),
-                    "Login Failed! " + exception.getCause()+"  "+ exception.getMessage(), Toast.LENGTH_LONG)
+                    "Login Failed! " + exception.getCause() + "  " + exception.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
 
     }
-    private void fbLogin(){
+
+    private void fbLogin() {
         LoggedInWithFB = true;
         final Map<String, String> facebookFieldMappings = new HashMap<String, String>();
         facebookFieldMappings.put("name", "name");
 
         List<String> permissions = new ArrayList<String>();
-        permissions.add( "email" );
-        permissions.add( "user_friends");
+        permissions.add("email");
+        permissions.add("user_friends");
         permissions.add("public_profile");
         permissions.add("user_about_me");
 
 
-        Backendless.UserService.loginWithFacebookSdk(this,  facebookFieldMappings, permissions, callbackManager,
-        new AsyncCallback<BackendlessUser>() {
+        Backendless.UserService.loginWithFacebookSdk(this, facebookFieldMappings, permissions, callbackManager,
+                new AsyncCallback<BackendlessUser>() {
 
-            @Override
-            public void handleResponse(BackendlessUser backendlessUser) {
-                // user logged in successfully
-
-                Intent i = new Intent(getApplicationContext(),
-                        Profile2_ScrollingActivity.class);
-                Profile profile = Profile.getCurrentProfile();
-                wonGames = (int) backendlessUser.getProperty("WON");
-                MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
-                lostGames = (int) backendlessUser.getProperty("LOST");
-                drawGames = (int) backendlessUser.getProperty("DRAW");
-                fbRanking = (int) backendlessUser.getProperty("RANKING");
-                usersCount = (int) backendlessUser.getProperty("usersCount");
-                Points = (int)  backendlessUser.getProperty("POINTS");
-                OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
-                Profile2_ScrollingActivity.AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
-                user.setUserObjectId(backendlessUser.getObjectId());
-                MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
-                playedGames = wonGames +lostGames+ drawGames;
-                i.putExtra ( "wonGames", wonGames );
-                i.putExtra ( "lostGames", lostGames );
-                i.putExtra ( "drawGames", drawGames );
-                i.putExtra ( "playedGames", playedGames );
-                i.putExtra("Ranking",fbRanking);
-                i.putExtra("usersCount",  usersCount);
-                i.putExtra("points",  Points);
-                i.putExtra("OLDRANKING",OldRanking);
-                i.putExtra("RANKINGARROW", (String) backendlessUser.getProperty("RANKINGARROW"));
-                System.out.println("check the fb backendlsess user : "+ backendlessUser.getObjectId());
-                Backendless.UserService.setCurrentUser(backendlessUser);
-                final String currentUserObjectId = backendlessUser.getObjectId();
-                playerObejtID.setUserObjectID(currentUserObjectId);
-                String ProjectNumberNotification = "687259024455";
-                String UserNameFb = profile.getFirstName()+"  "+profile.getLastName();
-                i.putExtra ( "name", UserNameFb );
-                //startActivity(i);
-                startActivityForResult(i, 1);
-                //finish();
-
-                // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
-                // TODO: 2016-06-14 Add the user object id to the playerObjectID when logging in with facebook or when loggin in with the token of facebook.
-                Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
                     @Override
-                    public void handleResponse(Void response) {
-                        Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
-                        final String Device_ID = Messaging.DEVICE_ID;
-                        Log.d(TAG,"The Device ID is :  "+Device_ID);
-                       // UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
-                        user.setDeviceID(Device_ID);
-                        //Backendless.UserService.loggedInUser();
-                        System.out.println("the current user for fb users :    " + currentUserObjectId);
+                    public void handleResponse(BackendlessUser backendlessUser) {
+                        // user logged in successfully
 
+                        Intent i = new Intent(getApplicationContext(),
+                                Profile2_ScrollingActivity.class);
+                        Profile profile = Profile.getCurrentProfile();
+                        wonGames = (int) backendlessUser.getProperty("WON");
+                        MainActivity.userName.setUserName((String) backendlessUser.getProperty("name"));
+                        lostGames = (int) backendlessUser.getProperty("LOST");
+                        drawGames = (int) backendlessUser.getProperty("DRAW");
+                        fbRanking = (int) backendlessUser.getProperty("RANKING");
+                        usersCount = (int) backendlessUser.getProperty("usersCount");
+                        Points = (int) backendlessUser.getProperty("POINTS");
+                        OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
+                        Profile2_ScrollingActivity.AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
+                        user.setUserObjectId(backendlessUser.getObjectId());
+                        MainActivity.userName.setUserNameUSrObjectID(backendlessUser.getObjectId());
+                        playedGames = wonGames + lostGames + drawGames;
+                        i.putExtra("wonGames", wonGames);
+                        i.putExtra("lostGames", lostGames);
+                        i.putExtra("drawGames", drawGames);
+                        i.putExtra("playedGames", playedGames);
+                        i.putExtra("Ranking", fbRanking);
+                        i.putExtra("usersCount", usersCount);
+                        i.putExtra("points", Points);
+                        i.putExtra("OLDRANKING", OldRanking);
+                        i.putExtra("RANKINGARROW", (String) backendlessUser.getProperty("RANKINGARROW"));
+                        System.out.println("check the fb backendlsess user : " + backendlessUser.getObjectId());
+                        Backendless.UserService.setCurrentUser(backendlessUser);
+                        final String currentUserObjectId = backendlessUser.getObjectId();
+                        playerObejtID.setUserObjectID(currentUserObjectId);
+                        String ProjectNumberNotification = "687259024455";
+                        String UserNameFb = profile.getFirstName() + "  " + profile.getLastName();
+                        i.putExtra("name", UserNameFb);
+                        //startActivity(i);
+                        startActivityForResult(i, 1);
+                        //finish();
 
-                        Backendless.UserService.findById  (currentUserObjectId, new AsyncCallback<BackendlessUser>() { @Override
-                        public void handleResponse(BackendlessUser backendlessUser )
-                        {
-
-                            System.out.println(backendlessUser.getObjectId());
-                            backendlessUser.setProperty("Device_ID", Device_ID);
-
-                            Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
-                                public void handleResponse(BackendlessUser user) {
-                                    Log.d(TAG, "The Device ID is updated successfully for the user  :" + user.getUserId());
-                                }
-
-                                public void handleFault(BackendlessFault fault) {
-                                    Log.d(TAG, "User not updated (Device ID Update ) for the reasons" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-
-                                }
-                            });
-
-
+                        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+                        // TODO: 2016-06-14 Add the user object id to the playerObjectID when logging in with facebook or when loggin in with the token of facebook.
+                        String DeviceID = null;
+                        try {
+                            DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                        } catch (BackendlessException e) {
+                            RegisterDeviceUpdateUserDeviceID();
                         }
-
-                            @Override
-                            public void handleFault( BackendlessFault fault )
-                            {
-                                System.err.println( "Error - " + fault );
-                            }});
-
+                        if (DeviceID == null || DeviceID == "")
+                            RegisterDeviceUpdateUserDeviceID();
 
 
                     }
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                        Log.d(TAG, "Failed to logging with Facebook .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                        FBLoginProgreessDialogue.dismiss();
                     }
                 });
-
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Failed to logging with Facebook .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
-                FBLoginProgreessDialogue.dismiss();
-            }
-        });
         //RegisterDeviceUpdateUserDeviceID();
 
 
     }
 
 
-
-    public void RegisterDeviceUpdateUserDeviceID(){
+    public void RegisterDeviceUpdateUserDeviceID() {
 
 
         String ProjectNumberNotification = "687259024455";
+        //Backendless.Messaging.getDeviceRegistration().
         // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
         Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
-                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   " );
+                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   ");
                 String Device_ID = Messaging.DEVICE_ID;
-                Log.d(TAG,"The Device ID is :  "+Device_ID);
+                Log.d(TAG, "The Device ID is :  " + Device_ID);
                 UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
                 user.setDeviceID(Device_ID);
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass() );
+                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
             }
         });
 
 
-
     }
-    public String FindUsersObjectID(String name){
+
+    public String FindUsersObjectID(String name) {
         String userObjectID = null;
         //final String[] UserObjcetID = new String[1];
         System.out.println(name);
-        String whereClause = " name='" + name+"'";
+        String whereClause = " name='" + name + "'";
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         dataQuery.setWhereClause(whereClause);
         try {
@@ -503,41 +481,14 @@ public class MainActivity extends AppCompatActivity {
                 usersCount = q.getUsersCount();
                 Points = q.getPOINTS();
                 OldRanking = q.getOLDRANKING();
-                Profile2_ScrollingActivity.AnsweredQuestonsIds= q.getAnsweredQuestionsIDs();
+                Profile2_ScrollingActivity.AnsweredQuestonsIds = q.getAnsweredQuestionsIDs();
             }
-        }
-        catch (BackendlessException fault){
+        } catch (BackendlessException fault) {
             Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
 
         }
-//        Backendless.Persistence.of (Users.class).find(dataQuery, new AsyncCallback<BackendlessCollection<Users>>() {
-//            @Override
-//            public void handleResponse(BackendlessCollection<Users> foundQuestions) {
-//                for (Users q : foundQuestions.getData()) {
-//                    //System.out.println(  " The shit  in the table :  '"+ q.getObjectId()) ;
-//                    Backendless.Persistence.of(Users.class).findById(q.getObjectId(), new AsyncCallback<Users>() {
-//                        @Override
-//                        public void handleResponse(Users response) {
-//                            Log.d(TAG, "Success trying to fetch FB user object ID using hte name only : the user's object ID" + response.getObjectId()+" The user's Device ID : " +response.getDevice_ID());
-//                            //result.setSecondUSerObjectID(response.getObjectId());
-//                            UserObjcetID[0] = response.getObjectId();
-//                        }
-//
-//                        @Override
-//                        public void handleFault(BackendlessFault fault) {
-//                            Log.d(TAG, "fault trying to fetch FB user object ID using hte name only" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//                Log.d(TAG, "fault trying to fetch questions from DB fault" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-//
-//            }
-//        });
-       return userObjectID;
+
+        return userObjectID;
     }
 
 
