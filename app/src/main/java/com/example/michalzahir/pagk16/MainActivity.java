@@ -84,143 +84,159 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new Thread() {
+            @Override
+            public void run() {
 
-        Context AppContext = getApplicationContext();
-        if (!FacebookSdk.isInitialized())
-            FacebookSdk.sdkInitialize(AppContext);
-        user = User.getInstance();
-        userName = new UserName();
+                Context AppContext = getApplicationContext();
+                if (!FacebookSdk.isInitialized())
+                    FacebookSdk.sdkInitialize(AppContext);
+                user = User.getInstance();
+                userName = new UserName();
 
-        callbackManager = CallbackManager.Factory.create();
+                callbackManager = CallbackManager.Factory.create();
 
 
-        //backendless namiary na apke
-        final String appVersion = "v1";
-        Backendless.initApp(MainActivity.this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-        //String ProjectNumberNotification = "687259024455";
+                //backendless namiary na apke
+                final String appVersion = "v1";
+                Backendless.initApp(MainActivity.this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+                //String ProjectNumberNotification = "687259024455";
 
-        MobileAds.initialize(AppContext, "ca-app-pub-3940256099942544~3347511713");
-        //RegisterDeviceUpdateUserDeviceID();
-        String userToken = UserTokenStorageFactory.instance().getStorage().get();
+                MobileAds.initialize(AppContext, "ca-app-pub-3940256099942544~3347511713");
+                //RegisterDeviceUpdateUserDeviceID();
+                String userToken = UserTokenStorageFactory.instance().getStorage().get();
 
-        if (userToken != null && !userToken.equals("")) {  // user login is available, skip the login activity/login form
-            String s = Backendless.UserService.loggedInUser();
-            LoggedInWithFB = false;
+                if (userToken != null && !userToken.equals("")) {  // user login is available, skip the login activity/login form
+                    String s = Backendless.UserService.loggedInUser();
+                    LoggedInWithFB = false;
 
-            playerObejtID.setUserObjectID(s);
-            user.setUserObjectId(s);
-            Intent i = new Intent(AppContext,
-                    Profile2_ScrollingActivity.class);
-            startActivity(i);
-            finish();
-            return;
-        }
-        // token for fb login
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        Log.i("Fb access token  ", accessToken + "");
-        if (accessToken != null) {
-            LoggedInWithFB = true;
-            System.out.println("access token user token facebook : " + accessToken);
-            Profile profile = Profile.getCurrentProfile();
-            //String a = AccessToken.getCurrentAccessToken().getUserId();
-            final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
-            System.out.println(" facebook UserNameFb  : " + UserNameFb);
-            user.setName(UserNameFb);
-            MainActivity.userName.setUserName(UserNameFb);
-            final String[] UserObjectID = new String[1];
-
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    UserObjectID[0] = FindUsersObjectID(UserNameFb);
-
+                    playerObejtID.setUserObjectID(s);
+                    user.setUserObjectId(s);
+                    Intent i = new Intent(AppContext,
+                            Profile2_ScrollingActivity.class);
+                    startActivity(i);
+                    finish();
+                    return;
                 }
-            });
+                // token for fb login
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                Log.i("Fb access token  ", accessToken + "");
+                if (accessToken != null) {
+                    LoggedInWithFB = true;
+                    System.out.println("access token user token facebook : " + accessToken);
+                    Profile profile = Profile.getCurrentProfile();
+                    //String a = AccessToken.getCurrentAccessToken().getUserId();
+                    final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
+                    System.out.println(" facebook UserNameFb  : " + UserNameFb);
+                    user.setName(UserNameFb);
+                    MainActivity.userName.setUserName(UserNameFb);
+                    final String[] UserObjectID = new String[1];
 
-            t.start(); // spawn thread
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            UserObjectID[0] = FindUsersObjectID(UserNameFb);
 
-            user.setUserObjectId(UserObjectID[0]);
-            playerObejtID.setUserObjectID(UserObjectID[0]);
+                        }
+                    });
+
+                    t.start(); // spawn thread
+                    try {
+                        t.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    user.setUserObjectId(UserObjectID[0]);
+                    playerObejtID.setUserObjectID(UserObjectID[0]);
 //            String s = Backendless.UserService.loggedInUser();
 //            playerObejtID.setUserObjectID(s);
 
-            //RegisterDeviceUpdateUserDeviceID();
-            Intent i = new Intent(AppContext,
-                    Profile2_ScrollingActivity.class);
-            i.putExtra("wonGames", fbWon);
-            i.putExtra("lostGames", fbLost);
-            i.putExtra("drawGames", fbDraw);
-            i.putExtra("playedGames", fbplayed);
-            i.putExtra("Ranking", fbRanking);
-            i.putExtra("usersCount", usersCount);
-            i.putExtra("points", Points);
-            i.putExtra("OLDRANKING", OldRanking);
-            startActivity(i);
-            finish();
-            return;
-        }
+                    //RegisterDeviceUpdateUserDeviceID();
+                    Intent i = new Intent(AppContext,
+                            Profile2_ScrollingActivity.class);
+                    i.putExtra("wonGames", fbWon);
+                    i.putExtra("lostGames", fbLost);
+                    i.putExtra("drawGames", fbDraw);
+                    i.putExtra("playedGames", fbplayed);
+                    i.putExtra("Ranking", fbRanking);
+                    i.putExtra("usersCount", usersCount);
+                    i.putExtra("points", Points);
+                    i.putExtra("OLDRANKING", OldRanking);
+                    startActivity(i);
+                    finish();
+                    return;
+                }
+                final AdRequest adRequest = new AdRequest.Builder().build();
 
 
-        setContentView(R.layout.activity_main);
+                try {
+
+                    // code runs in a thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setContentView(R.layout.activity_main);
 
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
-        FBLOGIN = (Button) findViewById(R.id.fbLogin);
+                            inputEmail = (EditText) findViewById(R.id.email);
+                            inputPassword = (EditText) findViewById(R.id.password);
+                            btnLogin = (Button) findViewById(R.id.btnLogin);
+                            btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+                            FBLOGIN = (Button) findViewById(R.id.fbLogin);
 
-        AdView LoginAdView = (AdView) findViewById(R.id.adViewLogin);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        LoginAdView.loadAd(adRequest);
+                            AdView LoginAdView = (AdView) findViewById(R.id.adViewLogin);
+                            LoginAdView.loadAd(adRequest);
 
+                            // end of token for fb login
+                            // Login button Click Event
+                            btnLogin.setOnClickListener(new View.OnClickListener() {
 
-        // end of token for fb login
-        // Login button Click Event
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View view) {
+                                    String name = inputEmail.getText().toString().trim();
+                                    String password = inputPassword.getText().toString().trim();
 
-            public void onClick(View view) {
-                String name = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                                    // Check for empty data in the form
+                                    if (!name.isEmpty() && !password.isEmpty()) {
+                                        // Login user
+                                        Login(name, password);
+                                    } else {
+                                        // Prompt user to enter credentials
+                                        Toast.makeText(getApplicationContext(),
+                                                "Please enter the credentials!", Toast.LENGTH_LONG)
+                                                .show();
+                                    }
+                                }
 
-                // Check for empty data in the form
-                if (!name.isEmpty() && !password.isEmpty()) {
-                    // Login user
-                    Login(name, password);
-                } else {
-                    // Prompt user to enter credentials
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
-                            .show();
+                            });
+
+                            // Link to Register Screen
+                            btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
+
+                                public void onClick(View view) {
+                                    Intent i = new Intent(getApplicationContext(),
+                                            RegisterActivity.class);
+
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                            FBLOGIN.setOnClickListener(new View.OnClickListener() {
+
+                                public void onClick(View view) {
+
+                                    fbLogin();
+
+                                }
+                            });
+
+                        }
+                    });
+                } catch (final Exception ex) {
+                    Log.i("Main activity : ", "Exception in thread");
                 }
             }
-
-        });
-
-        // Link to Register Screen
-        btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
-
-                startActivity(i);
-                finish();
-            }
-        });
-        FBLOGIN.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-
-                fbLogin();
-
-            }
-        });
+        }.start();
 
 
         // hash key for fb
