@@ -61,7 +61,8 @@ public class ActivityFake extends AppCompatActivity {
     public static void  InitializeObjectIDNotifStart(Context x){
         final String appVersion = "v1";
         Backendless.initApp(x, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-        FacebookSdk.sdkInitialize(x);
+        if(!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(x);
 
         String userToken = UserTokenStorageFactory.instance().getStorage().get();
 

@@ -27,7 +27,8 @@ public class invitingFriendsActivity extends AppCompatActivity {
 
 
         // app link url
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        if(!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(getApplicationContext());
         Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         if (targetUrl != null) {
             Log.i("Activity", "App Link Target URL: " + targetUrl.toString());

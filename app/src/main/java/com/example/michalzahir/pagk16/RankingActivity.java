@@ -82,7 +82,12 @@ public class RankingActivity extends AppCompatActivity {
                 queryOptions.setPageSize(100);
                 dataQuery.setQueryOptions( queryOptions );
 
-                BackendlessCollection<BackendlessUser> users = Backendless.Data.of( BackendlessUser.class ).find( dataQuery );
+                BackendlessCollection<BackendlessUser> users = null;
+                try {
+                    users = Backendless.Data.of( BackendlessUser.class ).find( dataQuery );
+                } catch (BackendlessException e) {
+                    e.printStackTrace();
+                }
                 int i =1;
                 int TableSize = users.getTotalObjects();
                   UsrsobjIDsTab  = new String[TableSize];

@@ -196,7 +196,8 @@ public class pushNotification {
              playerObejtID.setUserObjectID(NewGameActivity.result.getSecondUSerObjectID());
              final String appVersion = "v1";
              Backendless.initApp(c, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-             FacebookSdk.sdkInitialize(c);
+            if(!FacebookSdk.isInitialized())
+                FacebookSdk.sdkInitialize(c);
         }
         Log.d(TAG, "Checking after the fix player object ID " + playerObejtID.getUserObjectID() +"   result first user object ID  " +NewGameActivity.result.getFirstUSerObjectID() + "  second user object ID"+NewGameActivity.result.getSecondUSerObjectID() + "  1st user result"+NewGameActivity.result.getFirstUserResult() +"  scnd user result"+NewGameActivity.result.getSecondtUserResult()  );
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID())) {

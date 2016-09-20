@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.michalzahir.pagk16">
+    package="com.example.michalzahir.pagk16" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,10 +18,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <receiver
             android:name=".PushReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -33,7 +33,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +74,7 @@
             android:name=".questionActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".resultActivity" />
-        <activity android:name=".FacebookUsers.invitingFriendsActivity">
+        <activity android:name=".FacebookUsers.invitingFriendsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -94,9 +94,11 @@
         <activity android:name=".SavedGames.SavedGamesActivity" />
         <activity android:name=".RankingActivity" />
         <activity android:name=".splashScreenActivity" />
-        <activity android:name=".Splashes.splashFbLoginActivity"
-            android:theme="@style/SplashTheme">
-
+        <activity
+            android:name=".Splashes.splashFbLoginActivity"
+            android:theme="@style/SplashTheme" >
+        </activity>
+        <activity android:name=".Splashes.SplashScreenActivity" >
         </activity>
     </application>
 
