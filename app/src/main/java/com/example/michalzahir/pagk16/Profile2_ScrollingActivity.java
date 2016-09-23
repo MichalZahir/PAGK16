@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -71,212 +72,286 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     AccessToken accessToken;
     public static String AnsweredQuestonsIds;
     public static String OpponentAnsweredQuestonsIds = "";
+    AdRequest adRequest;
 
     // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
-        Runnable runnable = new Runnable() {
+
+        Thread t = new Thread(new Runnable()  {
             @Override
             public void run() {
-            }
-        };
-        //new Thread(runnable).start();
-        final String appVersion = "v1";
+                //If there are stories, add them to the table
+                final String appVersion = "v1";
 
-        Backendless.initApp(this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
-        if (!FacebookSdk.isInitialized())
-            FacebookSdk.sdkInitialize(getApplicationContext());
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        if (resultActivity.mInterstitialAd == null) {
-            resultActivity.mInterstitialAd = new InterstitialAd(this);
-            resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                Backendless.initApp(Profile2_ScrollingActivity.this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
+                if (!FacebookSdk.isInitialized())
+                    FacebookSdk.sdkInitialize(getApplicationContext());
+                MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
 
-        }
-        if (resultActivity.mInterstitialAd != null && !resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
-            resultActivity.loadInterstitialAd(this);
-        }
-        //AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        //ProfileAdView.loadAd(adRequest);
+                //AdView ProfileAdView = (AdView) findViewById(R.id.adViewProfile);
+                adRequest = new AdRequest.Builder().build();
+                //ProfileAdView.loadAd(adRequest);
 
 
-        if (RegisterActivity.RegisterProgreessDialogue != null)
-            RegisterActivity.RegisterProgreessDialogue.dismiss();
-        if (MainActivity.FBLoginProgreessDialogue != null)
-            MainActivity.FBLoginProgreessDialogue.dismiss();
+                MainActivity.user = User.getInstance();
 
-        MainActivity.user = User.getInstance();
-        UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
-        wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);
-        lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
-        drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
-        playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
-        SavedGamesButton = (Button) findViewById(R.id.savedGamesButton);
-        pointsTextView = (TextView) findViewById(R.id.PointsTextView);
-        ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
-        newGameButton = (Button) findViewById(R.id.newGameButton);
-        RankingTextView = (TextView) findViewById(R.id.tvNumber3);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
-        setSupportActionBar(toolbar);
-        RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Intent intent = getIntent();
+
+                Intent intent = getIntent();
 //        if ( intent.hasExtra("caller")) {
 //            splashFbLoginActivity.splash.finish();
 //
 //        }
 
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    logOut();
-//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
+
+                final String currentUserObjectId = Backendless.UserService.loggedInUser();
+                //MainActivity.user.setUserObjectId(currentUserObjectId);
+                if (currentUserObjectId !=null  && !currentUserObjectId.equals("")){
+
+                    BackendlessUser backendlessUser = Backendless.UserService.findById(currentUserObjectId);
+
+                            Backendless.UserService.setCurrentUser(backendlessUser);
+                            playerObejtID.setUserObjectID(currentUserObjectId);
+                            UserName = "" + backendlessUser.getProperty("name");
+                            wonGames = (int) backendlessUser.getProperty("WON");
+                            lostGames = (int) backendlessUser.getProperty("LOST");
+                            drawGames = (int) backendlessUser.getProperty("DRAW");
+                            Ranking = (int) backendlessUser.getProperty("RANKING");
+                            OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
+                            usersCount = (int) backendlessUser.getProperty("usersCount");
+                            points = (int) backendlessUser.getProperty("POINTS");
+                            AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
+                            MainActivity.user.setName(UserName);
+
+//                            if (OldRanking < Ranking) {
+//                                RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+//                            } else if (OldRanking > Ranking)
+//                                RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+//                            else if (OldRanking == Ranking)
+//                                RankingArrowImaView.setBackgroundResource(R.drawable.same);
+                            playedGames = wonGames + lostGames + drawGames;
+
+                            // UserNameTectView.setText(UserName);
+                            MainActivity.userName.setUserName(UserName);
+                            MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
+//                            lostGamesTextView.setText(String.valueOf(lostGames));
+//                            drawGamesTextView.setText(String.valueOf(drawGames));
+//                            playedGamesTextView.setText(String.valueOf(playedGames));
+//                            wonGamesTextView.setText(String.valueOf(wonGames));
+//
+//                            RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
+//                            pointsTextView.setText(String.valueOf(points));
+
+                        }
+
+
+
+                System.out.println("user id from token " + currentUserObjectId);
+
+                accessToken = AccessToken.getCurrentAccessToken();
+                if (accessToken!=null ) {
+                    MainActivity.LoggedInWithFB = true;
+                    // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
+                    wonGames = intent.getIntExtra("wonGames", -1);
+                    lostGames = intent.getIntExtra("lostGames", -1);
+                    drawGames = intent.getIntExtra("drawGames", -1);
+                    playedGames = intent.getIntExtra("playedGames", -1);
+                    Ranking = intent.getIntExtra("Ranking", -1);
+                    usersCount = intent.getIntExtra("usersCount", -1);
+                    points = intent.getIntExtra("points", -1);
+                    RankingArrow = intent.getStringExtra("RANKINGARROW");
+                    OldRanking = intent.getIntExtra("OLDRANKING", -1);
+
+                    Profile profile = Profile.getCurrentProfile();
+                    final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
+                    if (wonGames == -1) {
+                        final int[][] tab = new int[1][1];
+
+                        Thread t = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                tab[0] = com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+
+                            }
+                        });
+
+                        t.start(); // spawn thread
+                        try {
+                            t.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        wonGames = (tab[0][0]);
+                        drawGames = (tab[0][1]);
+                        lostGames = (tab[0][2]);
+                        playedGames = (tab[0][3]);
+                        Ranking = (tab[0][4]);
+                        usersCount = (tab[0][5]);
+                        points = (tab[0][6]);
+                        OldRanking = (tab[0][7]);
+//                wonGamesTextView.setText(String.valueOf(tab[0][0]));
+//                drawGamesTextView.setText(String.valueOf(tab[0][1]));
+//                lostGamesTextView.setText(String.valueOf(tab[0][2]));
+//                playedGamesTextView.setText(String.valueOf(tab[0][3]));
+//                RankingTextView.setText(String.valueOf(tab[0][4]) + " from total " + tab[0][5] + " users");
+//                Ranking = tab[0][4];
+//                pointsTextView.setText(String.valueOf(tab[0][6]));
+//                OldRanking = tab[0][7];
+//                        if (OldRanking < Ranking) {
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+//                        } else if (OldRanking > Ranking)
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+//                        else if (OldRanking == Ranking)
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.same);
+
+                    }
+                    //else {
+//                        lostGamesTextView.setText(String.valueOf(lostGames));
+//                        drawGamesTextView.setText(String.valueOf(drawGames));
+//                        playedGamesTextView.setText(String.valueOf(playedGames));
+//                        wonGamesTextView.setText(String.valueOf(wonGames));
+//                        RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
+//                        pointsTextView.setText(String.valueOf(points));
+//                        if (OldRanking < Ranking) {
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
+//                        } else if (OldRanking > Ranking)
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
+//                        else if (OldRanking == Ranking)
+//                            RankingArrowImaView.setBackgroundResource(R.drawable.same);
+                    //   }
+
+
+                    UserName = UserNameFb;
+                    MainActivity.user.setName(UserNameFb);
+//                    UserNameTectView.setText(UserName);
+                    MainActivity.userName.setUserName(UserName);
                 }
-            });
-        }
-        RankingLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
-                RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait, it might take a minute to load the data ", true);
 
 
-                Intent i = new Intent(Profile2_ScrollingActivity.this,
-                        RankingActivity.class);
+                }
 
-                startActivity(i);
-                finish();
-
-            }
         });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        final String currentUserObjectId = Backendless.UserService.loggedInUser();
-        //MainActivity.user.setUserObjectId(currentUserObjectId);
-        if (currentUserObjectId != null&& !currentUserObjectId.equals(""))
-            Backendless.UserService.findById(currentUserObjectId, new AsyncCallback<BackendlessUser>() {
+        try {
+            // code runs in a thread
+            runOnUiThread(new Runnable() {
                 @Override
-                public void handleResponse(BackendlessUser backendlessUser) {
+                public void run() {
 
-                    Backendless.UserService.setCurrentUser(backendlessUser);
-                    playerObejtID.setUserObjectID(currentUserObjectId);
-                    UserName = "" + backendlessUser.getProperty("name");
-                    wonGames = (int) backendlessUser.getProperty("WON");
-                    lostGames = (int) backendlessUser.getProperty("LOST");
-                    drawGames = (int) backendlessUser.getProperty("DRAW");
-                    Ranking = (int) backendlessUser.getProperty("RANKING");
-                    OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
-                    usersCount = (int) backendlessUser.getProperty("usersCount");
-                    points = (int) backendlessUser.getProperty("POINTS");
-                    AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
-                    MainActivity.user.setName(UserName);
-
+                    if (RegisterActivity.RegisterProgreessDialogue != null)
+                        RegisterActivity.RegisterProgreessDialogue.dismiss();
+                    if (MainActivity.FBLoginProgreessDialogue != null)
+                        MainActivity.FBLoginProgreessDialogue.dismiss();
+                    UserNameTectView = (TextView) findViewById(R.id.UserNameIcone);
+                    wonGamesTextView = (TextView) findViewById(R.id.tvNumber5);
+                    lostGamesTextView = (TextView) findViewById(R.id.tvNumber6);
+                    drawGamesTextView = (TextView) findViewById(R.id.tvNumber1);
+                    playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
+                    SavedGamesButton = (Button) findViewById(R.id.savedGamesButton);
+                    pointsTextView = (TextView) findViewById(R.id.PointsTextView);
+                    ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
+                    newGameButton = (Button) findViewById(R.id.newGameButton);
+                    RankingTextView = (TextView) findViewById(R.id.tvNumber3);
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                    RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
+                    setSupportActionBar(toolbar);
+                    RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
+                    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                    lostGamesTextView.setText(String.valueOf(lostGames));
+                    drawGamesTextView.setText(String.valueOf(drawGames));
+                    playedGamesTextView.setText(String.valueOf(playedGames));
+                    wonGamesTextView.setText(String.valueOf(wonGames));
+                    RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
+                    pointsTextView.setText(String.valueOf(points));
                     if (OldRanking < Ranking) {
                         RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
                     } else if (OldRanking > Ranking)
                         RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
                     else if (OldRanking == Ranking)
                         RankingArrowImaView.setBackgroundResource(R.drawable.same);
-                    playedGames = wonGames + lostGames + drawGames;
-
                     UserNameTectView.setText(UserName);
-                    MainActivity.userName.setUserName(UserName);
-                    MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
-                    lostGamesTextView.setText(String.valueOf(lostGames));
-                    drawGamesTextView.setText(String.valueOf(drawGames));
-                    playedGamesTextView.setText(String.valueOf(playedGames));
-                    wonGamesTextView.setText(String.valueOf(wonGames));
 
-                    RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
-                    pointsTextView.setText(String.valueOf(points));
-
-                }
-
-                @Override
-                public void handleFault(BackendlessFault fault) {
-                    System.err.println("Error - Detail " + fault.getDetail() + " Message  " + fault.getMessage() + fault.getCode());
-                }
-            });
-        System.out.println("user id from token " + currentUserObjectId);
-
-        accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken != null) {
-            MainActivity.LoggedInWithFB = true;
-            // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
-            wonGames = intent.getIntExtra("wonGames", -1);
-            lostGames = intent.getIntExtra("lostGames", -1);
-            drawGames = intent.getIntExtra("drawGames", -1);
-            playedGames = intent.getIntExtra("playedGames", -1);
-            Ranking = intent.getIntExtra("Ranking", -1);
-            usersCount = intent.getIntExtra("usersCount", -1);
-            points = intent.getIntExtra("points", -1);
-            RankingArrow = intent.getStringExtra("RANKINGARROW");
-            OldRanking = intent.getIntExtra("OLDRANKING", -1);
-
-            Profile profile = Profile.getCurrentProfile();
-            final String UserNameFb = profile.getFirstName() + " " + profile.getLastName();
-            if (wonGames == -1) {
-                final int[][] tab = new int[1][1];
-
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        tab[0] = com.example.michalzahir.pagk16.Helper.fbUsrStatistics.GetFbUsrStatistics(UserNameFb);
+                    AdView mAdView = (AdView) findViewById(R.id.adView);
+                    if (resultActivity.mInterstitialAd == null) {
+                        resultActivity.mInterstitialAd = new InterstitialAd(Profile2_ScrollingActivity.this);
+                        resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
                     }
-                });
+                    if (resultActivity.mInterstitialAd != null && !resultActivity.mInterstitialAd.isLoading() && !resultActivity.mInterstitialAd.isLoaded()) {
+                        resultActivity.loadInterstitialAd(Profile2_ScrollingActivity.this);
+                    }
+                    mAdView.loadAd(adRequest);
 
-                t.start(); // spawn thread
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+                    if (fab != null) {
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                logOut();
+//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+                            }
+                        });
+                    }
+                    RankingLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
+                            RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait, it might take a minute to load the data ", true);
+
+
+                            Intent i = new Intent(Profile2_ScrollingActivity.this,
+                                    RankingActivity.class);
+
+                            startActivity(i);
+                            finish();
+
+                        }
+                    });
+                    newGameButton.setOnClickListener(new View.OnClickListener() {
+
+                        public void onClick(View view) {
+                            Intent i = new Intent(getApplicationContext(),
+                                    NewGameActivity.class);
+                            //i.setFlags(16777216);
+                            startActivity(i);
+                            finish();
+
+
+                        }
+                    });
+                    SavedGamesButton.setOnClickListener(new View.OnClickListener() {
+
+                        public void onClick(View view) {
+                            RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
+                            RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait a second until we load data ", true);
+                            Intent i = new Intent(getApplicationContext(),
+                                    SavedGamesActivity.class);
+                            startActivity(i);
+                            finish();
+
+
+                        }
+                    });
                 }
+            });
+        } catch (final Exception ex) {
+            Log.i("---", "Exception in thread");
+        }
 
 
-                wonGamesTextView.setText(String.valueOf(tab[0][0]));
-                drawGamesTextView.setText(String.valueOf(tab[0][1]));
-                lostGamesTextView.setText(String.valueOf(tab[0][2]));
-                playedGamesTextView.setText(String.valueOf(tab[0][3]));
-                RankingTextView.setText(String.valueOf(tab[0][4]) + " from total " + tab[0][5] + " users");
-                Ranking = tab[0][4];
-                pointsTextView.setText(String.valueOf(tab[0][6]));
-                OldRanking = tab[0][7];
-                if (OldRanking < Ranking) {
-                    RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
-                } else if (OldRanking > Ranking)
-                    RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
-                else if (OldRanking == Ranking)
-                    RankingArrowImaView.setBackgroundResource(R.drawable.same);
-
-            } else {
-                lostGamesTextView.setText(String.valueOf(lostGames));
-                drawGamesTextView.setText(String.valueOf(drawGames));
-                playedGamesTextView.setText(String.valueOf(playedGames));
-                wonGamesTextView.setText(String.valueOf(wonGames));
-                RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
-                pointsTextView.setText(String.valueOf(points));
-                if (OldRanking < Ranking) {
-                    RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
-                } else if (OldRanking > Ranking)
-                    RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
-                else if (OldRanking == Ranking)
-                    RankingArrowImaView.setBackgroundResource(R.drawable.same);
-            }
-
-
-            UserName = UserNameFb;
-            MainActivity.user.setName(UserNameFb);
-            UserNameTectView.setText(UserName);
-            MainActivity.userName.setUserName(UserName);
 //            try {
 //
 //
@@ -288,35 +363,10 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 //            }
 
         }
-        newGameButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        NewGameActivity.class);
-                //i.setFlags(16777216);
-                startActivity(i);
-                finish();
 
 
-            }
-        });
-        SavedGamesButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
-                RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait a second until we load data ", true);
-                Intent i = new Intent(getApplicationContext(),
-                        SavedGamesActivity.class);
-                startActivity(i);
-                finish();
 
 
-            }
-        });
-
-
-    }
 
     @Override
     protected void onDestroy() {
