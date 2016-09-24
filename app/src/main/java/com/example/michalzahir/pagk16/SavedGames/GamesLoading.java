@@ -10,6 +10,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.QueryOptions;
 import com.example.michalzahir.pagk16.ConstantsClass;
 import com.example.michalzahir.pagk16.QUESTIONS;
 import com.example.michalzahir.pagk16.playerObejtID;
@@ -30,6 +31,9 @@ public class GamesLoading {
         Log.d(TAG, "player object ID b4 the query " + playerObejtID.getUserObjectID());
         String whereClause = "firstUserID='"+ playerObejtID.getUserObjectID()+"'"+"OR secondUserID='"+ playerObejtID.getUserObjectID()+"'";
         final BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setPageSize(100);
+        dataQuery.setQueryOptions(queryOptions);
         dataQuery.setWhereClause(whereClause);
         final BackendlessCollection<Saved_Games>[] foundGames = new BackendlessCollection[]{null};
 
@@ -50,9 +54,9 @@ public class GamesLoading {
                     try {
                         for( Saved_Games q : foundGames[0].getData() )
                         {
-                            Saved_Games response = Backendless.Persistence.of( Saved_Games.class ).findById(q.getObjectId());
-                            Log.d(TAG, "The saved Games were Found  First user ID  " +response.getFirstUserID()+" SecondUserID" +response.getSecondUserID() + " Saved Games Object ID:" +response.getObjectId());
-                            SavedGameslist.add(response);
+                           // Saved_Games response = Backendless.Persistence.of( Saved_Games.class ).findById(q.getObjectId());
+                            Log.d(TAG, "The saved Games were Found  First user ID  " +q.getFirstUserID()+" SecondUserID" +q.getSecondUserID() + " Saved Games Object ID:" +q.getObjectId());
+                            SavedGameslist.add(q);
                         }
                     } catch (BackendlessException e) {
                         e.printStackTrace();

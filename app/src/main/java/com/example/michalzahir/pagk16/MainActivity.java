@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
+
         new Thread() {
             @Override
             public void run() {
@@ -107,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
                 String userToken = UserTokenStorageFactory.instance().getStorage().get();
 
                 if (userToken != null && !userToken.equals("")) {  // user login is available, skip the login activity/login form
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            setContentView(R.layout.activity_splash_screen);
+//                        }});
+
                     String s = Backendless.UserService.loggedInUser();
                     LoggedInWithFB = false;
 
@@ -122,6 +130,11 @@ public class MainActivity extends AppCompatActivity {
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
                 Log.i("Fb access token  ", accessToken + "");
                 if (accessToken != null) {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            setContentView(R.layout.activity_splash_screen);
+//                        }});
                     LoggedInWithFB = true;
                     System.out.println("access token user token facebook : " + accessToken);
                     Profile profile = Profile.getCurrentProfile();

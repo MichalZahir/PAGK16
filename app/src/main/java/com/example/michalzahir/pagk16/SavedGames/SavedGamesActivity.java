@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.Helper.EndlessScrollListener;
 import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.Profile2_ScrollingActivity;
 import com.example.michalzahir.pagk16.R;
@@ -26,6 +27,24 @@ public class SavedGamesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GamesLoading.loadSavedGames();
+
+
+            }
+        });
+
+        t.start(); // spawn thread
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_games);
         AdView LoginAdView = (AdView) findViewById(R.id.adViewSavedGame);
@@ -52,6 +71,16 @@ public class SavedGamesActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, SavedGamesArray);
 
         ListView listView = (ListView) findViewById(R.id.mobile_list);
+        listView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
         listView.setAdapter(adapter);
         Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
@@ -77,6 +106,11 @@ public class SavedGamesActivity extends AppCompatActivity {
             }});
 
 
+    }
+    public void customLoadMoreDataFromApi(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
     }
     @Override
     public void onBackPressed() {
