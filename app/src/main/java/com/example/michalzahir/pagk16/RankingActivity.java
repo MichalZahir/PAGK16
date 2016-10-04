@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,10 +49,11 @@ public class RankingActivity extends AppCompatActivity {
     String UsrsDeviceIDsTab [];
     String UsrsNamesTab [];
     String AnsweredQuestionsIds [];
+    //String RankingArrows [];
     JSONArray Friends;
     public static Boolean RankingGame = false ;
     String UserName;
-    View wantedView = null;
+    //View wantedView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +63,20 @@ public class RankingActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         LoginAdView.loadAd(adRequest);
 
-       if (MainActivity.LoggedInWithFB) {
-             Friends = getFriendList(this);
-       }
-
-
-            Highlighted.clear();
-
 
 
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+
+                if (MainActivity.LoggedInWithFB) {
+                    Friends = getFriendList(RankingActivity.this);
+                }
+
+
+                Highlighted.clear();
+
                 BackendlessDataQuery dataQuery = new BackendlessDataQuery();
                 System.out.println("set Ranking start");
 
@@ -94,6 +97,7 @@ public class RankingActivity extends AppCompatActivity {
                   UsrsDeviceIDsTab   = new String[TableSize];
                   UsrsNamesTab  = new String[TableSize];
                 AnsweredQuestionsIds = new String[TableSize];
+                //RankingArrows = new String[TableSize];
                 while (users.getCurrentPage().size() > 0)
                 {
 
@@ -124,6 +128,7 @@ public class RankingActivity extends AppCompatActivity {
                         UsrsNamesTab[i-1] = UserName;
                         UsrsDeviceIDsTab[i-1] = (String) user.getProperty("Device_ID");
                         AnsweredQuestionsIds[i-1] = (String) user.getProperty("AnsweredQuestionsIDs");
+                       // RankingArrows[i-1] = (String) user.getProperty("RANKINGARROW");
                         i++;
                     }
                     System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
@@ -161,8 +166,9 @@ public class RankingActivity extends AppCompatActivity {
 
 
                 TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
-
+                //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
                 tvName.setText(getItem(position));
+                //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
                 tvName.setTextColor(Color.parseColor("#424242"));
                 System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
 

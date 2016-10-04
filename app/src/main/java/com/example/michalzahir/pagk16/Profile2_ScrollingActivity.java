@@ -346,7 +346,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                             RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait a second until we load data ", true);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data..... ", "Please wait a second until we load data ", true);
                             Intent i = new Intent(getApplicationContext(),
                                     SavedGamesActivity.class);
                             startActivity(i);

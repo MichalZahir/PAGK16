@@ -23,6 +23,7 @@ import com.google.android.gms.ads.AdView;
 
 public class SavedGamesActivity extends AppCompatActivity {
     private static final String TAG = "SavedGamesActivity";
+      String [] SavedGamesArray;
     String[] mobileArray = {"Android","IPhone","WindowsMobile","Blackberry","WebOS","Ubuntu","Windows7","Max OS X", "asdasd","asd","asd","asd","asd", "asd","qweqwe","qwe","qwe","qwe","qwe","qwe","qwe"};
 
     @Override
@@ -50,22 +51,37 @@ public class SavedGamesActivity extends AppCompatActivity {
         AdView LoginAdView = (AdView) findViewById(R.id.adViewSavedGame);
         AdRequest adRequest = new AdRequest.Builder().build();
         LoginAdView.loadAd(adRequest);
-        GamesLoading.loadSavedGames();
-        int i =1;
-        int d =0;
-        final String [] SavedGamesArray = new String[GamesLoading.SavedGameslist.size()];
-        Log.d(TAG, "The moment before going into the loop for after loading the games");
-         for (Saved_Games sg :GamesLoading.SavedGameslist){
-          SavedGamesArray[d]= "Game " +i +": " +SetWhosTurn(sg);
-             Log.d(TAG, "The saved Games Array object ID = " + sg.getObjectId() + "who's turn" +sg.getWhosTurn());
+        //GamesLoading.loadSavedGames();
+        Thread a = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int i =1;
+                int d =0;
+                 SavedGamesArray = new String[GamesLoading.SavedGameslist.size()];
+                Log.d(TAG, "The moment before going into the loop for after loading the games");
+                for (Saved_Games sg :GamesLoading.SavedGameslist){
+                    SavedGamesArray[d]= "Game " +i +": " +SetWhosTurn(sg);
+                    Log.d(TAG, "The saved Games Array object ID = " + sg.getObjectId() + "who's turn" +sg.getWhosTurn());
 
 
 
 
-             i++;
-             d++;
+                    i++;
+                    d++;
 
-         }
+                }
+
+
+            }
+        });
+
+        a.start(); // spawn thread
+        try {
+            a.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, SavedGamesArray);

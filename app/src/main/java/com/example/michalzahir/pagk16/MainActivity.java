@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void handleResponse(BackendlessUser backendlessUser) {
                         // user logged in successfully
-
+                        String FbProfileID;
                         Intent i = new Intent(getApplicationContext(),
                                 Profile2_ScrollingActivity.class);
                         Profile profile = Profile.getCurrentProfile();
@@ -434,6 +434,7 @@ public class MainActivity extends AppCompatActivity {
                         playerObejtID.setUserObjectID(currentUserObjectId);
                         String ProjectNumberNotification = "687259024455";
                         String UserNameFb = profile.getFirstName() + "  " + profile.getLastName();
+                        FbProfileID = profile.getId();
                         i.putExtra("name", UserNameFb);
                         //startActivity(i);
                         startActivityForResult(i, 1);
@@ -445,10 +446,10 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
                         } catch (BackendlessException e) {
-                            RegisterDeviceUpdateUserDeviceID();
+                            RegisterDeviceUpdateUserDeviceID(FbProfileID);
                         }
                         if (DeviceID == null || DeviceID == "")
-                            RegisterDeviceUpdateUserDeviceID();
+                            RegisterDeviceUpdateUserDeviceID(FbProfileID);
 
 
                     }
@@ -478,6 +479,30 @@ public class MainActivity extends AppCompatActivity {
                 String Device_ID = Messaging.DEVICE_ID;
                 Log.d(TAG, "The Device ID is :  " + Device_ID);
                 UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID);
+                user.setDeviceID(Device_ID);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d(TAG, "Device Not Registered .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+            }
+        });
+
+
+    }
+    public void RegisterDeviceUpdateUserDeviceID(final String FbProfileID) {
+
+
+        String ProjectNumberNotification = "687259024455";
+        //Backendless.Messaging.getDeviceRegistration().
+        // TODO: 2016-06-01 Add checking for the device, if registered don't go through the registration.
+        Backendless.Messaging.registerDevice(ProjectNumberNotification, "default", new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                Log.d(TAG, "Device Registered for backendless messaging and push notifications.   ");
+                String Device_ID = Messaging.DEVICE_ID;
+                Log.d(TAG, "The Device ID is :  " + Device_ID);
+                UserUpdatePushNotif.UpdateUserWithDeviceID(Device_ID,FbProfileID);
                 user.setDeviceID(Device_ID);
             }
 
