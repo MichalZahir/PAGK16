@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         Log.d(TAG, "Failed to logging with Facebook .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
-                        FBLoginProgreessDialogue.dismiss();
+                        //FBLoginProgreessDialogue.dismiss();
                     }
                 });
         //RegisterDeviceUpdateUserDeviceID();

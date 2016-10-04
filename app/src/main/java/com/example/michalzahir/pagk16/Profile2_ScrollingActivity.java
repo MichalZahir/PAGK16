@@ -1,29 +1,38 @@
 package com.example.michalzahir.pagk16;
 
+
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Process;
+
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.servercode.IBackendlessService;
-import com.example.michalzahir.pagk16.Helper.fbUsrStatistics;
+
 import com.example.michalzahir.pagk16.SavedGames.SavedGamesActivity;
 import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.model.User;
@@ -35,11 +44,8 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
+
+
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -58,6 +64,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private Button newGameButton;
     private Button SavedGamesButton;
     private ImageView RankingArrowImaView;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
     static public ProgressDialog RankingProgreessDialogue;
     int wonGames;
     int lostGames;
@@ -73,6 +81,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     public static String AnsweredQuestonsIds;
     public static String OpponentAnsweredQuestonsIds = "";
     AdRequest adRequest;
+
 
     // TODO: 2016-06-28  fix the problem with the late updating of the info on the profile activity.
     @Override
@@ -264,9 +273,10 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     RankingTextView = (TextView) findViewById(R.id.tvNumber3);
                     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                     RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
+
                     setSupportActionBar(toolbar);
                     RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
-                    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                    //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                     lostGamesTextView.setText(String.valueOf(lostGames));
                     drawGamesTextView.setText(String.valueOf(drawGames));
                     playedGamesTextView.setText(String.valueOf(playedGames));
@@ -293,16 +303,16 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     mAdView.loadAd(adRequest);
 
 
-                    if (fab != null) {
-                        fab.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                logOut();
-//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-                            }
-                        });
-                    }
+//                    if (fab != null) {
+//                        fab.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                logOut();
+////                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                            .setAction("Action", null).show();
+//                            }
+//                        });
+//                    }
                     RankingLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -345,6 +355,30 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
                         }
                     });
+
+
+
+                    toolbar.setNavigationIcon(R.drawable.logout2);
+                    toolbar.setNavigationContentDescription("Logout");
+
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(Profile2_ScrollingActivity.this, "asd"+"clicked on menu" , Toast.LENGTH_SHORT).show();
+                            logOut();
+                        }
+
+                    });
+
+
+//                    if (savedInstanceState == null) {
+//                        selectItem(0);
+//                    }
+
+
+
+
                 }
             });
         } catch (final Exception ex) {
@@ -422,4 +456,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+
+
+
 }
+
