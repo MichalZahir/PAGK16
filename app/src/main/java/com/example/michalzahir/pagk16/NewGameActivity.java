@@ -128,12 +128,14 @@ public class NewGameActivity extends AppCompatActivity {
 
 
 
+                Intent i = new Intent(getApplicationContext(),rankingProfileActivity.class);
+                startActivity(i);
 
-                RankingActivity.RankingGame =false;
-                 if (!MainActivity.LoggedInWithFB) {
-                    SetDialogueForNotFbLoggedusr();
-                } else
-                    com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
+//                RankingActivity.RankingGame =false;
+//                 if (!MainActivity.LoggedInWithFB) {
+//                    SetDialogueForNotFbLoggedusr();
+//                } else
+//                    com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
 
 
             }

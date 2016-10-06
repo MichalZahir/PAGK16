@@ -21,11 +21,12 @@ public class Users {
     private String RANKINGARROW;
     private int OLDRANKING;
     private String AnsweredQuestionsIDs;
-
+    private String FbProfile_ID;
     public Users() {
     }
 
-    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING, int usersCount, int POINTS, String RANKINGARROW, int OLDRANKING, String AnsweredQuestionsIDs) {
+    public Users(String objectId, int ID, Date created, Date updated, String device_ID, String name, int DRAW, int WON, int LOST, int RANKING,
+                 int usersCount, int POINTS, String RANKINGARROW, int OLDRANKING, String AnsweredQuestionsIDs, String FbProfile_ID) {
         this.objectId = objectId;
         this.ID = ID;
         this.created = created;
@@ -41,6 +42,7 @@ public class Users {
         this.RANKINGARROW = RANKINGARROW;
         this.OLDRANKING = OLDRANKING;
         this.AnsweredQuestionsIDs = AnsweredQuestionsIDs;
+        this.FbProfile_ID = FbProfile_ID;
     }
 
     public String getAnsweredQuestionsIDs() {
@@ -161,5 +163,13 @@ public class Users {
 
     public void setLOST(int LOST) {
         this.LOST = LOST;
+    }
+
+    public String getFbProfile_ID() {
+        return FbProfile_ID;
+    }
+
+    public void setFbProfile_ID(String fbProfile_ID) {
+        FbProfile_ID = fbProfile_ID;
     }
 }

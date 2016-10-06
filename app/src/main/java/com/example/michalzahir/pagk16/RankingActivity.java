@@ -26,6 +26,7 @@ import com.backendless.persistence.QueryOptions;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 import com.example.michalzahir.pagk16.Helper.EndlessScrollListener;
 import com.example.michalzahir.pagk16.Helper.myArrayAdapter;
+import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -48,6 +49,7 @@ public class RankingActivity extends AppCompatActivity {
     String UsrsobjIDsTab [];
     String UsrsDeviceIDsTab [];
     String UsrsNamesTab [];
+    BackendlessUser usrTable[];
     String AnsweredQuestionsIds [];
     //String RankingArrows [];
     JSONArray Friends;
@@ -97,6 +99,7 @@ public class RankingActivity extends AppCompatActivity {
                   UsrsDeviceIDsTab   = new String[TableSize];
                   UsrsNamesTab  = new String[TableSize];
                 AnsweredQuestionsIds = new String[TableSize];
+                usrTable = new BackendlessUser[TableSize];
                 //RankingArrows = new String[TableSize];
                 while (users.getCurrentPage().size() > 0)
                 {
@@ -128,6 +131,7 @@ public class RankingActivity extends AppCompatActivity {
                         UsrsNamesTab[i-1] = UserName;
                         UsrsDeviceIDsTab[i-1] = (String) user.getProperty("Device_ID");
                         AnsweredQuestionsIds[i-1] = (String) user.getProperty("AnsweredQuestionsIDs");
+                        usrTable[i-1] = user;
                        // RankingArrows[i-1] = (String) user.getProperty("RANKINGARROW");
                         i++;
                     }
