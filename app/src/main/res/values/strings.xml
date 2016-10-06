@@ -116,4 +116,6 @@
     <string name="NewGame">New Game</string>
     <string name="invite_other_friends">Invite Other Friends</string>
     <string name="title_activity_activity_saved_games">ActivitySavedGames</string>
+    <string name="play">Play</string>
+    <string name="chat">Chat</string>
 </resources>
