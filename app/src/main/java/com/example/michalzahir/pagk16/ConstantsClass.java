@@ -9,11 +9,11 @@ public class ConstantsClass {
     public final static int HistoryQuestiSize = 10;
     public final static int MedicineQuestiSize = 10;
     public final static int ScienceQuestiSize = 10;
-    public final static int QuestionsQuestSize = 10;
+    public   static int QuestionsQuestSize = 0;
     public final static int ChemistryQuestiSize = 10;
     public final static int GeographyQuestSize = 10;
     public final static int AstronomyQuestSize = 10;
     public final static int LiteratureQuestSize = 10;
-    public final static int QuestionsNumberToBeAsked = 6;
+    public final static int QuestionsNumberToBeAsked = 2;
 
 }

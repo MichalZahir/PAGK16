@@ -23,6 +23,7 @@ import com.backendless.BackendlessCollection;
 import com.backendless.Messaging;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
+import com.example.michalzahir.pagk16.Helper.GettinQuesQuantityDyn;
 import com.example.michalzahir.pagk16.Splashes.SplashScreenActivity;
 import com.example.michalzahir.pagk16.Splashes.splashFbLoginActivity;
 import com.example.michalzahir.pagk16.UsersDB.Users;
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
         new Thread() {
             @Override
             public void run() {
@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
                 final String appVersion = "v1";
                 Backendless.initApp(MainActivity.this, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
                 //String ProjectNumberNotification = "687259024455";
+                if (ConstantsClass.QuestionsQuestSize==0)
+                    ConstantsClass.QuestionsQuestSize= GettinQuesQuantityDyn.GetQuestionsQuantityDynamically();
 
                 MobileAds.initialize(AppContext, "ca-app-pub-3940256099942544~3347511713");
                 //RegisterDeviceUpdateUserDeviceID();
