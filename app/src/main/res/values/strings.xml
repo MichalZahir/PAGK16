@@ -118,4 +118,6 @@
     <string name="title_activity_activity_saved_games">ActivitySavedGames</string>
     <string name="play">Play</string>
     <string name="chat">Chat</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_ranking_temp">RankingActivityTemp</string>
 </resources>

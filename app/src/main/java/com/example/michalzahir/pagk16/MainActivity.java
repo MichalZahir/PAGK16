@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     user.setUserObjectId(UserObjectID[0]);
+                    MainActivity.userName.setUserNameUSrObjectID(UserObjectID[0]);
                     playerObejtID.setUserObjectID(UserObjectID[0]);
 //            String s = Backendless.UserService.loggedInUser();
 //            playerObejtID.setUserObjectID(s);

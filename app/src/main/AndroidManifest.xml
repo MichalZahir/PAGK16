@@ -96,9 +96,13 @@
         <activity android:name=".splashScreenActivity" />
         <activity
             android:name=".Splashes.splashFbLoginActivity"
-            android:theme="@style/SplashTheme"></activity>
-        <activity android:name=".Splashes.SplashScreenActivity"></activity>
-        <activity android:name=".rankingProfileActivity"></activity>
+            android:theme="@style/SplashTheme" />
+        <activity android:name=".Splashes.SplashScreenActivity" />
+        <activity android:name=".rankingProfileActivity" />
+        <activity
+            android:name=".RankingProfileActivityTemp"
+            android:label="@string/title_activity_ranking_temp"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

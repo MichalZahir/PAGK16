@@ -89,7 +89,7 @@ public class RegisterActivity extends Activity {
         // RegisterProgreessDialogue = new ProgressDialog(RegisterActivity.this);
        // RegisterProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         RegisterProgreessDialogue = ProgressDialog.show(RegisterActivity.this,"the user registration is being processed... ","Please wait a second ",true);
-
+        MainActivity.LoggedInWithFB = false;
         BackendlessUser user = new BackendlessUser();
         user.setProperty("name", name);
         user.setPassword(password);

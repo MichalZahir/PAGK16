@@ -19,6 +19,7 @@ import com.example.michalzahir.pagk16.SavingMyAnsweredQuestions.QuestionsIDs;
 import com.example.michalzahir.pagk16.ServiceAppOff.MyService;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -51,6 +52,8 @@ public class resultActivity extends AppCompatActivity {
         secondUserResultTextView = (TextView) findViewById(R.id.secondUserResult);
         firstUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.firstUserName);
         secondUserNameTextView = (com.example.michalzahir.pagk16.Helper.AutoResizeTextView) findViewById(R.id.secondUserName);
+        if (!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(getApplicationContext());
         shareDialog = new ShareDialog(this);
         callbackManager = CallbackManager.Factory.create();
 

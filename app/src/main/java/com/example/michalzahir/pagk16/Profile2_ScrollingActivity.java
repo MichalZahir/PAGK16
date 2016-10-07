@@ -76,7 +76,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     int usersCount;
     int points;
     String RankingArrow;
-    ImageView ProfilPicture;
+    //ImageView ProfilPicture;
     AccessToken accessToken;
     public static String AnsweredQuestonsIds;
     public static String OpponentAnsweredQuestonsIds = "";
@@ -268,7 +268,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     playedGamesTextView = (TextView) findViewById(R.id.tvNumber4);
                     SavedGamesButton = (Button) findViewById(R.id.savedGamesButton);
                     pointsTextView = (TextView) findViewById(R.id.PointsTextView);
-                    ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
+                    //ProfilPicture = (ImageView) findViewById(R.id.ProfilePic);
                     newGameButton = (Button) findViewById(R.id.newGameButton);
                     RankingTextView = (TextView) findViewById(R.id.tvNumber3);
                     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -365,7 +365,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(Profile2_ScrollingActivity.this, "asd"+"clicked on menu" , Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Profile2_ScrollingActivity.this, "asd"+"clicked on menu" , Toast.LENGTH_SHORT).show();
                             logOut();
                         }
 

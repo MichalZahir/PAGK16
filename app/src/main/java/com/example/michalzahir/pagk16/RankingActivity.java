@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.GpsStatus;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +50,8 @@ public class RankingActivity extends AppCompatActivity {
     String UsrsobjIDsTab [];
     String UsrsDeviceIDsTab [];
     String UsrsNamesTab [];
-    BackendlessUser usrTable[];
+    String FbProfileID [];
+    Users usrTable[];
     String AnsweredQuestionsIds [];
     //String RankingArrows [];
     JSONArray Friends;
@@ -99,7 +101,7 @@ public class RankingActivity extends AppCompatActivity {
                   UsrsDeviceIDsTab   = new String[TableSize];
                   UsrsNamesTab  = new String[TableSize];
                 AnsweredQuestionsIds = new String[TableSize];
-                usrTable = new BackendlessUser[TableSize];
+                FbProfileID = new String[TableSize];
                 //RankingArrows = new String[TableSize];
                 while (users.getCurrentPage().size() > 0)
                 {
@@ -131,7 +133,8 @@ public class RankingActivity extends AppCompatActivity {
                         UsrsNamesTab[i-1] = UserName;
                         UsrsDeviceIDsTab[i-1] = (String) user.getProperty("Device_ID");
                         AnsweredQuestionsIds[i-1] = (String) user.getProperty("AnsweredQuestionsIDs");
-                        usrTable[i-1] = user;
+                        FbProfileID[i-1] = (String) user.getProperty("FbProfile_ID");
+                        //usrTable[i-1] = (Users) user;
                        // RankingArrows[i-1] = (String) user.getProperty("RANKINGARROW");
                         i++;
                     }
@@ -210,26 +213,36 @@ public class RankingActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
 
                     //Toast.makeText(fbFriendsListActivity.this, "" + position + finalFriendslist.getJSONObject(position).getString("name") + "      " + finalFriendslist.getJSONObject(position), Toast.LENGTH_SHORT).show();
-                    MainActivity.userName.setOponnentName(UsrsNamesTab[position]);
-                    RankingGame = true;
+                Intent i = new Intent(getApplicationContext(),RankingProfileActivityTemp.class);
 
-                    result = new gameResult();
-                    MainActivity.userName.setOponnentUserObjectID(UsrsobjIDsTab[position]);
-                    result.setSecondUSerObjectID(UsrsobjIDsTab[position]);
-                    Profile2_ScrollingActivity.OpponentAnsweredQuestonsIds = AnsweredQuestionsIds[position];
+                i.putExtra("UsrsobjIDsTab",  UsrsobjIDsTab[position]);
+                i.putExtra("UsrsNamesTab",UsrsNamesTab[position]);
+                i.putExtra("AnsweredQuestionsIds",  AnsweredQuestionsIds[position]);
+                i.putExtra("UsrsDeviceIDsTab",  UsrsDeviceIDsTab[position]);
+                i.putExtra("FbProfileID",  FbProfileID[position]);
+                startActivity(i);
 
-                    result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
-                    result.setFirstUserResult(0);
-                    result.setSecondtUserResult(0);
-                    NewGameActivity.result = result;
-                    NewGameActivity.AddUserToQueue = false;
-                    fbFriendsListActivity.FbGame=false;
-                    pushNotification.OpponentDeviceID= UsrsDeviceIDsTab[position];
 
-                    playerObejtID.setUserObjectID(MainActivity.user.getUserObjectId());
-                    gameResult.questionsAnswered =0;
-
-                    com.example.michalzahir.pagk16.gettingQuestions.getQuestions(RankingActivity.this);
+//                    MainActivity.userName.setOponnentName(UsrsNamesTab[position]);
+//                    RankingGame = true;
+//
+//                    result = new gameResult();
+//                    MainActivity.userName.setOponnentUserObjectID(UsrsobjIDsTab[position]);
+//                    result.setSecondUSerObjectID(UsrsobjIDsTab[position]);
+//                    Profile2_ScrollingActivity.OpponentAnsweredQuestonsIds = AnsweredQuestionsIds[position];
+//
+//                    result.setFirstUSerObjectID(MainActivity.user.getUserObjectId());
+//                    result.setFirstUserResult(0);
+//                    result.setSecondtUserResult(0);
+//                    NewGameActivity.result = result;
+//                    NewGameActivity.AddUserToQueue = false;
+//                    fbFriendsListActivity.FbGame=false;
+//                    pushNotification.OpponentDeviceID= UsrsDeviceIDsTab[position];
+//
+//                    playerObejtID.setUserObjectID(MainActivity.user.getUserObjectId());
+//                    gameResult.questionsAnswered =0;
+//
+//                    com.example.michalzahir.pagk16.gettingQuestions.getQuestions(RankingActivity.this);
 
 
 

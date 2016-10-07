@@ -1,11 +1,16 @@
 package com.example.michalzahir.pagk16.UsersDB;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.backendless.BackendlessUser;
+
 import java.util.Date;
 
 /**
  * Created by zahirm on 2016-07-07.
  */
-public class Users {
+public class Users extends BackendlessUser implements Parcelable {
     private String objectId;
     private int ID;
     private Date created;
@@ -172,4 +177,35 @@ public class Users {
     public void setFbProfile_ID(String fbProfile_ID) {
         FbProfile_ID = fbProfile_ID;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] { this.objectId,
+                this.Device_ID,
+                this.name, this.AnsweredQuestionsIDs,this.FbProfile_ID
+        });
+    }
+    public Users(Parcel in){
+        String[] data = new String[5];
+        in.readStringArray(data);
+        this.objectId =data[0];
+        this.Device_ID = data[1];
+        this.name =data[2];
+        this.AnsweredQuestionsIDs =data[3];
+        this.FbProfile_ID = data[4];
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Users createFromParcel(Parcel in) {
+            return new Users(in);
+        }
+
+        public Users[] newArray(int size) {
+            return new Users[size];
+        }
+    };
 }
