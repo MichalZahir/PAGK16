@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -144,7 +145,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
                     notificationBuilder.setContentIntent(contentIntent);
                     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     notificationBuilder.setSound(uri);
-
+                    //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+                    //notificationBuilder.setLights(Color.RED, 3000, 3000);
 
                     Notification notification = notificationBuilder.build();
 
@@ -209,7 +211,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
             notificationBuilder.setContentIntent(contentIntent);
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             notificationBuilder.setSound(uri);
-
+            //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+            //notificationBuilder.setLights(Color.RED, 3000, 3000);
             Notification notification = notificationBuilder.build();
 
 
@@ -418,7 +421,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder.setSound(uri);
-
+        //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+        //notificationBuilder.setLights(Color.RED, 3000, 3000);
 
         Notification notification = notificationBuilder.build();
         //notification.defaults |= Notification.DEFAULT_VIBRATE;
@@ -521,6 +525,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         notificationBundle.putBoolean("correct_C", Correct_C);
         notificationBundle.putBoolean("correct_D", Correct_D);
         NewGameActivity.AddUserToQueue = false;
+        notificationBundle.putBoolean("AddUserToQueue",false);
         notificationBundle.putString("firstUSerObjectID", bundle.getString("firstUSerObjectID"));
         notificationBundle.putString("secondUSerObjectID", bundle.getString("secondUSerObjectID"));
         notificationBundle.putString("firstUserResult", bundle.getString("firstUserResult"));
@@ -549,7 +554,8 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder.setSound(uri);
-
+        //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+        //notificationBuilder.setLights(Color.RED, 3000, 3000);
 
         Notification notification = notificationBuilder.build();
         //notification.defaults |= Notification.DEFAULT_VIBRATE;

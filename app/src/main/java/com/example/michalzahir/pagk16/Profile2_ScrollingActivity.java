@@ -63,6 +63,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     private RelativeLayout RankingLayout;
     private Button newGameButton;
     private Button SavedGamesButton;
+    private Button LogOutTMP;
     private ImageView RankingArrowImaView;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -273,8 +274,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     RankingTextView = (TextView) findViewById(R.id.tvNumber3);
                     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                     RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
-
-                    setSupportActionBar(toolbar);
+                    LogOutTMP = (Button) findViewById(R.id.button2);
+                     setSupportActionBar(toolbar);
                     RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
                     //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                     lostGamesTextView.setText(String.valueOf(lostGames));
@@ -355,7 +356,14 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
                         }
                     });
+                    LogOutTMP.setOnClickListener(new View.OnClickListener(){
 
+
+                        @Override
+                        public void onClick(View v) {
+                            logOut();
+                        }
+                    });
 
 
                     toolbar.setNavigationIcon(R.drawable.logout2);

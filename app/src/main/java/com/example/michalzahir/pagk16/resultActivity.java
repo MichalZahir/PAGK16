@@ -46,7 +46,7 @@ public class resultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         //loadInterstitialAd(this);
-
+        initializeAd();
 
         firstUserResultTextView = (TextView) findViewById(R.id.firstUserResult);
         secondUserResultTextView = (TextView) findViewById(R.id.secondUserResult);
@@ -463,5 +463,13 @@ public class resultActivity extends AppCompatActivity {
         mInterstitialAd.loadAd(adRequest);
 
     }
+    public   void initializeAd(){
+        if (resultActivity.mInterstitialAd == null) {
+            resultActivity.mInterstitialAd = new InterstitialAd(resultActivity.this);
+            resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        }
+    }
+
 
 }

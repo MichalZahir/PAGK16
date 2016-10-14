@@ -120,4 +120,6 @@
     <string name="chat">Chat</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_ranking_temp">RankingActivityTemp</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="text_chat_title">Chat</string>
 </resources>

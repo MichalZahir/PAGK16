@@ -31,7 +31,8 @@ public class ActivityFake extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
        if (NewGameActivity.result==null) {
            NewGameActivity.result = new gameResult( );}
-
+        if (bundle.containsKey("AddUserToQueue"))
+            NewGameActivity.AddUserToQueue=false;
 
            NewGameActivity.result.setFirstUSerObjectID(bundle.getString("firstUSerObjectID"));
             NewGameActivity.result.setSecondUSerObjectID(bundle.getString("secondUSerObjectID"));

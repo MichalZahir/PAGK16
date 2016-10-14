@@ -68,6 +68,7 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
         AnsweredQuestionsIds = intent.getStringExtra("AnsweredQuestionsIds");
         UsrsDeviceIDs = intent.getStringExtra("UsrsDeviceIDsTab");
         UserNameTectView.setText(UserName);
+        blockButons(UsrsobjIDsTab);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -135,8 +136,17 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(RankingProfileActivityTemp.this, "This Action"+" will be available in the next release" , Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(RankingProfileActivityTemp.this,
+                        ChatActivity.class);
+                i.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
+                i.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
+                i.putExtra("UsrsNamesTab",UserName);
+                startActivity(i);
+
             }
         });
+
+
 
     }
     @Override
@@ -145,6 +155,14 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
             return super.dispatchTouchEvent(ev);
         } catch (Exception e) {
             return false;
+        }
+    }
+    public void blockButons(String UserObjectID){
+
+        if (playerObejtID.getUserObjectID().equals(UserObjectID)){
+
+            chatButton.setEnabled(false);
+            playButton.setEnabled(false);
         }
     }
 }

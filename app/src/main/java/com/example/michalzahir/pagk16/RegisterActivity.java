@@ -90,6 +90,7 @@ public class RegisterActivity extends Activity {
        // RegisterProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         RegisterProgreessDialogue = ProgressDialog.show(RegisterActivity.this,"the user registration is being processed... ","Please wait a second ",true);
         MainActivity.LoggedInWithFB = false;
+        MainActivity.user.setName(name);
         BackendlessUser user = new BackendlessUser();
         user.setProperty("name", name);
         user.setPassword(password);
@@ -150,6 +151,7 @@ public class RegisterActivity extends Activity {
                     Intent i = new Intent(getApplicationContext(),
                             Profile2_ScrollingActivity.class);
                     i.putExtra("name", name);
+                    MainActivity.user.setName(name);
                     RegisterDeviceUpdateUserDeviceID();
                     // startActivity(i);
                     startActivityForResult(i, 1);
