@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.GpsStatus;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,13 +59,16 @@ public class RankingActivity extends AppCompatActivity {
     JSONArray Friends;
     public static Boolean RankingGame = false ;
     String UserName;
+    ListView listView;
+    BackendlessCollection<BackendlessUser> users = null;
+    static int iCounter = 101;
     //View wantedView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
-        AdView LoginAdView = (AdView) findViewById(R.id.adViewRanking);
+        final AdView LoginAdView = (AdView) findViewById(R.id.adViewRanking);
         AdRequest adRequest = new AdRequest.Builder().build();
         LoginAdView.loadAd(adRequest);
 
@@ -89,7 +94,7 @@ public class RankingActivity extends AppCompatActivity {
                 queryOptions.setPageSize(100);
                 dataQuery.setQueryOptions( queryOptions );
 
-                BackendlessCollection<BackendlessUser> users = null;
+
                 try {
                     users = Backendless.Data.of( BackendlessUser.class ).find( dataQuery );
                 } catch (BackendlessException e) {
@@ -103,8 +108,8 @@ public class RankingActivity extends AppCompatActivity {
                 AnsweredQuestionsIds = new String[TableSize];
                 FbProfileID = new String[TableSize];
                 //RankingArrows = new String[TableSize];
-                while (users.getCurrentPage().size() > 0)
-                {
+                //while (users.getCurrentPage().size() > 0)
+                //{
 
                     System.out.println( "b4 the for loop size: " + users.getCurrentPage().size()  );
                     for (BackendlessUser user : users.getCurrentPage()) {
@@ -137,14 +142,81 @@ public class RankingActivity extends AppCompatActivity {
                         //usrTable[i-1] = (Users) user;
                        // RankingArrows[i-1] = (String) user.getProperty("RANKINGARROW");
                         i++;
+
                     }
+                    // Load one page into listView
+                      listView = (ListView) findViewById(R.id.listView);
+                    // Creating a button - Load More
+                    Button btnLoadMore = new Button(RankingActivity.this);
+                    btnLoadMore.setText("Load More");
+                    listView.addFooterView(btnLoadMore);
+                    final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                    final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            View view = convertView;
+//                if (view == null) {
+                            view = inflater.inflate(R.layout.item_layout, parent, false);
+//                }
+
+
+                            TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
+                            //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
+                            tvName.setText(getItem(position));
+                            //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
+                            tvName.setTextColor(Color.parseColor("#424242"));
+                            System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+
+                            if (RankingActivity.Highlighted.contains(position)) {
+
+                                String airi  =  getItem(position);
+                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
+
+                                System.out.println(" the item at the position in the list view : " + airi);
+
+                            }
+
+                            return view;
+                        }
+                    }; // simple textview for list item
+                    listView.setOnScrollListener(new EndlessScrollListener() {
+                        @Override
+                        public boolean onLoadMore(int page, int totalItemsCount) {
+                            // Triggered only when new data needs to be appended to the list
+                            // Add whatever code is needed to append new items to your AdapterView
+                            customLoadMoreDataFromApi(page);
+                            // or customLoadMoreDataFromApi(totalItemsCount);
+                            return true; // ONLY if more data is actually being loaded; false otherwise.
+                        }
+                    });
+
+                    listView.setAdapter(adapter);
+                    Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+                    //final BackendlessCollection<BackendlessUser> finalUsers = users;
+                    btnLoadMore.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View arg0) {
+                            // Starting a new async task
+                            //new loadMoreListView().execute();
+                            new loadMoreListView().execute();
+
+                        }
+                    });
+                    // the end of loading one page
+
+
                     System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
                     //int size  = users.getCurrentPage().size();
                     //System.out.println( "Loaded " + size + " restaurants in the current page" );
 
-                    users = users.nextPage();
+                 //   users = users.nextPage();
                     System.out.println( "after next page " + users.getCurrentPage().size() + " restaurants in the current page" );
-                }
+                //}
             }
         });
 
@@ -155,55 +227,7 @@ public class RankingActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        final ListView listView = (ListView) findViewById(R.id.listView);
 
-
-        final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        final ArrayAdapter adapter = new ArrayAdapter< String>(this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                 LayoutInflater inflater = (LayoutInflater) getApplicationContext()
-                       .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = convertView;
-//                if (view == null) {
-                   view = inflater.inflate(R.layout.item_layout, parent, false);
-//                }
-
-
-                TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
-                //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
-                tvName.setText(getItem(position));
-                //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
-                tvName.setTextColor(Color.parseColor("#424242"));
-                System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
-
-                if (RankingActivity.Highlighted.contains(position)) {
-
-                    String airi  =  getItem(position);
-                    tvName.setBackgroundColor(Color.parseColor("#039be5"));
-
-                       System.out.println(" the item at the position in the list view : " + airi);
-
-                }
-
-                return view;
-            }
-        }; // simple textview for list item
-        listView.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-                customLoadMoreDataFromApi(page);
-                // or customLoadMoreDataFromApi(totalItemsCount);
-                return true; // ONLY if more data is actually being loaded; false otherwise.
-            }
-        });
-
-        listView.setAdapter(adapter);
-        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 
 
 
@@ -254,6 +278,98 @@ public class RankingActivity extends AppCompatActivity {
 
     });
 
+
+    }
+    public void LoadMoreData(final BackendlessCollection<BackendlessUser> users){
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+        System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
+        //int size  = users.getCurrentPage().size();
+        //System.out.println( "Loaded " + size + " restaurants in the current page" );
+
+
+                    users.nextPage();
+
+
+                //   System.out.println(e.getMessage() + "     detail " + e.getDetail());
+
+        System.out.println( "after next page " + users.getCurrentPage().size() + " restaurants in the current page" );
+        // Load one page into listView
+        //listView = (ListView) findViewById(R.id.listView);
+        // Creating a button - Load More
+        Button btnLoadMore = new Button(RankingActivity.this);
+        btnLoadMore.setText("Load More");
+        listView.addFooterView(btnLoadMore);
+
+        final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = convertView;
+//                if (view == null) {
+                view = inflater.inflate(R.layout.item_layout, parent, false);
+//                }
+
+
+                TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
+                //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
+                tvName.setText(getItem(position));
+                //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
+                tvName.setTextColor(Color.parseColor("#424242"));
+                System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+
+                if (RankingActivity.Highlighted.contains(position)) {
+
+                    String airi  =  getItem(position);
+                    tvName.setBackgroundColor(Color.parseColor("#039be5"));
+
+                    System.out.println(" the item at the position in the list view : " + airi);
+
+                }
+
+                return view;
+            }
+        }; // simple textview for list item
+        listView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
+
+        listView.setAdapter(adapter);
+        Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+        btnLoadMore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // Starting a new async task
+                //new loadMoreListView().execute();
+
+
+            }
+        });
+        // the end of loading one page
+            }
+        });
+        t.run();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
     public void customLoadMoreDataFromApi(int offset) {
@@ -322,6 +438,158 @@ public class RankingActivity extends AppCompatActivity {
         } else {
             final int childIndex = position - firstListItemPosition;
             return listView.getChildAt(childIndex);
+        }
+    }
+    private class loadMoreListView extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            // Showing progress dialog before sending http request
+//            pDialog = new ProgressDialog(
+//                    AndroidListViewWithLoadMoreButtonActivity.this);
+//            pDialog.setMessage("Please wait..");
+//            pDialog.setIndeterminate(true);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+        }
+
+        protected Void doInBackground(Void... unused) {
+
+                    Thread t = new Thread(new Runnable() {
+                public void run() {
+                    // increment current page
+                    System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
+                    //int size  = users.getCurrentPage().size();
+                    //System.out.println( "Loaded " + size + " restaurants in the current page" );
+
+
+                    try {
+                       users= users.nextPage();
+                    } catch (BackendlessException e) {
+                        e.printStackTrace();
+                    }
+                     //iCounter = users.getCurrentPage().size()+iCounter;
+                    final int currentScrlPosition = iCounter;
+                    for (BackendlessUser user : users.getCurrentPage()) {
+                        UserName = (String) user.getProperty("name");
+                        RankingList.add(+iCounter + " : " + UserName + " points : " + user.getProperty("POINTS"));
+//                        TextView tv=new TextView(getApplicationContext());
+//                        tv.setText(+i + " : " + user.getProperty("name") + " points : " + user.getProperty("POINTS"));
+//                            RankingList.add(i-1,tv);
+                        if (MainActivity.LoggedInWithFB) {
+                            try {
+
+                                for (int l = 0; l < Friends.length(); l++) {
+
+                                    if (Friends.getJSONObject(l).getString("name").equals(UserName)) {
+                                        Highlighted.add(iCounter - 1);
+                                        System.out.println("Friends names = " + UserName);
+
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        UsrsobjIDsTab[iCounter-1] = user.getObjectId();
+                        UsrsNamesTab[iCounter-1] = UserName;
+                        UsrsDeviceIDsTab[iCounter-1] = (String) user.getProperty("Device_ID");
+                        AnsweredQuestionsIds[iCounter-1] = (String) user.getProperty("AnsweredQuestionsIDs");
+                        FbProfileID[iCounter-1] = (String) user.getProperty("FbProfile_ID");
+                        //usrTable[i-1] = (Users) user;
+                        // RankingArrows[i-1] = (String) user.getProperty("RANKINGARROW");
+                        iCounter++;
+
+                    }
+
+                    //   System.out.println(e.getMessage() + "     detail " + e.getDetail());
+
+                    System.out.println( "after next page " + users.getCurrentPage().size() + " restaurants in the current page" );
+                    // Load one page into listView
+                    //listView = (ListView) findViewById(R.id.listView);
+                    // Creating a button - Load More
+                   // Button btnLoadMore = new Button(RankingActivity.this);
+                   // btnLoadMore.setText("Load More");
+                    //listView.addFooterView(btnLoadMore);
+
+                    final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                    final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            View view = convertView;
+//                if (view == null) {
+                            view = inflater.inflate(R.layout.item_layout, parent, false);
+//                }
+
+
+                            TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
+                            //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
+                            tvName.setText(getItem(position));
+                            //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
+                            tvName.setTextColor(Color.parseColor("#424242"));
+                            System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+
+                            if (RankingActivity.Highlighted.contains(position)) {
+
+                                String airi  =  getItem(position);
+                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
+
+                                System.out.println(" the item at the position in the list view : " + airi);
+
+                            }
+
+                            return view;
+                        }
+                    }; // simple textview for list item
+                    listView.setOnScrollListener(new EndlessScrollListener() {
+                        @Override
+                        public boolean onLoadMore(int page, int totalItemsCount) {
+                            // Triggered only when new data needs to be appended to the list
+                            // Add whatever code is needed to append new items to your AdapterView
+                            customLoadMoreDataFromApi(page);
+                            // or customLoadMoreDataFromApi(totalItemsCount);
+                            return true; // ONLY if more data is actually being loaded; false otherwise.
+                        }
+                    });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listView.setAdapter(adapter);
+                            listView.setSelectionFromTop(currentScrlPosition -2, 0);
+                        }
+                    });
+
+                  //  Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+//                    btnLoadMore.setOnClickListener(new View.OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(View arg0) {
+//                            // Starting a new async task
+//                            //new loadMoreListView().execute();
+//
+//
+//                        }
+//                    });
+                }
+            });
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return (null);
+        }
+
+
+        protected void onPostExecute(Void unused) {
+            // closing progress dialog
+            //pDialog.dismiss();
         }
     }
 
