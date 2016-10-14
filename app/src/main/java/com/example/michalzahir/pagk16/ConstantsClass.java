@@ -15,5 +15,6 @@ public class ConstantsClass {
     public final static int AstronomyQuestSize = 10;
     public final static int LiteratureQuestSize = 10;
     public final static int QuestionsNumberToBeAsked = 2;
-
+    public static final String DEFAULT_CHANNEL = "default";
+    public static String CONNECT_DEMAND = "User %s wants to chat with you";
 }

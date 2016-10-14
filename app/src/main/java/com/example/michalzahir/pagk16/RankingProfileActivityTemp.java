@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.messaging.DeliveryOptions;
+import com.backendless.messaging.MessageStatus;
+import com.backendless.messaging.PublishOptions;
+import com.backendless.messaging.PublishStatusEnum;
+import com.backendless.messaging.PushPolicyEnum;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
 
 import java.io.IOException;
@@ -135,13 +141,14 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RankingProfileActivityTemp.this, "This Action"+" will be available in the next release" , Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(RankingProfileActivityTemp.this,
-                        ChatActivity.class);
-                i.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
-                i.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
-                i.putExtra("UsrsNamesTab",UserName);
-                startActivity(i);
+                onCompanionFound();
+//                Toast.makeText(RankingProfileActivityTemp.this, "This Action"+" will be available in the next release" , Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(RankingProfileActivityTemp.this,
+//                        ChatActivity.class);
+//                i.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
+//                i.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
+//                i.putExtra("UsrsNamesTab",UserName);
+//                startActivity(i);
 
             }
         });
@@ -164,5 +171,49 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
             chatButton.setEnabled(false);
             playButton.setEnabled(false);
         }
+    }
+    private void onCompanionFound()
+    {
+        PublishOptions publishOptions = new PublishOptions();
+        publishOptions.putHeader( PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format( ConstantsClass.CONNECT_DEMAND, MainActivity.user.getName() ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString( R.string.app_name ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TEXT_TAG, String.format( ConstantsClass.CONNECT_DEMAND, MainActivity.user.getName() ) );
+        publishOptions.putHeader("Chat","Chat");
+        publishOptions.putHeader("UsrsDeviceIDsTab",UsrsDeviceIDs);
+        publishOptions.putHeader("UsrsobjIDsTab",UsrsobjIDsTab);
+        publishOptions.putHeader("UsrsNamesTab",UserName);
+        publishOptions.putHeader("PublisherUsrName",MainActivity.userName.getUserName());
+
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy( PushPolicyEnum.ONLY );
+        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
+
+        final String message_subtopic = MainActivity.user.getName().concat( "_with_" ).concat( UserName);
+
+        Backendless.Messaging.publish( ConstantsClass.DEFAULT_CHANNEL, message_subtopic, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>( this, "Sending push message" )
+        {
+            @Override
+            public void handleResponse( MessageStatus response )
+            {
+                super.handleResponse( response );
+
+                PublishStatusEnum messageStatus = response.getStatus();
+
+                if( messageStatus == PublishStatusEnum.SCHEDULED )
+                {
+                    Intent chatIntent = new Intent( RankingProfileActivityTemp.this, ChatActivity.class );
+                    chatIntent.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
+                    chatIntent.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
+                    chatIntent.putExtra("UsrsNamesTab",UserName);
+                    chatIntent.putExtra( "subtopic", message_subtopic );
+                    startActivity( chatIntent );
+                    //finish();
+                }
+                else
+                {
+                    Toast.makeText( RankingProfileActivityTemp.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT ).show();
+                }
+            }
+        } );
     }
 }

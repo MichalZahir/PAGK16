@@ -38,15 +38,17 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
         CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
         CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
+
         String subtopic = intent.getStringExtra("message");
         Bundle bundle = intent.getExtras();
 
         if (bundle.containsKey("UserName")) {
             SetUserNameoppName(bundle);
         }
-
+        if(bundle.containsKey("Chat"))
+            OnChatMessage(bundle, intent, context);
         // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
-        if (bundle.containsKey("Last Result")) {
+        else if (bundle.containsKey("Last Result")) {
 
             GetLastResultNotification(bundle, intent, context);
 
@@ -577,6 +579,63 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         };
         context.getApplicationContext().registerReceiver(call_method, new IntentFilter("call_method"));
 
+
+    }
+    public void OnChatMessage(Bundle bundle,Intent intent,Context context){
+
+        Intent chatIntent = new Intent( context, ChatActivity.class );
+        Bundle notificationBundle = new Bundle();
+        //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
+        //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
+
+        notificationBundle.putString("UsrsNamesTab", bundle.getString("UsrsNamesTab"));
+        notificationBundle.putString("UsrsobjIDsTab", bundle.getString("UsrsobjIDsTab"));
+        notificationBundle.putString("UsrsDeviceIDsTab", bundle.getString("UsrsDeviceIDsTab"));
+        notificationBundle.putString("subtopic",bundle.getString("subtopic"));
+
+        CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
+        CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
+        CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
+        String subtopic = intent.getStringExtra("message");
+        if (tickerText != null && tickerText.length() > 0) {
+            int appIcon = R.mipmap.ic_launcher;
+            if (appIcon == 0)
+                appIcon = android.R.drawable.sym_def_app_icon;
+
+
+//
+//                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
+            //Intent chatIntent = new Intent(context, ChatActivity.class);
+            System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
+            chatIntent.putExtras(notificationBundle);
+            Random random = new Random();
+            int m = random.nextInt(9999 - 1000) + 1000;
+            chatIntent.putExtra("subtopic", subtopic);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, m, chatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+            notificationBuilder.setSmallIcon(getNotificationIcon());
+            notificationBuilder.setTicker(tickerText);
+            notificationBuilder.setWhen(System.currentTimeMillis());
+            notificationBuilder.setContentTitle(contentTitle);
+            notificationBuilder.setContentText(contentText);
+            notificationBuilder.setAutoCancel(true);
+            notificationBuilder.setContentIntent(contentIntent);
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder.setSound(uri);
+            //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+            //notificationBuilder.setLights(Color.RED, 3000, 3000);
+            Notification notification = notificationBuilder.build();
+
+
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(m, notification);
+
+        }
+        System.out.println("Chat Message");
+        //chatIntent.putExtra( "owner", owner );
+        //chatIntent.putExtra( "subtopic", subtopic );
+       // context.startActivity( chatIntent );
 
     }
 }
