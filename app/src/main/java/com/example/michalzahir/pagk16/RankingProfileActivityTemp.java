@@ -202,10 +202,11 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
                 if( messageStatus == PublishStatusEnum.SCHEDULED )
                 {
                     Intent chatIntent = new Intent( RankingProfileActivityTemp.this, ChatActivity.class );
+                    chatIntent.putExtra("Chat","Chat");
                     chatIntent.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
                     chatIntent.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
                     chatIntent.putExtra("UsrsNamesTab",UserName);
-                    chatIntent.putExtra( "subtopic", message_subtopic );
+                    chatIntent.putExtra("subtopic", message_subtopic );
                     startActivity( chatIntent );
                     //finish();
                 }

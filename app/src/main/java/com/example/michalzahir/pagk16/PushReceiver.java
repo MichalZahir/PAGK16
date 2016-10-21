@@ -45,8 +45,10 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         if (bundle.containsKey("UserName")) {
             SetUserNameoppName(bundle);
         }
-        if(bundle.containsKey("Chat"))
+        if(bundle.containsKey("Chat")){
             OnChatMessage(bundle, intent, context);
+        }
+
         // in this place put the if clause to see whether is it a notification with last result or its the notification with the questions.
         else if (bundle.containsKey("Last Result")) {
 
@@ -587,7 +589,11 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         Bundle notificationBundle = new Bundle();
         //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
         //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
+        Intent mainActivity = new Intent(context, MainActivity.class);
+        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
+
+        notificationBundle.putBoolean("fromNotification",true);
         notificationBundle.putString("UsrsNamesTab", bundle.getString("UsrsNamesTab"));
         notificationBundle.putString("UsrsobjIDsTab", bundle.getString("UsrsobjIDsTab"));
         notificationBundle.putString("UsrsDeviceIDsTab", bundle.getString("UsrsDeviceIDsTab"));
