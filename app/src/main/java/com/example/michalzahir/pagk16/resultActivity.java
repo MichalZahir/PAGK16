@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -143,6 +144,11 @@ public class resultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Intent i = new Intent(getApplicationContext(),
+                MainActivity.class);
+
+        startActivity(i);
+        finish();
 
     }
 
@@ -179,7 +185,7 @@ public class resultActivity extends AppCompatActivity {
                     int wonGames = (int) backendlessUser.getProperty("WON");
 
                     backendlessUser.setProperty("WON", wonGames + 1);
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
                             Log.d(TAG, "The Number of won games is updated of the user :" + user.getUserId());
@@ -208,7 +214,7 @@ public class resultActivity extends AppCompatActivity {
                     int lostGames = (int) backendlessUser.getProperty("LOST");
 
                     backendlessUser.setProperty("LOST", lostGames + 1);
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
 
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
@@ -243,7 +249,7 @@ public class resultActivity extends AppCompatActivity {
                     System.out.println(backendlessUser.getObjectId());
                     int wonGames = (int) backendlessUser.getProperty("WON");
                     backendlessUser.setProperty("WON", wonGames + 1);
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
 
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
@@ -274,7 +280,7 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     //System.out.println(backendlessUser.getObjectId());
                     int lostGames = (int) backendlessUser.getProperty("LOST");
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
 
 
                     backendlessUser.setProperty("LOST", lostGames + 1);
@@ -307,7 +313,7 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     int drawGames = (int) backendlessUser.getProperty("DRAW");
                     backendlessUser.setProperty("DRAW", drawGames + 1);
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
 
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
@@ -335,7 +341,7 @@ public class resultActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser backendlessUser) {
                     int drawGames = (int) backendlessUser.getProperty("DRAW");
                     backendlessUser.setProperty("DRAW", drawGames + 1);
-                    backendlessUser.setProperty("AnsweredQuestionsIDs",backendlessUser.getProperty("AnsweredQuestionsIDs")+ QuestionsIDs.AnsweredQuesIDs);
+                    backendlessUser.setProperty("AnsweredQuestionsIDs", backendlessUser.getProperty("AnsweredQuestionsIDs") + QuestionsIDs.AnsweredQuesIDs);
 
 
                     Backendless.UserService.update(backendlessUser, new AsyncCallback<BackendlessUser>() {
@@ -463,13 +469,13 @@ public class resultActivity extends AppCompatActivity {
         mInterstitialAd.loadAd(adRequest);
 
     }
-    public   void initializeAd(){
+
+    public void initializeAd() {
         if (resultActivity.mInterstitialAd == null) {
             resultActivity.mInterstitialAd = new InterstitialAd(resultActivity.this);
             resultActivity.mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
         }
     }
-
 
 }

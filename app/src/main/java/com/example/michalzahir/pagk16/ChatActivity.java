@@ -13,14 +13,17 @@ import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
+import com.backendless.BackendlessUser;
 import com.backendless.Subscription;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.messaging.DeliveryOptions;
 import com.backendless.messaging.Message;
 import com.backendless.messaging.MessageStatus;
 import com.backendless.messaging.PublishOptions;
 import com.backendless.messaging.PublishStatusEnum;
+import com.backendless.messaging.PushPolicyEnum;
 import com.backendless.messaging.SubscriptionOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
@@ -98,9 +101,13 @@ public class ChatActivity extends AppCompatActivity {
         publishOptions = new PublishOptions();
         publishOptions.setPublisherId( FstUserName);
         publishOptions.setSubtopic( subtopic );
-
+        publishOptions.putHeader( PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString( R.string.app_name ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
+        publishOptions.putHeader("Chat","Chat");
         subscriptionOptions = new SubscriptionOptions();
         subscriptionOptions.setSubtopic( subtopic );
+
         Backendless.Messaging.subscribe( ConstantsClass.DEFAULT_CHANNEL, new AsyncCallback<List<Message>>()
         {
             @Override
@@ -119,8 +126,9 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void handleResponse( Subscription response )
             {
-                super.handleResponse( response );
+                super.handleResponse(response);
                 subscription = response;
+
             }
         } );
     }
@@ -130,8 +138,8 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         //super.onStop();
 
-        if( subscription != null )
-            subscription.cancelSubscription();
+//        if( subscription != null )
+//            subscription.cancelSubscription();
     }
 
     @Override
@@ -139,8 +147,8 @@ public class ChatActivity extends AppCompatActivity {
     {
         super.onResume();
 
-        if( subscription != null )
-            subscription.resumeSubscription();
+//        if( subscription != null )
+//            subscription.resumeSubscription();
     }
 
     @Override
@@ -148,13 +156,11 @@ public class ChatActivity extends AppCompatActivity {
     {
         super.onPause();
 
-        if( subscription != null )
-            subscription.pauseSubscription();
+//        if( subscription != null )
+//            subscription.pauseSubscription();
     }
     private void onReceiveMessage( List<Message> messages )
     {
-
-
 
         for( Message message : messages )
         {
@@ -180,7 +186,9 @@ public class ChatActivity extends AppCompatActivity {
     }
     private boolean onSendMessage( int keyCode, KeyEvent keyEvent )
     {
-
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
+        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
         if( keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP )
         {
             String message = messageField.getText().toString();
@@ -188,13 +196,12 @@ public class ChatActivity extends AppCompatActivity {
             if( message == null || message.equals( "" ) )
                 return true;
 
-            Backendless.Messaging.publish( (Object) message, publishOptions, new DefaultCallback<MessageStatus>( ChatActivity.this, "Sending..." )
+            Backendless.Messaging.publish( (Object) message, publishOptions,deliveryOptions, new DefaultCallback<MessageStatus>( ChatActivity.this, "Sending..." )
             {
                 @Override
                 public void handleResponse( MessageStatus response )
                 {
                     super.handleResponse( response );
-
                     PublishStatusEnum messageStatus = response.getStatus();
 
                     if( messageStatus == PublishStatusEnum.SCHEDULED )
