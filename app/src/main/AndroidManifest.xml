@@ -105,7 +105,8 @@
             android:name=".RankingProfileActivityTemp"
             android:label="@string/title_activity_ranking_temp"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".RankingProfPicActivity"></activity>
     </application>
 
 </manifest>

@@ -28,6 +28,7 @@ import com.backendless.messaging.SubscriptionOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.example.michalzahir.pagk16.Helper.GettinQuesQuantityDyn;
+import com.example.michalzahir.pagk16.Helper.chatMessage;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
@@ -44,25 +45,27 @@ import static com.example.michalzahir.pagk16.MainActivity.user;
 import static com.example.michalzahir.pagk16.MainActivity.userName;
 
 public class ChatActivity extends AppCompatActivity {
-    private static final String TAG = "Caht Activity" ;
+    private static final String TAG = "Chat Activity" ;
+
+
     String UserName;
     String UsrsobjIDsTab;
     String UsrsDeviceIDs;
     private EditText history;
     private EditText messageField;
     private TextView chatWithSmbTitleTextView;
-    private String subtopic;
+    static public String subtopic;
     private SubscriptionOptions subscriptionOptions;
     private PublishOptions publishOptions;
     private Subscription subscription;
     Boolean StartFromNotif = false;
-
+    public static Boolean onChatWindow = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
+        onChatWindow = true;
         Intent intent = getIntent();
         if (intent.hasExtra("fromNotification")&& user==null){
             Thread t = new Thread(new Runnable() {
@@ -93,13 +96,17 @@ public class ChatActivity extends AppCompatActivity {
         String FstUserName = user.getName();
         if(intent.hasExtra("subtopic")){
             subtopic = intent.getStringExtra("subtopic");
+            String MessageSender =intent.getStringExtra("MessageSender");
+            chatMessage cm =chatMessage.findChatMessageByPublisherID(MessageSender,PushReceiver.ChatMessages);
+            if (cm!=null)
+                onReceiveMessage(cm);
         }
             else {
             subtopic = FstUserName.concat( "_with_" ).concat( UserName);
         }
 
         publishOptions = new PublishOptions();
-        publishOptions.setPublisherId( FstUserName);
+        publishOptions.setPublisherId(FstUserName);
         publishOptions.setSubtopic( subtopic );
         publishOptions.putHeader( PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
         publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString( R.string.app_name ) );
@@ -107,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
         publishOptions.putHeader("Chat","Chat");
         subscriptionOptions = new SubscriptionOptions();
         subscriptionOptions.setSubtopic( subtopic );
-
+        System.out.println("Subtopic : " + subtopic);
         Backendless.Messaging.subscribe( ConstantsClass.DEFAULT_CHANNEL, new AsyncCallback<List<Message>>()
         {
             @Override
@@ -135,6 +142,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
+        onChatWindow = false;
         super.onDestroy();
         //super.onStop();
 
@@ -155,6 +163,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
+        onChatWindow = false;
 
 //        if( subscription != null )
 //            subscription.pauseSubscription();
@@ -165,6 +174,15 @@ public class ChatActivity extends AppCompatActivity {
         for( Message message : messages )
         {
             history.setText( history.getText() + "\n" + message.getPublisherId() + ": " + message.getData() );
+        }
+    }
+    private void onReceiveMessage( chatMessage chatMessages )
+    {
+
+        for( String Message : chatMessages.getMessages() )
+        {
+            history.setText( history.getText() + "\n" + chatMessages.getPublisherID() + ": " + Message );
+
         }
     }
     private void initUI()
@@ -192,6 +210,8 @@ public class ChatActivity extends AppCompatActivity {
         if( keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP )
         {
             String message = messageField.getText().toString();
+            publishOptions.putHeader("message",message);
+            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
 
             if( message == null || message.equals( "" ) )
                 return true;
@@ -255,6 +275,11 @@ public class ChatActivity extends AppCompatActivity {
 
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
+            BackendlessUser backendlessUser = Backendless.UserService.findById(s);
+            UserName = (String) backendlessUser.getProperty("name");
+            MainActivity.user.setName(UserName);
+            MainActivity.userName.setUserName(UserName);
+            MainActivity.userName.setUserNameUSrObjectID(s);
 
         }
         // token for fb login
@@ -322,6 +347,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+        onChatWindow = false;
         if (StartFromNotif) {
             Intent i = new Intent(getApplicationContext(),
                     MainActivity.class);
