@@ -79,6 +79,7 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                blockButtons();
                 RankingActivity.RankingGame =false;
                 fbFriendsListActivity.FbGame = false;
                 Thread t = new Thread(new Runnable() {
@@ -133,9 +134,10 @@ public class NewGameActivity extends AppCompatActivity {
                 RankingActivity.RankingGame =false;
                  if (!MainActivity.LoggedInWithFB) {
                     SetDialogueForNotFbLoggedusr();
-                } else
-                    com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
-
+                } else {
+                     blockButtons();
+                     com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
+                 }
 
             }
 
@@ -212,6 +214,10 @@ public class NewGameActivity extends AppCompatActivity {
 
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
+    }
+    public void blockButtons(){
+        newRandomGameButton.setEnabled(false);
+        newFBGameButton.setEnabled(false);
     }
 
 }
