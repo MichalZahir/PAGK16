@@ -42,6 +42,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -57,6 +61,7 @@ public class RankingActivity extends AppCompatActivity {
     String AnsweredQuestionsIds [];
     //String RankingArrows [];
     JSONArray Friends;
+    boolean alreadySeen = false;
     public static Boolean RankingGame = false ;
     String UserName;
     ListView listView;
@@ -144,6 +149,21 @@ public class RankingActivity extends AppCompatActivity {
                         i++;
 
                     }
+                    int currentUserPosition = 0;
+                    List <String >myList = new LinkedList<>();
+                    //new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                     if (Arrays.asList(UsrsobjIDsTab).contains(MainActivity.user.getUserObjectId())){
+
+                         //UsrsobjIDsTab = clean(UsrsobjIDsTab);
+                            myList= Arrays.asList(UsrsobjIDsTab);
+
+
+                            //myList.removeAll(null);
+
+                         //currentUserPosition = new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                currentUserPosition = myList.indexOf(MainActivity.user.getUserObjectId());
+                     }
+                         System.out.println("currentUserPosition 1 = " + currentUserPosition);
                     // Load one page into listView
                       listView = (ListView) findViewById(R.id.listView);
                     // Creating a button - Load More
@@ -208,7 +228,8 @@ public class RankingActivity extends AppCompatActivity {
                         }
                     });
                     // the end of loading one page
-
+                    System.out.println("currentUserPosition 2 = " + currentUserPosition);
+                    listView.setSelection(currentUserPosition);
 
                     System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
                     //int size  = users.getCurrentPage().size();
@@ -377,6 +398,7 @@ public class RankingActivity extends AppCompatActivity {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
     }
+
     @Override
     public void onBackPressed() {
         Intent i = new Intent(getApplicationContext(),
@@ -502,6 +524,20 @@ public class RankingActivity extends AppCompatActivity {
                         iCounter++;
 
                     }
+                    int currentUserPosition = 0;
+                    List <String >myList = new LinkedList<>();
+                    //new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                    if (Arrays.asList(UsrsobjIDsTab).contains(MainActivity.user.getUserObjectId())) {
+
+                        //UsrsobjIDsTab = clean(UsrsobjIDsTab);
+                        myList = Arrays.asList(UsrsobjIDsTab);
+
+
+                        //myList.removeAll(null);
+
+                        //currentUserPosition = new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                        currentUserPosition = myList.indexOf(MainActivity.user.getUserObjectId());
+                    }
 
                     //   System.out.println(e.getMessage() + "     detail " + e.getDetail());
 
@@ -546,6 +582,7 @@ public class RankingActivity extends AppCompatActivity {
                             return view;
                         }
                     }; // simple textview for list item
+
                     listView.setOnScrollListener(new EndlessScrollListener() {
                         @Override
                         public boolean onLoadMore(int page, int totalItemsCount) {
@@ -556,15 +593,23 @@ public class RankingActivity extends AppCompatActivity {
                             return true; // ONLY if more data is actually being loaded; false otherwise.
                         }
                     });
+                    final int finalCurrentUserPosition = currentUserPosition;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             listView.setAdapter(adapter);
+                            if (finalCurrentUserPosition !=0 && !alreadySeen) {
+                                listView.setSelection(finalCurrentUserPosition);
+                                alreadySeen =true;
+                            }
+                            else
                             listView.setSelectionFromTop(currentScrlPosition -2, 0);
+
                         }
                     });
 
-                  //  Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+
+                    //  Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 //                    btnLoadMore.setOnClickListener(new View.OnClickListener() {
 //
 //                        @Override

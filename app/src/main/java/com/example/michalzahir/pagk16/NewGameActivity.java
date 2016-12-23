@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -51,6 +52,8 @@ public class NewGameActivity extends AppCompatActivity {
     int QuestionID;
     String QuestionsIDSArray;
     String QuestionCategory;
+    private long mLastClickTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,11 @@ public class NewGameActivity extends AppCompatActivity {
         newRandomGameButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                blockButtons();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1500){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                //blockButtons();
                 RankingActivity.RankingGame =false;
                 fbFriendsListActivity.FbGame = false;
                 Thread t = new Thread(new Runnable() {
@@ -135,7 +142,11 @@ public class NewGameActivity extends AppCompatActivity {
                  if (!MainActivity.LoggedInWithFB) {
                     SetDialogueForNotFbLoggedusr();
                 } else {
-                     blockButtons();
+                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                         return;
+                     }
+                     mLastClickTime = SystemClock.elapsedRealtime();
+                     //blockButtons();
                      com.example.michalzahir.pagk16.FacebookUsers.fbFriendsList.getFriendList(getApplicationContext());
                  }
 

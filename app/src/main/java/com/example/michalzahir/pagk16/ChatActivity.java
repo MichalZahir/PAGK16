@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText history;
     private EditText messageField;
     private TextView chatWithSmbTitleTextView;
+    private ImageButton sendChatButton;
     static public String subtopic;
     private SubscriptionOptions subscriptionOptions;
     private PublishOptions publishOptions;
@@ -188,11 +190,17 @@ public class ChatActivity extends AppCompatActivity {
     private void initUI()
     {
         history = (EditText) findViewById( R.id.historyField );
+        sendChatButton = (ImageButton) findViewById(R.id.sendChatButton);
         messageField = (EditText) findViewById( R.id.messageField );
         chatWithSmbTitleTextView = (TextView) findViewById( R.id.textChatWithSmbTitle );
 
         chatWithSmbTitleTextView.setText( String.format(   "Waiting for %s to accept invitation..."  , UserName ) );
-
+        sendChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendMessage();
+            }
+        });
         messageField.setOnKeyListener( new View.OnKeyListener()
         {
             @Override
@@ -201,6 +209,36 @@ public class ChatActivity extends AppCompatActivity {
                 return onSendMessage( keyCode, keyEvent );
             }
         } );
+    }
+    private void onSendMessage(){
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
+        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
+
+            String message = messageField.getText().toString();
+            publishOptions.putHeader("message",message);
+            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
+
+            if( message == null || message.equals( "" ) ){
+
+            }
+            else {
+                Backendless.Messaging.publish((Object) message, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>(ChatActivity.this, "Sending...") {
+                    @Override
+                    public void handleResponse(MessageStatus response) {
+                        super.handleResponse(response);
+                        PublishStatusEnum messageStatus = response.getStatus();
+
+                        if (messageStatus == PublishStatusEnum.SCHEDULED) {
+                            messageField.setText("");
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+            }
+
+
     }
     private boolean onSendMessage( int keyCode, KeyEvent keyEvent )
     {
