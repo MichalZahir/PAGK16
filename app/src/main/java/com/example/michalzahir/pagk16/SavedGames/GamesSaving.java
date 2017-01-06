@@ -6,6 +6,7 @@ import com.backendless.Backendless;
 import com.backendless.Messaging;
 import com.backendless.exceptions.BackendlessException;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.MainActivity;
 import com.example.michalzahir.pagk16.NewGameActivity;
 import com.example.michalzahir.pagk16.gameResult;
 import com.example.michalzahir.pagk16.gettingQuestions;
@@ -30,12 +31,12 @@ public class GamesSaving {
         saved_games.setFbGame(fbFriendsListActivity.FbGame);
         saved_games.setFirstUserID(NewGameActivity.result.getFirstUSerObjectID());
         saved_games.setSecondUserID(NewGameActivity.result.getSecondUSerObjectID());
+        setUsersNames(saved_games);
         setDevicesIDS(saved_games);
         SetWhosTurn(saved_games);
         setOpponentDeviceID(saved_games);
         saved_games.setQuestionsAnswered( QuestionsAnswered);
         Log.d(TAG, "The Questions Answered : " +  QuestionsAnswered);
-        saved_games.setSecondUserName("asd");
         saved_games.setAddUserToQueue(NewGameActivity.AddUserToQueue);
         saved_games.setAnsweredQuestionsIDs(gameResult.AnsweredQuestionsIDS);
         saved_games.setQuestionsIDs(Arrays.toString(gettingQuestions.QuestionsIDs));
@@ -102,5 +103,17 @@ public class GamesSaving {
         else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()))
             saved_games.setFirstUserDeviceID(pushNotification.OpponentDeviceID);
 
+    }
+    public static void setUsersNames(Saved_Games saved_games){
+        if (NewGameActivity.result.getFirstUSerObjectID().equals(MainActivity.userName.getUserNameUSrObjectID())){
+
+            saved_games.setFirstUserName(MainActivity.userName.getUserName());
+            saved_games.setSecondUserName(MainActivity.userName.getOponnentName());
+        }
+        else if (NewGameActivity.result.getFirstUSerObjectID().equals(MainActivity.userName.getOponnentUserObjectID())){
+            saved_games.setFirstUserName(MainActivity.userName.getOponnentName());
+            saved_games.setSecondUserName(MainActivity.userName.getUserName());
+
+        }
     }
 }

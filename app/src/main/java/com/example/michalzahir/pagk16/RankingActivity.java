@@ -3,6 +3,8 @@ package com.example.michalzahir.pagk16;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.GpsStatus;
 import android.os.AsyncTask;
@@ -37,10 +39,20 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,7 +88,22 @@ public class RankingActivity extends AppCompatActivity {
         final AdView LoginAdView = (AdView) findViewById(R.id.adViewRanking);
         AdRequest adRequest = new AdRequest.Builder().build();
         LoginAdView.loadAd(adRequest);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+//        ImageLoader.getInstance().init(config);
 
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
 
 
 
@@ -174,6 +201,8 @@ public class RankingActivity extends AppCompatActivity {
 
                     final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
 
+                        ImageLoader imageLoader = ImageLoader.getInstance();
+
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
                             LayoutInflater inflater = (LayoutInflater) getApplicationContext()
@@ -185,17 +214,20 @@ public class RankingActivity extends AppCompatActivity {
 
 
                             TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
+
                             //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
                             tvName.setText(getItem(position));
                             //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
                             tvName.setTextColor(Color.parseColor("#424242"));
-                            System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+                            System.out.println(" Outside the if see if there is text, the item at the position in the list view : " + getItem(position));
 
                             if (RankingActivity.Highlighted.contains(position)) {
-
+                                ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
                                 String airi  =  getItem(position);
-                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
+                                tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
 
+                                //fbProfilePic.setImageBitmap(getFacebookProfilePicture(FbProfileID[position]));
+                                imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                                 System.out.println(" the item at the position in the list view : " + airi);
 
                             }
@@ -329,7 +361,7 @@ public class RankingActivity extends AppCompatActivity {
         final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
-
+            ImageLoader imageLoader = ImageLoader.getInstance();
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext()
@@ -348,10 +380,11 @@ public class RankingActivity extends AppCompatActivity {
                 System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
 
                 if (RankingActivity.Highlighted.contains(position)) {
+                    ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
 
                     String airi  =  getItem(position);
-                    tvName.setBackgroundColor(Color.parseColor("#039be5"));
-
+                    tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
+                    imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                     System.out.println(" the item at the position in the list view : " + airi);
 
                 }
@@ -371,6 +404,8 @@ public class RankingActivity extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+                listView.setFastScrollEnabled(true);
+                listView.setScrollingCacheEnabled(false);
         Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
         btnLoadMore.setOnClickListener(new View.OnClickListener() {
 
@@ -393,6 +428,37 @@ public class RankingActivity extends AppCompatActivity {
         }
 
     }
+    public static String getFacebookProfilePicture(final String userID){
+        final Bitmap[] bitmap = {null};
+        String imageURL = "https://graph.facebook.com/" + userID + "/picture?type=large";
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String imageURL;
+//
+//                imageURL = "https://graph.facebook.com/" + userID + "/picture?type=small";
+//                InputStream in = null;
+//                try {
+//                    in = (InputStream) new URL(imageURL).getContent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                bitmap[0] = BitmapFactory.decodeStream(in);
+//
+//
+//            }
+//        });
+//        t.start();
+//        try {
+//            t.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+        return imageURL;
+    }
+
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
@@ -552,6 +618,7 @@ public class RankingActivity extends AppCompatActivity {
                     final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                     final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+                        ImageLoader imageLoader = ImageLoader.getInstance();
 
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -572,11 +639,13 @@ public class RankingActivity extends AppCompatActivity {
 
                             if (RankingActivity.Highlighted.contains(position)) {
 
+
+                                ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
+
                                 String airi  =  getItem(position);
-                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
-
+                                tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
+                                imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                                 System.out.println(" the item at the position in the list view : " + airi);
-
                             }
 
                             return view;

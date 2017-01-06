@@ -26,16 +26,17 @@ public class GamesLoading {
 
     private static final String TAG = "Saved Games Loading";
     static ArrayList<Saved_Games> SavedGameslist = new ArrayList<Saved_Games>();
+    final static BackendlessCollection<Saved_Games>[] foundGames = new BackendlessCollection[]{null};
     static  void loadSavedGames(){
         SavedGameslist.clear();
         Log.d(TAG, "player object ID b4 the query " + playerObejtID.getUserObjectID());
         String whereClause = "firstUserID='"+ playerObejtID.getUserObjectID()+"'"+"OR secondUserID='"+ playerObejtID.getUserObjectID()+"'";
         final BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         QueryOptions queryOptions = new QueryOptions();
-        queryOptions.setPageSize(100);
+        queryOptions.setPageSize(10);
         dataQuery.setQueryOptions(queryOptions);
         dataQuery.setWhereClause(whereClause);
-        final BackendlessCollection<Saved_Games>[] foundGames = new BackendlessCollection[]{null};
+
 
         Thread thread = new Thread(new Runnable()
         {
@@ -52,7 +53,7 @@ public class GamesLoading {
                     }
 
                     try {
-                        for( Saved_Games q : foundGames[0].getData() )
+                        for( Saved_Games q : foundGames[0].getCurrentPage() )
                         {
                            // Saved_Games response = Backendless.Persistence.of( Saved_Games.class ).findById(q.getObjectId());
                             Log.d(TAG, "The saved Games were Found  First user ID  " +q.getFirstUserID()+" SecondUserID" +q.getSecondUserID() + " Saved Games Object ID:" +q.getObjectId());
@@ -76,34 +77,6 @@ public class GamesLoading {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-//        Backendless.Persistence.of( Saved_Games.class ).find(dataQuery, new AsyncCallback<BackendlessCollection<Saved_Games>>() {
-//            @Override
-//            public void handleResponse(BackendlessCollection<Saved_Games> foundGames){
-//                for( Saved_Games q : foundGames.getData() )
-//                {
-//                     Backendless.Persistence.of( Saved_Games.class ).findById(q.getObjectId(), new AsyncCallback<Saved_Games>() {
-//                        @Override
-//                        public void handleResponse(Saved_Games response) {
-//                            SavedGameslist.add(response);
-//                            Log.d(TAG, "The saved Games were Found  First user ID  " +response.getFirstUserID()+" SecondUserID" +response.getSecondUserID() + " Saved Games Object ID:" +response.getObjectId());
-//
-//                        }
-//
-//                        @Override
-//                        public void handleFault(BackendlessFault fault) {
-//                            Log.d(TAG, "fault trying to fetch The saved Games  from DB fault" + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass());
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//                Log.d(TAG, "fault trying to fetch saved Games from DB fault" + fault.getMessage()+fault.getCode()+fault.getDetail()+fault.getClass());
-//
-//            }});
 
 
 
