@@ -36,6 +36,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
@@ -46,7 +48,7 @@ import static com.example.michalzahir.pagk16.MainActivity.user;
 import static com.example.michalzahir.pagk16.MainActivity.userName;
 
 public class ChatActivity extends AppCompatActivity {
-    private static final String TAG = "Chat Activity" ;
+    private static final String TAG = "Chat Activity";
 
 
     String UserName;
@@ -61,15 +63,18 @@ public class ChatActivity extends AppCompatActivity {
     private PublishOptions publishOptions;
     private Subscription subscription;
     Boolean StartFromNotif = false;
-    public static Boolean onChatWindow = false ;
+    public static Boolean onChatWindow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+        final AdView LoginAdView = (AdView) findViewById(R.id.adViewChat);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        LoginAdView.loadAd(adRequest);
         onChatWindow = true;
         Intent intent = getIntent();
-        if (intent.hasExtra("fromNotification")&& user==null){
+        if (intent.hasExtra("fromNotification") && user == null) {
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -96,54 +101,48 @@ public class ChatActivity extends AppCompatActivity {
         UsrsDeviceIDs = intent.getStringExtra("UsrsDeviceIDsTab");
         initUI();
         String FstUserName = user.getName();
-        if(intent.hasExtra("subtopic")){
+        if (intent.hasExtra("subtopic")) {
             subtopic = intent.getStringExtra("subtopic");
-            String MessageSender =intent.getStringExtra("MessageSender");
-            chatMessage cm =chatMessage.findChatMessageByPublisherID(MessageSender,PushReceiver.ChatMessages);
-            if (cm!=null)
+            String MessageSender = intent.getStringExtra("MessageSender");
+            chatMessage cm = chatMessage.findChatMessageByPublisherID(MessageSender, PushReceiver.ChatMessages);
+            if (cm != null)
                 onReceiveMessage(cm);
-        }
-            else {
-            subtopic = FstUserName.concat( "_with_" ).concat( UserName);
+        } else {
+            subtopic = FstUserName.concat("_with_").concat(UserName);
         }
 
         publishOptions = new PublishOptions();
         publishOptions.setPublisherId(FstUserName);
-        publishOptions.setSubtopic( subtopic );
-        publishOptions.putHeader( PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
-        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString( R.string.app_name ) );
-        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
-        publishOptions.putHeader("Chat","Chat");
+        publishOptions.setSubtopic(subtopic);
+        publishOptions.putHeader(PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format(ConstantsClass.MESSAGE_SEND, MainActivity.user.getName()));
+        publishOptions.putHeader(PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString(R.string.app_name));
+        publishOptions.putHeader(PublishOptions.ANDROID_CONTENT_TEXT_TAG, String.format(ConstantsClass.MESSAGE_SEND, MainActivity.user.getName()));
+        publishOptions.putHeader("Chat", "Chat");
         subscriptionOptions = new SubscriptionOptions();
-        subscriptionOptions.setSubtopic( subtopic );
+        subscriptionOptions.setSubtopic(subtopic);
         System.out.println("Subtopic : " + subtopic);
-        Backendless.Messaging.subscribe( ConstantsClass.DEFAULT_CHANNEL, new AsyncCallback<List<Message>>()
-        {
+        Backendless.Messaging.subscribe(ConstantsClass.DEFAULT_CHANNEL, new AsyncCallback<List<Message>>() {
             @Override
-            public void handleResponse( List<Message> response )
-            {
-                onReceiveMessage( response );
+            public void handleResponse(List<Message> response) {
+                onReceiveMessage(response);
             }
 
             @Override
-            public void handleFault( BackendlessFault fault )
-            {
-                Toast.makeText( ChatActivity.this, fault.getMessage(), Toast.LENGTH_SHORT ).show();
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(ChatActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }, subscriptionOptions, new DefaultCallback<Subscription>( ChatActivity.this, "Retrieving subscription" )
-        {
+        }, subscriptionOptions, new DefaultCallback<Subscription>(ChatActivity.this, "Retrieving subscription") {
             @Override
-            public void handleResponse( Subscription response )
-            {
+            public void handleResponse(Subscription response) {
                 super.handleResponse(response);
                 subscription = response;
 
             }
-        } );
+        });
     }
+
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         onChatWindow = false;
         super.onDestroy();
         //super.onStop();
@@ -153,8 +152,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
 //        if( subscription != null )
@@ -162,123 +160,113 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         onChatWindow = false;
 
 //        if( subscription != null )
 //            subscription.pauseSubscription();
     }
-    private void onReceiveMessage( List<Message> messages )
-    {
 
-        for( Message message : messages )
-        {
-            history.setText( history.getText() + "\n" + message.getPublisherId() + ": " + message.getData() );
+    private void onReceiveMessage(List<Message> messages) {
+
+        for (Message message : messages) {
+            history.setText(history.getText() + "\n" + message.getPublisherId() + ": " + message.getData());
         }
     }
-    private void onReceiveMessage( chatMessage chatMessages )
-    {
 
-        for( String Message : chatMessages.getMessages() )
-        {
-            history.setText( history.getText() + "\n" + chatMessages.getPublisherID() + ": " + Message );
+    private void onReceiveMessage(chatMessage chatMessages) {
+
+        for (String Message : chatMessages.getMessages()) {
+            history.setText(history.getText() + "\n" + chatMessages.getPublisherID() + ": " + Message);
 
         }
     }
-    private void initUI()
-    {
-        history = (EditText) findViewById( R.id.historyField );
+
+    private void initUI() {
+        history = (EditText) findViewById(R.id.historyField);
         sendChatButton = (ImageButton) findViewById(R.id.sendChatButton);
-        messageField = (EditText) findViewById( R.id.messageField );
-        chatWithSmbTitleTextView = (TextView) findViewById( R.id.textChatWithSmbTitle );
+        messageField = (EditText) findViewById(R.id.messageField);
+        chatWithSmbTitleTextView = (TextView) findViewById(R.id.textChatWithSmbTitle);
 
-        chatWithSmbTitleTextView.setText( String.format(   "Waiting for %s to accept invitation..."  , UserName ) );
+        chatWithSmbTitleTextView.setText(String.format("Chat with %s", UserName));
         sendChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSendMessage();
             }
         });
-        messageField.setOnKeyListener( new View.OnKeyListener()
-        {
+        messageField.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey( View view, int keyCode, KeyEvent keyEvent )
-            {
-                return onSendMessage( keyCode, keyEvent );
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                return onSendMessage(keyCode, keyEvent);
             }
-        } );
+        });
     }
-    private void onSendMessage(){
+
+    private void onSendMessage() {
         DeliveryOptions deliveryOptions = new DeliveryOptions();
-        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
-        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
+        deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
+        deliveryOptions.addPushSinglecast(UsrsDeviceIDs);
 
-            String message = messageField.getText().toString();
-            publishOptions.putHeader("message",message);
-            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
+        String message = messageField.getText().toString();
+        publishOptions.putHeader("message", message);
+        publishOptions.putHeader("MessageSender", publishOptions.getPublisherId());
 
-            if( message == null || message.equals( "" ) ){
+        if (message == null || message.equals("")) {
 
-            }
-            else {
-                Backendless.Messaging.publish((Object) message, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>(ChatActivity.this, "Sending...") {
-                    @Override
-                    public void handleResponse(MessageStatus response) {
-                        super.handleResponse(response);
-                        PublishStatusEnum messageStatus = response.getStatus();
-
-                        if (messageStatus == PublishStatusEnum.SCHEDULED) {
-                            messageField.setText("");
-                        } else {
-                            Toast.makeText(ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
-            }
-
-
-    }
-    private boolean onSendMessage( int keyCode, KeyEvent keyEvent )
-    {
-        DeliveryOptions deliveryOptions = new DeliveryOptions();
-        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
-        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
-        if( keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP )
-        {
-            String message = messageField.getText().toString();
-            publishOptions.putHeader("message",message);
-            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
-
-            if( message == null || message.equals( "" ) )
-                return true;
-
-            Backendless.Messaging.publish( (Object) message, publishOptions,deliveryOptions, new DefaultCallback<MessageStatus>( ChatActivity.this, "Sending..." )
-            {
+        } else {
+            Backendless.Messaging.publish((Object) message, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>(ChatActivity.this, "Sending...") {
                 @Override
-                public void handleResponse( MessageStatus response )
-                {
-                    super.handleResponse( response );
+                public void handleResponse(MessageStatus response) {
+                    super.handleResponse(response);
                     PublishStatusEnum messageStatus = response.getStatus();
 
-                    if( messageStatus == PublishStatusEnum.SCHEDULED )
-                    {
-                        messageField.setText( "" );
-                    }
-                    else
-                    {
-                        Toast.makeText( ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT );
+                    if (messageStatus == PublishStatusEnum.SCHEDULED) {
+                        messageField.setText("");
+                    } else {
+                        Toast.makeText(ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT);
                     }
                 }
-            } );
+            });
+        }
+
+
+    }
+
+    private boolean onSendMessage(int keyCode, KeyEvent keyEvent) {
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy(PushPolicyEnum.ALSO);
+        deliveryOptions.addPushSinglecast(UsrsDeviceIDs);
+        if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+            String message = messageField.getText().toString();
+            publishOptions.putHeader("message", message);
+            publishOptions.putHeader("MessageSender", publishOptions.getPublisherId());
+
+            if (message == null || message.equals(""))
+                return true;
+
+            Backendless.Messaging.publish((Object) message, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>(ChatActivity.this, "Sending...") {
+                @Override
+                public void handleResponse(MessageStatus response) {
+                    super.handleResponse(response);
+                    PublishStatusEnum messageStatus = response.getStatus();
+
+                    if (messageStatus == PublishStatusEnum.SCHEDULED) {
+                        messageField.setText("");
+                    } else {
+                        Toast.makeText(ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT);
+                    }
+                }
+            });
 
             return true;
         }
         return false;
     }
-    public void  readyForstartfrmNotifi() {
-         StartFromNotif = true;
+
+    public void readyForstartfrmNotifi() {
+        StartFromNotif = true;
         System.out.println("Start of readyForstartfrmNotifi");
         Context AppContext = getApplicationContext();
         System.out.println("!FacebookSdk.isInitialized()");
@@ -295,8 +283,8 @@ public class ChatActivity extends AppCompatActivity {
         Backendless.initApp(AppContext, "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         //String ProjectNumberNotification = "687259024455";
         //if (ConstantsClass.QuestionsQuestSize == 0)
-          //  ConstantsClass.QuestionsQuestSize = GettinQuesQuantityDyn.GetQuestionsQuantityDynamically();
-       // System.out.println("MobileAds.initialize");
+        //  ConstantsClass.QuestionsQuestSize = GettinQuesQuantityDyn.GetQuestionsQuantityDynamically();
+        // System.out.println("MobileAds.initialize");
         //MobileAds.initialize(AppContext, "ca-app-pub-3940256099942544~3347511713");
         //RegisterDeviceUpdateUserDeviceID();
         System.out.println(" UserTokenStorageFactory.instance().getStorage().get()");
@@ -361,6 +349,7 @@ public class ChatActivity extends AppCompatActivity {
 
         }
     }
+
     public String FindUsersObjectID(String name) {
         String userObjectID = null;
         //final String[] UserObjcetID = new String[1];
@@ -383,6 +372,7 @@ public class ChatActivity extends AppCompatActivity {
 
         return userObjectID;
     }
+
     @Override
     public void onBackPressed() {
         onChatWindow = false;
@@ -392,8 +382,7 @@ public class ChatActivity extends AppCompatActivity {
 
             startActivity(i);
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }

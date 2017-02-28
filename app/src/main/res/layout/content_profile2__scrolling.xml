@@ -57,13 +57,19 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/NewGame"
+                    android:text="@string/NewGameAR"
                     android:id="@+id/newGameButton"/>
+
+                <Button
+                    android:text="@string/PlayersList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button2" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Saved Games"
+                    android:text="@string/saved_gamesAR"
                     android:id="@+id/savedGamesButton" />
 
 
@@ -98,7 +104,7 @@
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_toEndOf="@id/ivContactItem2"
                     android:layout_toRightOf="@id/ivContactItem2"
-                    android:text="User Name"
+                    android:text="@string/AR_Hint_UserName"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -111,7 +117,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem2"
                     android:layout_toRightOf="@id/ivContactItem2"
-                    android:text="Name"
+                    android:text="@string/AR_Hint_UserName"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -163,7 +169,7 @@
                     android:layout_toStartOf="@+id/chkState3"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="User Ranking : 1"
+                    android:text="@string/user_rankingAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -176,7 +182,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem3"
                     android:layout_toRightOf="@id/ivContactItem3"
-                    android:text="Ranking"
+                    android:text="@string/user_rankingAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -226,7 +232,7 @@
                     android:layout_toStartOf="@+id/chkState7"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Points  : 1"
+                    android:text="@string/pointsAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -239,7 +245,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem7"
                     android:layout_toRightOf="@id/ivContactItem7"
-                    android:text="Points"
+                    android:text="@string/pointsAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -289,7 +295,7 @@
                     android:layout_toStartOf="@+id/chkState4"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Played "
+                    android:text="@string/playedAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -302,7 +308,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem4"
                     android:layout_toRightOf="@id/ivContactItem4"
-                    android:text="Played Games by the user :"
+                    android:text="@string/playedAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -352,7 +358,7 @@
                     android:layout_toStartOf="@+id/chkState5"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Won "
+                    android:text="@string/wonAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -365,7 +371,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem5"
                     android:layout_toRightOf="@id/ivContactItem5"
-                    android:text="Won games"
+                    android:text="@string/wonAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -415,7 +421,7 @@
                     android:layout_toStartOf="@+id/chkState6"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Lost"
+                    android:text="@string/lost"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#212121" />
 
@@ -428,7 +434,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem6"
                     android:layout_toRightOf="@id/ivContactItem6"
-                    android:text="Lost games "
+                    android:text="@string/lostAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 
@@ -486,7 +492,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_toEndOf="@id/ivContactItem1"
                     android:layout_toRightOf="@id/ivContactItem1"
-                    android:text="Draw games:"
+                    android:text="@string/draw_gamesAR"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="#727272" />
 

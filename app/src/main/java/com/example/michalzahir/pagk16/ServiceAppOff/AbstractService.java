@@ -40,7 +40,7 @@ public abstract class AbstractService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Toast.makeText(getApplicationContext(), "AS onTaskRemoved called", Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(), "AS onTaskRemoved called", Toast.LENGTH_LONG).show();
         super.onTaskRemoved(rootIntent);
     }
 }

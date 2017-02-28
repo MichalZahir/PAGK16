@@ -265,7 +265,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
-                            Log.d("push reciever", "User not updated (Device ID Update ) for the reasons" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                            Log.d("push receiver", "User not updated (Device ID Update ) for the reasons" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
                         }
                     });
 
@@ -357,6 +357,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
         Backendless.initApp(context.getApplicationContext(), "49D5B4BA-6BE5-9529-FF74-3DA2B56A3C00", "836D3D29-DD33-A22B-FFF5-E2DA720F6700", appVersion);
         InitialiseGameResultWhenNull();
         fbFriendsListActivity.FbGame = true;
+        MainActivity.LoggedInWithFB=true;
         gameResult.questionsAnswered =0;
 
         Bundle notificationBundle = new Bundle();
@@ -617,7 +618,7 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
 
                 notificationBundle.putBoolean("fromNotification", true);
-                notificationBundle.putString("UsrsNamesTab", bundle.getString("UsrsNamesTab"));
+                notificationBundle.putString("UsrsNamesTab", bundle.getString("MessageSender"));
                 notificationBundle.putString("UsrsobjIDsTab", bundle.getString("UsrsobjIDsTab"));
                 notificationBundle.putString("UsrsDeviceIDsTab", bundle.getString("UsrsDeviceIDsTab"));
                 notificationBundle.putString("subtopic", Subtopic);

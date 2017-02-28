@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:paddingLeft="@dimen/dp16"
@@ -21,7 +23,7 @@ tools:context="com.example.michalzahir.pagk16.ChatActivity">
     android:layout_marginBottom="@dimen/dp4"
     android:gravity="center"/>
 
-<EditText
+    <EditText
     android:layout_width="fill_parent"
     android:layout_height="@dimen/dp48"
     android:id="@+id/messageField"
@@ -30,7 +32,9 @@ tools:context="com.example.michalzahir.pagk16.ChatActivity">
     android:imeOptions="actionGo"
     android:inputType="textImeMultiLine"
     android:minHeight="@dimen/dp40"
-    android:layout_alignParentBottom="true"/>
+    android:layout_alignParentStart="@+id/sendChatButton"
+    android:layout_alignParentBottom="true"
+    android:layout_toStartOf="@+id/sendChatButton" />
 
 <EditText
     android:editable="false"
@@ -49,7 +53,18 @@ tools:context="com.example.michalzahir.pagk16.ChatActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/chat_send_button"
+
         android:layout_alignTop="@+id/messageField"
         android:layout_alignParentEnd="true"
         android:id="@+id/sendChatButton" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        android:layout_below="@+id/textChatWithSmbTitle"
+        android:layout_alignParentStart="true">
+    </com.google.android.gms.ads.AdView>
 </RelativeLayout>

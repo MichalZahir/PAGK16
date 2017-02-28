@@ -24,8 +24,8 @@ public class wonOrLost  {
         else {
             if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()) && NewGameActivity.result.getFirstUserResult() > NewGameActivity.result.getSecondtUserResult()) {
                 new AlertDialog.Builder(c)
-                        .setTitle("Congrats! You just won. ")
-                        .setMessage("Please click OK to go to Your profile")
+                        .setTitle("مبروك!    أنت الرابح")
+                        .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 final Intent i = new Intent(c, MainActivity.class);
@@ -44,8 +44,8 @@ public class wonOrLost  {
                         .show();
             } else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() > NewGameActivity.result.getFirstUserResult()) {
                 new AlertDialog.Builder(c)
-                        .setTitle("Congrats! You just won. ")
-                        .setMessage("Please click OK to go to Your profile")
+                        .setTitle("مبروك!    أنت الرابح")
+                        .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
 
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -64,8 +64,8 @@ public class wonOrLost  {
             } else if (NewGameActivity.result.getSecondtUserResult() == NewGameActivity.result.getFirstUserResult()) {
 
                 new AlertDialog.Builder(c)
-                        .setTitle("ouups we Have a draw!")
-                        .setMessage("Please click OK to go to Your profile")
+                        .setTitle("اللعبة إنتهت بالتعادل!")
+                        .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 final Intent i = new Intent(c, MainActivity.class);
@@ -86,8 +86,8 @@ public class wonOrLost  {
             // the losin part
             else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() < NewGameActivity.result.getFirstUserResult()) {
                 new AlertDialog.Builder(c)
-                        .setTitle("Hard luck, You lost ")
-                        .setMessage("Try to play again, Please click OK to go to Your profile")
+                        .setTitle("للأسف اللعبة انتهت بخسارتك حظا أوفر في المرة القادمة")
+                        .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 final Intent i = new Intent(c, MainActivity.class);
@@ -104,8 +104,8 @@ public class wonOrLost  {
                         .show();
             } else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() > NewGameActivity.result.getFirstUserResult()) {
                 new AlertDialog.Builder(c)
-                        .setTitle("Hard luck, You lost ")
-                        .setMessage("Try to play again, Please click OK to go to Your profile")
+                        .setTitle("للأسف اللعبة انتهت بخسارتك حظا أوفر في المرة القادمة")
+                        .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 final Intent i = new Intent(c, MainActivity.class);
@@ -127,11 +127,11 @@ public class wonOrLost  {
     static public void CheckWhoWonFBusrs(final Context c) {
         if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()) && NewGameActivity.result.getFirstUserResult() > NewGameActivity.result.getSecondtUserResult()) {
             new AlertDialog.Builder(c)
-                    .setTitle("Congrats! You just won. ")
-                    .setMessage("Please click OK to go to Your profile")
-                    .setNeutralButton("Share results on Facebook", new DialogInterface.OnClickListener() {
+                    .setTitle("مبروك!    أنت الرابح")
+                    .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
+                    .setNeutralButton("شارك النتيجة مع أصدقائك على الفيسبوك", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            resultActivity.ShowFbShareDialog("I just won against " + getOpponentName(),c);
+                            resultActivity.ShowFbShareDialog("لقد ربحت ضد" + getOpponentName(),c);
 
                         }
                     })
@@ -153,11 +153,11 @@ public class wonOrLost  {
                     .show();
         } else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() > NewGameActivity.result.getFirstUserResult()) {
             new AlertDialog.Builder(c)
-                    .setTitle("Congrats! You just won. ")
-                    .setMessage("Please click OK to go to Your profile")
-                    .setNeutralButton("Share results on Facebook", new DialogInterface.OnClickListener() {
+                    .setTitle("مبروك!    أنت الرابح")
+                    .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
+                    .setNeutralButton("شارك النتيجة مع أصدقائك على الفيسبوك", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            resultActivity.ShowFbShareDialog("I just won against " + getOpponentName(),c);
+                            resultActivity.ShowFbShareDialog("لقد ربحت ضد" + getOpponentName(),c);
 
                         }
                     })
@@ -178,11 +178,11 @@ public class wonOrLost  {
         } else if (NewGameActivity.result.getSecondtUserResult() == NewGameActivity.result.getFirstUserResult()) {
 
             new AlertDialog.Builder(c)
-                    .setTitle("ouups we Have a draw!")
-                    .setMessage("Please click OK to go to Your profile")
-                    .setNeutralButton("Share results on Facebook", new DialogInterface.OnClickListener() {
+                    .setTitle("اللعبة إنتهت بالتعادل!")
+                    .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
+                    .setNeutralButton("شارك النتيجة مع أصدقائك على الفيسبوك", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            resultActivity.ShowFbShareDialog("I just had a draw against " + getOpponentName(),c);
+                            resultActivity.ShowFbShareDialog("لقد تعادلت ضد" + getOpponentName(),c);
 
                         }
                     })
@@ -206,12 +206,12 @@ public class wonOrLost  {
         // the losin part
         else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getSecondUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() < NewGameActivity.result.getFirstUserResult()) {
             new AlertDialog.Builder(c)
-                    .setTitle("Hard luck, You lost ")
-                    .setMessage("Try to play again, Please click OK to go to Your profile")
+                    .setTitle("للأسف اللعبة انتهت بخسارتك حظا أوفر في المرة القادمة")
+                    .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
 
-                    .setNeutralButton("Share results on Facebook", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("شارك النتيجة مع أصدقائك على الفيسبوك", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            resultActivity.ShowFbShareDialog("I just lost against " + getOpponentName(),c);
+                            resultActivity.ShowFbShareDialog("لقد خسرت ضد" + getOpponentName(),c);
 
                         }
                     })
@@ -231,14 +231,14 @@ public class wonOrLost  {
                     .show();
         } else if (playerObejtID.getUserObjectID().equals(NewGameActivity.result.getFirstUSerObjectID()) && NewGameActivity.result.getSecondtUserResult() > NewGameActivity.result.getFirstUserResult()) {
             new AlertDialog.Builder(c)
-                    .setTitle("Hard luck, You lost ")
-                    .setNeutralButton("Share results on Facebook", new DialogInterface.OnClickListener() {
+                    .setTitle("للأسف اللعبة انتهت بخسارتك حظا أوفر في المرة القادمة")
+                    .setNeutralButton("شارك النتيجة مع أصدقائك على الفيسبوك", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            resultActivity.ShowFbShareDialog("I just lost against " + getOpponentName(),c);
+                            resultActivity.ShowFbShareDialog("لقد خسرت ضد" + getOpponentName(),c);
 
                         }
                     })
-                    .setMessage("Try to play again, Please click OK to go to Your profile")
+                    .setMessage(" OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final Intent i = new Intent(c, MainActivity.class);

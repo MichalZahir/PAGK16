@@ -80,7 +80,8 @@ public class SavedGamesActivity extends AppCompatActivity {
                 SavedGamesArray = new String[GamesLoading.SavedGameslist.size()];
                 Log.d(TAG, "The moment before going into the loop for after loading the games");
                 for (Saved_Games sg : GamesLoading.SavedGameslist) {
-                    SavedGamesArray[d] = "Game " + i + ": " + SetWhosTurn(sg);
+                    // SavedGamesArray[d] = "Game " + i + ": " + SetWhosTurn(sg);
+                    SavedGamesArray[d] = "اللعبة رقم " + i + ": " + SetWhosTurn(sg);
                     Log.d(TAG, "The saved Games Array object ID = " + sg.getObjectId() + "who's turn" + sg.getWhosTurn());
 
 
@@ -134,7 +135,7 @@ public class SavedGamesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 //Toast.makeText(SavedGamesActivity.this, "" + position + GamesLoading.SavedGameslist.get(position).getQuestionsIDs(), Toast.LENGTH_SHORT).show();
-                if (SetWhosTurn(GamesLoading.SavedGameslist.get(position)).contains("It's your turn to play")) {
+                if (SetWhosTurn(GamesLoading.SavedGameslist.get(position)).contains("إنه دورك للعب ضد")) {
                     gettingQuestions.getQuestionsForSavedGames(getApplicationContext(), GamesLoading.SavedGameslist.get(position));
                     NewGameActivity.result = new gameResult();
                     NewGameActivity.result.setFirstUserResult(GamesLoading.SavedGameslist.get(position).getFirstUserResult());
@@ -175,16 +176,18 @@ public class SavedGamesActivity extends AppCompatActivity {
         String WhosTurn = null;
         if (playerObejtID.getUserObjectID().equals(savedGames.getFirstUserID())) {
             if (savedGames.getWhosTurn().equals("1st user"))
-                WhosTurn = "It's your turn to play against : " + savedGames.getSecondUserName();
+                  WhosTurn = "إنه دورك للعب ضد : " + savedGames.getSecondUserName();
+                //WhosTurn = "It's your turn to play against : " + savedGames.getSecondUserName();
             else if (savedGames.getWhosTurn().equals("2nd user"))
-                WhosTurn = "Your Opponent " + savedGames.getSecondUserName() + " is playing right now ";
-
+                //WhosTurn = "Your Opponent " + savedGames.getSecondUserName() + " is playing right now ";
+                WhosTurn = "إنه دور خصمك  " + savedGames.getSecondUserName() ;
         } else if (playerObejtID.getUserObjectID().equals(savedGames.getSecondUserID())) {
             if (savedGames.getWhosTurn().equals("1st user"))
-                WhosTurn = "Your Opponent  " + savedGames.getSecondUserName() + "  is playing right now";
+                //WhosTurn = "Your Opponent  " + savedGames.getSecondUserName() + "  is playing right now";
+                WhosTurn = "إنه دور خصمك  " + savedGames.getSecondUserName() ;
             else if (savedGames.getWhosTurn().equals("2nd user"))
-                WhosTurn = "It's your turn to play against : " + savedGames.getFirstUserName();
-
+                //WhosTurn = "It's your turn to play against : " + savedGames.getFirstUserName();
+                WhosTurn = "إنه دورك للعب ضد : " + savedGames.getFirstUserName();
         }
 
 
@@ -246,7 +249,7 @@ public class SavedGamesActivity extends AppCompatActivity {
 
                     final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                    final ArrayAdapter adapter = new ArrayAdapter<String>(SavedGamesActivity.this, R.layout.activity_listview, R.id.itemTextView, SavedGamesArray) {
+                    final ArrayAdapter adapter = new ArrayAdapter<String>(SavedGamesActivity.this, R.layout.activity_listview,  SavedGamesArray) {
 
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -254,7 +257,7 @@ public class SavedGamesActivity extends AppCompatActivity {
                                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                             View view = convertView;
 //                if (view == null) {
-                            view = inflater.inflate(R.layout.item_layout, parent, false);
+                            view = inflater.inflate(R.layout.item_layout_saved_games, parent, false);
 //                }
 
 
@@ -263,7 +266,7 @@ public class SavedGamesActivity extends AppCompatActivity {
                             tvName.setText(getItem(position));
                             //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
                             tvName.setTextColor(Color.parseColor("#424242"));
-                            System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+                            System.out.println(" Outside the if see if there is text, the item at the position in the list view : " + getItem(position));
 
 
 

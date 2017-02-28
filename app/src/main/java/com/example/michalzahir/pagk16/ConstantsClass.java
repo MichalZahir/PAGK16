@@ -16,6 +16,6 @@ public class ConstantsClass {
     public final static int LiteratureQuestSize = 10;
     public final static int QuestionsNumberToBeAsked = 2;
     public static final String DEFAULT_CHANNEL = "default";
-    public static String CONNECT_DEMAND = "User %s wants to chat with you";
-    public static String MESSAGE_SEND = "User %s sent a message";
+    public static String CONNECT_DEMAND = "الاعب %s يريد التحدث معك";
+    public static String MESSAGE_SEND = "الاعب  %s أرسل رسالة لك"; 
 }

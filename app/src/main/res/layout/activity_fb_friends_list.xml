@@ -22,7 +22,7 @@ tools:context="com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivit
         android:id="@+id/inviteFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/invite_other_friends"
+        android:text="@string/invite_other_friends_AR"
         android:layout_gravity="center"
         />
     </android.support.v7.widget.Toolbar>

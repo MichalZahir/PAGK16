@@ -45,8 +45,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 
-
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -72,7 +70,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
     int lostGames;
     int drawGames;
     int playedGames;
-    int Ranking;
+    static int Ranking;
     int OldRanking;
     int usersCount;
     int points;
@@ -90,7 +88,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile2__scrolling);
 
-        Thread t = new Thread(new Runnable()  {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 //If there are stories, add them to the table
@@ -118,22 +116,22 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
                 final String currentUserObjectId = Backendless.UserService.loggedInUser();
                 //MainActivity.user.setUserObjectId(currentUserObjectId);
-                if (currentUserObjectId !=null  && !currentUserObjectId.equals("")){
+                if (currentUserObjectId != null && !currentUserObjectId.equals("")) {
 
                     BackendlessUser backendlessUser = Backendless.UserService.findById(currentUserObjectId);
 
-                            Backendless.UserService.setCurrentUser(backendlessUser);
-                            playerObejtID.setUserObjectID(currentUserObjectId);
-                            UserName = "" + backendlessUser.getProperty("name");
-                            wonGames = (int) backendlessUser.getProperty("WON");
-                            lostGames = (int) backendlessUser.getProperty("LOST");
-                            drawGames = (int) backendlessUser.getProperty("DRAW");
-                            Ranking = (int) backendlessUser.getProperty("RANKING");
-                            OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
-                            usersCount = (int) backendlessUser.getProperty("usersCount");
-                            points = (int) backendlessUser.getProperty("POINTS");
-                            AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
-                            MainActivity.user.setName(UserName);
+                    Backendless.UserService.setCurrentUser(backendlessUser);
+                    playerObejtID.setUserObjectID(currentUserObjectId);
+                    UserName = "" + backendlessUser.getProperty("name");
+                    wonGames = (int) backendlessUser.getProperty("WON");
+                    lostGames = (int) backendlessUser.getProperty("LOST");
+                    drawGames = (int) backendlessUser.getProperty("DRAW");
+                    Ranking = (int) backendlessUser.getProperty("RANKING");
+                    OldRanking = (int) backendlessUser.getProperty("OLDRANKING");
+                    usersCount = (int) backendlessUser.getProperty("usersCount");
+                    points = (int) backendlessUser.getProperty("POINTS");
+                    AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
+                    MainActivity.user.setName(UserName);
 
 //                            if (OldRanking < Ranking) {
 //                                RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
@@ -141,11 +139,11 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 //                                RankingArrowImaView.setBackgroundResource(R.drawable.greenarrow);
 //                            else if (OldRanking == Ranking)
 //                                RankingArrowImaView.setBackgroundResource(R.drawable.same);
-                            playedGames = wonGames + lostGames + drawGames;
+                    playedGames = wonGames + lostGames + drawGames;
 
-                            // UserNameTectView.setText(UserName);
-                            MainActivity.userName.setUserName(UserName);
-                            MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
+                    // UserNameTectView.setText(UserName);
+                    MainActivity.userName.setUserName(UserName);
+                    MainActivity.userName.setUserNameUSrObjectID(currentUserObjectId);
 //                            lostGamesTextView.setText(String.valueOf(lostGames));
 //                            drawGamesTextView.setText(String.valueOf(drawGames));
 //                            playedGamesTextView.setText(String.valueOf(playedGames));
@@ -154,14 +152,13 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 //                            RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
 //                            pointsTextView.setText(String.valueOf(points));
 
-                        }
-
+                }
 
 
                 System.out.println("user id from token " + currentUserObjectId);
 
                 accessToken = AccessToken.getCurrentAccessToken();
-                if (accessToken!=null ) {
+                if (accessToken != null) {
                     MainActivity.LoggedInWithFB = true;
                     // String currentUserObjectIdFB = Backendless.UserService.loggedInUser();
                     wonGames = intent.getIntExtra("wonGames", -1);
@@ -242,7 +239,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                 }
 
 
-                }
+            }
 
         });
         t.start();
@@ -275,14 +272,15 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                     RankingArrowImaView = (ImageView) findViewById(R.id.ivContactItem3);
                     LogOutTMP = (Button) findViewById(R.id.button2);
-                     setSupportActionBar(toolbar);
+                    setSupportActionBar(toolbar);
                     RankingLayout = (RelativeLayout) findViewById(R.id.RankingLayOut);
                     //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                     lostGamesTextView.setText(String.valueOf(lostGames));
                     drawGamesTextView.setText(String.valueOf(drawGames));
                     playedGamesTextView.setText(String.valueOf(playedGames));
                     wonGamesTextView.setText(String.valueOf(wonGames));
-                    RankingTextView.setText(String.valueOf(Ranking) + " from total " + usersCount + " users");
+                    String RankingtextView = String.valueOf(Ranking) + " من أصل " + usersCount + " لاعب ";
+                    RankingTextView.setText(RankingtextView);
                     pointsTextView.setText(String.valueOf(points));
                     if (OldRanking < Ranking) {
                         RankingArrowImaView.setBackgroundResource(R.drawable.redarraw);
@@ -319,7 +317,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                             RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data.... ", "Please wait, it might take a minute to load the data ", true);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "جاري تحميل البيانات.... ", "الرجاء الإنتظار لحظة", true);
 
 
                             Intent i = new Intent(Profile2_ScrollingActivity.this,
@@ -347,7 +345,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
                             RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "Loading data..... ", "Please wait a second until we load data ", true);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "جاري تحميل البيانات..... ", "الرجاء الإنتظار لحظة", true);
                             Intent i = new Intent(getApplicationContext(),
                                     SavedGamesActivity.class);
                             startActivity(i);
@@ -356,12 +354,23 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
                         }
                     });
-                    LogOutTMP.setOnClickListener(new View.OnClickListener(){
+                    LogOutTMP.setOnClickListener(new View.OnClickListener() {
 
 
                         @Override
                         public void onClick(View v) {
-                            logOut();
+                            RankingProgreessDialogue = new ProgressDialog(Profile2_ScrollingActivity.this);
+                            RankingProgreessDialogue.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            RankingProgreessDialogue = ProgressDialog.show(Profile2_ScrollingActivity.this, "جاري تحميل البيانات.... ", "الرجاء الإنتظار لحظة", true);
+
+
+                            Intent i = new Intent(Profile2_ScrollingActivity.this,
+                                    RankingActivity.class);
+
+                            startActivity(i);
+                            finish();
+
+                            //                            logOut();
                         }
                     });
 
@@ -385,8 +394,6 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 //                    }
 
 
-
-
                 }
             });
         } catch (final Exception ex) {
@@ -404,10 +411,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
 
-        }
-
-
-
+    }
 
 
     @Override
@@ -465,8 +469,6 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
         moveTaskToBack(true);
 
     }
-
-
 
 
 }

@@ -4,7 +4,6 @@
     android:layout_height="fill_parent"
     android:background="@color/bg_login"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
@@ -25,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
+            android:hint="@string/AR_Hint_UserName"
+            android:inputType="textVisiblePassword"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_login"
@@ -38,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword"
+            android:hint="@string/hint_passwordAR"
+            android:inputType="textVisiblePassword"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_login"
@@ -53,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/btn_login_bg"
-            android:text="@string/btn_login"
+            android:text="@string/btn_loginAR"
             android:textColor="@color/btn_login" />
         <Button
             android:id="@+id/fbLogin"
@@ -72,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="90dip"
             android:background="@null"
-            android:text="@string/btn_link_to_register"
+            android:text="@string/btn_link_to_registerAR"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp" />

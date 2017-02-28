@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/input_register_bg"
-            android:hint="@string/hint_name"
+            android:hint="@string/AR_Hint_UserName"
             android:padding="10dp"
             android:singleLine="true"
             android:inputType="textCapWords"
@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/input_register_bg"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword"
+            android:hint="@string/hint_passwordAR"
+            android:inputType="textVisiblePassword"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/input_register"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="#ea4c88"
-            android:text="@string/btn_register"
+            android:text="@string/btn_registerAR"
             android:textColor="@color/white" />
 
         <!-- Link to Login Screen -->
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"
             android:background="@null"
-            android:text="@string/btn_link_to_login"
+            android:text="@string/btn_link_to_loginAR"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15dp" />

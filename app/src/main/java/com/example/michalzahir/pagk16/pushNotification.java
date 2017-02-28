@@ -109,7 +109,7 @@ public class pushNotification {
 
         publishOptions.putHeader("android-ticker-text", "You just got a private push notification!");
         publishOptions.putHeader("android-content-title", "PAGK");
-        publishOptions.putHeader("android-content-text", MainActivity.userName.getUserName()+" Wants to play with you, he/she just finished playing, It's your turn to play!");
+        publishOptions.putHeader("android-content-text","الاعب "+ MainActivity.userName.getUserName()+"يريد أن يلعب معك. حان دورك للإجابة على الأسئلة");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
@@ -160,7 +160,7 @@ public class pushNotification {
 
         publishOptions.putHeader("android-ticker-text", "Your opponent just finished!");
         publishOptions.putHeader("android-content-title", "PAGK");
-        publishOptions.putHeader("android-content-text"," Your game with "+MainActivity.userName.getOponnentName() + " just finished and We got the final result, check if you won or lost!");
+        publishOptions.putHeader("android-content-text"," اللعبة ضد "+MainActivity.userName.getOponnentName() + " انتهت اضغط لمشاهدة النتيجة النهائية!");
         // MessageStatus status =Backendless.Messaging.publish( "default","this is a private message!", publishOptions, deliveryOptions) ;
         //retrieveDane(c);
 
@@ -174,13 +174,13 @@ public class pushNotification {
         Backendless.Messaging.publish("default", "this is a private message!", publishOptions, deliveryOptions, new AsyncCallback<MessageStatus>() {
             @Override
             public void handleResponse(MessageStatus messageStatus) {
-                Log.d(TAG, "Push Notification  workin. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
+                Log.d(TAG, "Push Notification Working. status :   " + messageStatus + "Error" + messageStatus.getErrorMessage() + "The Message ID " + messageStatus.getMessageId() + "the device receiver is : " + deliveryOptions.getPushSinglecast());
 
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d(TAG, "Push Notification not workin .  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
+                Log.d(TAG, "Push Notification Not Working.  The Cause :   " + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());
             }
         });
 

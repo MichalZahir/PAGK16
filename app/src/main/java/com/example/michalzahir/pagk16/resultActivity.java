@@ -108,8 +108,8 @@ public class resultActivity extends AppCompatActivity {
                 }
 
                 new AlertDialog.Builder(this)
-                        .setTitle("Your part is done, It's turn for your opponent. ")
-                        .setMessage("Please wait for a notification with the last result, please click ok to go to your profile")
+                        .setTitle(".دورك في اللعبة إنتهى, حان دور منافسك, انتظر النتيجة النهائية")
+                        .setMessage("OK للعودة إلى صفحتك الرئيسية اضغط الزر")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -157,7 +157,7 @@ public class resultActivity extends AppCompatActivity {
         // new Contact instance has been saved
         new AlertDialog.Builder(this)
                 .setTitle("Your result : ")
-                .setMessage("Your oponent is playing his round right now. Please wait for a notification when he finishes.")
+                .setMessage("Your opponent is playing his round right now. Please wait for a notification when he finishes.")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 

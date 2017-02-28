@@ -212,8 +212,9 @@ public class NewGameActivity extends AppCompatActivity {
     public void SetDialogueForNotFbLoggedusr() {
 
         new AlertDialog.Builder(this)
-                .setTitle("You're not logged in With your Facebook account.")
-                .setMessage("Please click OK to go to Your profile, you can log out and sign in with your facebook account to be able to play with facebook friends.")
+                .setTitle("لم تسجل دخولك عن طريق حساب الفيسبوك.")
+                .setMessage("كي تستطيع اللعب ضد أصدقاء الفيسبوك, يجب أن تسجل دخولك عن طريق حساب الفيسبوك." +
+                        "اضغط ok للعودة للصفحة الرئيسية, سجل الخروج عن طريق الزر في الزاوية اليسرى ثم سجل الدخول عن طريق حساب الفيسبوك")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         final Intent i = new Intent(getApplicationContext(), Profile2_ScrollingActivity.class);
