@@ -17,10 +17,12 @@ import com.backendless.Subscription;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.messaging.DeliveryOptions;
 import com.backendless.messaging.Message;
 import com.backendless.messaging.MessageStatus;
 import com.backendless.messaging.PublishOptions;
 import com.backendless.messaging.PublishStatusEnum;
+import com.backendless.messaging.PushPolicyEnum;
 import com.backendless.messaging.SubscriptionOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
@@ -180,7 +182,9 @@ public class ChatActivity extends AppCompatActivity {
     }
     private boolean onSendMessage( int keyCode, KeyEvent keyEvent )
     {
-
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
+        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
         if( keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP )
         {
             String message = messageField.getText().toString();
@@ -188,7 +192,7 @@ public class ChatActivity extends AppCompatActivity {
             if( message == null || message.equals( "" ) )
                 return true;
 
-            Backendless.Messaging.publish( (Object) message, publishOptions, new DefaultCallback<MessageStatus>( ChatActivity.this, "Sending..." )
+            Backendless.Messaging.publish( (Object) message, publishOptions,deliveryOptions, new DefaultCallback<MessageStatus>( ChatActivity.this, "Sending..." )
             {
                 @Override
                 public void handleResponse( MessageStatus response )

@@ -354,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                     String DeviceID = null;
                     try {
                         DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                        user.setDeviceID(DeviceID);
                     } catch (BackendlessException e) {
                         RegisterDeviceUpdateUserDeviceID();
                     }
@@ -448,6 +449,7 @@ public class MainActivity extends AppCompatActivity {
                         String DeviceID = null;
                         try {
                             DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                            user.setDeviceID(DeviceID);
                         } catch (BackendlessException e) {
                             RegisterDeviceUpdateUserDeviceID(FbProfileID);
                         }
