@@ -23,15 +23,19 @@ import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.push.BackendlessBroadcastReceiver;
 import com.example.michalzahir.pagk16.CATEGORY_QUESTIONS.SAVED_QUESTIONS;
 import com.example.michalzahir.pagk16.FacebookUsers.fbFriendsListActivity;
+import com.example.michalzahir.pagk16.Helper.chatMessage;
 import com.example.michalzahir.pagk16.fakeActivity.ActivityFake;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class PushReceiver extends BackendlessBroadcastReceiver {
     static Intent notificationIntent;
     Bundle insideBundle = new Bundle();
     static Intent LastResultIntent;
+    public  static List<chatMessage> ChatMessages =new ArrayList<>();
 
     @Override
     public boolean onMessage(Context context, Intent intent) {
@@ -584,61 +588,113 @@ public class PushReceiver extends BackendlessBroadcastReceiver {
 
     }
     public void OnChatMessage(Bundle bundle,Intent intent,Context context){
+       String Subtopic = bundle.getString("DSSubtopic");
 
-        Intent chatIntent = new Intent( context, ChatActivity.class );
-        Bundle notificationBundle = new Bundle();
-        //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
-        //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
-        Intent mainActivity = new Intent(context, MainActivity.class);
-        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //System.out.println("ChatActivity.onChatWindow" +ChatActivity.onChatWindow + " ChatActivity.subtopic="+ChatActivity.subtopic+ " bundle.getString(subtopic  "+bundle.getString("subtopic"+ " bundle.containsKeynoCheck)"+ bundle.containsKey("noCheck")));
+        //Boolean air = null;
+        //String khra = bundle.getString("DSSubtopic");
+        //if (ChatActivity.subtopic!=null){
 
 
-        notificationBundle.putBoolean("fromNotification",true);
-        notificationBundle.putString("UsrsNamesTab", bundle.getString("UsrsNamesTab"));
-        notificationBundle.putString("UsrsobjIDsTab", bundle.getString("UsrsobjIDsTab"));
-        notificationBundle.putString("UsrsDeviceIDsTab", bundle.getString("UsrsDeviceIDsTab"));
-        notificationBundle.putString("subtopic",bundle.getString("subtopic"));
+        //air = ChatActivity.subtopic.equals(bundle.getString("subtopic"));
+        //}
+        //Boolean r = air;
+        //Boolean air1 = !bundle.containsKey("noCheck");
+        //Boolean air2 = ChatActivity.onChatWindow;
+        Boolean NoCheck =bundle.containsKey("noCheck");
+        if (ChatActivity.onChatWindow && ChatActivity.subtopic.equals(Subtopic)&& !NoCheck){
 
-        CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
-        CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
-        CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
-        String subtopic = intent.getStringExtra("message");
-        if (tickerText != null && tickerText.length() > 0) {
-            int appIcon = R.mipmap.ic_launcher;
-            if (appIcon == 0)
-                appIcon = android.R.drawable.sym_def_app_icon;
+
+            }
+
+        else {
+                Intent chatIntent = new Intent(context, ChatActivity.class);
+                Bundle notificationBundle = new Bundle();
+                //notificationBundle.putString("1st user result", bundle.getString("1st user result"));
+                //notificationBundle.putString("2nd user result", bundle.getString("2nd user result"));
+                Intent mainActivity = new Intent(context, MainActivity.class);
+                mainActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+
+                notificationBundle.putBoolean("fromNotification", true);
+                notificationBundle.putString("UsrsNamesTab", bundle.getString("UsrsNamesTab"));
+                notificationBundle.putString("UsrsobjIDsTab", bundle.getString("UsrsobjIDsTab"));
+                notificationBundle.putString("UsrsDeviceIDsTab", bundle.getString("UsrsDeviceIDsTab"));
+                notificationBundle.putString("subtopic", Subtopic);
+
+                CharSequence tickerText = intent.getStringExtra(PublishOptions.ANDROID_TICKER_TEXT_TAG);
+                CharSequence contentTitle = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TITLE_TAG);
+                CharSequence contentText = intent.getStringExtra(PublishOptions.ANDROID_CONTENT_TEXT_TAG);
+                String subtopic = intent.getStringExtra("message");
+                if (tickerText != null && tickerText.length() > 0) {
+                    int appIcon = R.mipmap.ic_launcher;
+                    if (appIcon == 0)
+                        appIcon = android.R.drawable.sym_def_app_icon;
 
 
 //
 //                           SavedQuestionsToBundle(RecyclerAdapter.savedquestions.getSavedQuestions());
-            //Intent chatIntent = new Intent(context, ChatActivity.class);
-            System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
-            chatIntent.putExtras(notificationBundle);
-            Random random = new Random();
-            int m = random.nextInt(9999 - 1000) + 1000;
-            chatIntent.putExtra("subtopic", subtopic);
-            PendingIntent contentIntent = PendingIntent.getActivity(context, m, chatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    //Intent chatIntent = new Intent(context, ChatActivity.class);
+                    System.out.println("The current bundle is  from the push receiver why is it empty:     " + notificationBundle);
+                    chatIntent.putExtras(notificationBundle);
+                    Random random = new Random();
+                    int m = random.nextInt(9999 - 1000) + 1000;
+                    chatMessage CM =chatMessage.findChatMessageByPublisherID(bundle.getString("MessageSender"),ChatMessages);
+                    chatIntent.putExtra("MessageSender",bundle.getString("MessageSender"));
+                    if (bundle.containsKey("MessageSender"))
+                    if (CM!=null)
+                    {
+                     m = CM.getNotificationID();
+                    }
+                    if (NoCheck) {
+                        //The notification with the user wants to talk to you.
+                        chatIntent.putExtra("subtopic", subtopic);
+                        chatMessage ChatMessage = new chatMessage();
+                        ChatMessage.setPublisherID(bundle.getString("MessageSender"));
+                        ChatMessage.setNotificationID(m);
+                        ChatMessages.add(ChatMessage);
 
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
-            notificationBuilder.setSmallIcon(getNotificationIcon());
-            notificationBuilder.setTicker(tickerText);
-            notificationBuilder.setWhen(System.currentTimeMillis());
-            notificationBuilder.setContentTitle(contentTitle);
-            notificationBuilder.setContentText(contentText);
-            notificationBuilder.setAutoCancel(true);
-            notificationBuilder.setContentIntent(contentIntent);
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            notificationBuilder.setSound(uri);
-            //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
-            //notificationBuilder.setLights(Color.RED, 3000, 3000);
-            Notification notification = notificationBuilder.build();
+                    }
+                    else {
+                        chatIntent.putExtra("subtopic", Subtopic);
+                        String Message  = intent.getStringExtra("message");
+                        chatIntent.putExtra("message",Message);
+                        chatMessage ChatMessage= chatMessage.findChatMessageByPublisherID(bundle.getString("MessageSender"),ChatMessages);
+                        Boolean addToChatMessages = false;
+                        if (ChatMessage == null) {
+                            ChatMessage = new chatMessage();
+                            addToChatMessages = true;
+                        }
+                        ChatMessage.setPublisherID(bundle.getString("MessageSender"));
+                        ChatMessage.setNotificationID(m);
+                        ChatMessage.getMessages().add(Message);
+                        if (addToChatMessages)
+                            ChatMessages.add(ChatMessage);
+
+                    }
+                    PendingIntent contentIntent = PendingIntent.getActivity(context, m, chatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+                    notificationBuilder.setSmallIcon(getNotificationIcon());
+                    notificationBuilder.setTicker(tickerText);
+                    notificationBuilder.setWhen(System.currentTimeMillis());
+                    notificationBuilder.setContentTitle(contentTitle);
+                    notificationBuilder.setContentText(contentText);
+                    notificationBuilder.setAutoCancel(true);
+                    notificationBuilder.setContentIntent(contentIntent);
+                    Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    notificationBuilder.setSound(uri);
+                    //notificationBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+                    //notificationBuilder.setLights(Color.RED, 3000, 3000);
+                    Notification notification = notificationBuilder.build();
 
 
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(m, notification);
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(m, notification);
 
-        }
-        System.out.println("Chat Message");
+                }
+                System.out.println("Chat Message");
+            }
         //chatIntent.putExtra( "owner", owner );
         //chatIntent.putExtra( "subtopic", subtopic );
        // context.startActivity( chatIntent );

@@ -3,6 +3,8 @@ package com.example.michalzahir.pagk16;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.GpsStatus;
 import android.os.AsyncTask;
@@ -37,11 +39,25 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -57,6 +73,7 @@ public class RankingActivity extends AppCompatActivity {
     String AnsweredQuestionsIds [];
     //String RankingArrows [];
     JSONArray Friends;
+    boolean alreadySeen = false;
     public static Boolean RankingGame = false ;
     String UserName;
     ListView listView;
@@ -71,7 +88,22 @@ public class RankingActivity extends AppCompatActivity {
         final AdView LoginAdView = (AdView) findViewById(R.id.adViewRanking);
         AdRequest adRequest = new AdRequest.Builder().build();
         LoginAdView.loadAd(adRequest);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+//        ImageLoader.getInstance().init(config);
 
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
 
 
 
@@ -144,6 +176,21 @@ public class RankingActivity extends AppCompatActivity {
                         i++;
 
                     }
+                    int currentUserPosition = 0;
+                    List <String >myList = new LinkedList<>();
+                    //new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                     if (Arrays.asList(UsrsobjIDsTab).contains(MainActivity.user.getUserObjectId())){
+
+                         //UsrsobjIDsTab = clean(UsrsobjIDsTab);
+                            myList= Arrays.asList(UsrsobjIDsTab);
+
+
+                            //myList.removeAll(null);
+
+                         //currentUserPosition = new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                currentUserPosition = myList.indexOf(MainActivity.user.getUserObjectId());
+                     }
+                         System.out.println("currentUserPosition 1 = " + currentUserPosition);
                     // Load one page into listView
                       listView = (ListView) findViewById(R.id.listView);
                     // Creating a button - Load More
@@ -153,6 +200,8 @@ public class RankingActivity extends AppCompatActivity {
                     final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                     final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+
+                        ImageLoader imageLoader = ImageLoader.getInstance();
 
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -165,17 +214,20 @@ public class RankingActivity extends AppCompatActivity {
 
 
                             TextView tvName = (TextView)  view.findViewById(R.id.itemTextView);
+
                             //ImageView Rankingarrow = (ImageView) view.findViewById(R.id.RankingArrow);
                             tvName.setText(getItem(position));
                             //Rankingarrow.setBackgroundResource(R.drawable.redarraw);
                             tvName.setTextColor(Color.parseColor("#424242"));
-                            System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
+                            System.out.println(" Outside the if see if there is text, the item at the position in the list view : " + getItem(position));
 
                             if (RankingActivity.Highlighted.contains(position)) {
-
+                                ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
                                 String airi  =  getItem(position);
-                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
+                                tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
 
+                                //fbProfilePic.setImageBitmap(getFacebookProfilePicture(FbProfileID[position]));
+                                imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                                 System.out.println(" the item at the position in the list view : " + airi);
 
                             }
@@ -208,7 +260,8 @@ public class RankingActivity extends AppCompatActivity {
                         }
                     });
                     // the end of loading one page
-
+                    System.out.println("currentUserPosition 2 = " + currentUserPosition);
+                    listView.setSelection(currentUserPosition);
 
                     System.out.println( "after the for loop b4 the nextPage call size: " + users.getCurrentPage().size()  );
                     //int size  = users.getCurrentPage().size();
@@ -308,7 +361,7 @@ public class RankingActivity extends AppCompatActivity {
         final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
-
+            ImageLoader imageLoader = ImageLoader.getInstance();
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext()
@@ -327,10 +380,11 @@ public class RankingActivity extends AppCompatActivity {
                 System.out.println(" Outisede the if see if there is text, the item at the position in the list view : " + getItem(position));
 
                 if (RankingActivity.Highlighted.contains(position)) {
+                    ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
 
                     String airi  =  getItem(position);
-                    tvName.setBackgroundColor(Color.parseColor("#039be5"));
-
+                    tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
+                    imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                     System.out.println(" the item at the position in the list view : " + airi);
 
                 }
@@ -350,6 +404,8 @@ public class RankingActivity extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+                listView.setFastScrollEnabled(true);
+                listView.setScrollingCacheEnabled(false);
         Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
         btnLoadMore.setOnClickListener(new View.OnClickListener() {
 
@@ -372,11 +428,43 @@ public class RankingActivity extends AppCompatActivity {
         }
 
     }
+    public static String getFacebookProfilePicture(final String userID){
+        final Bitmap[] bitmap = {null};
+        String imageURL = "https://graph.facebook.com/" + userID + "/picture?type=large";
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String imageURL;
+//
+//                imageURL = "https://graph.facebook.com/" + userID + "/picture?type=small";
+//                InputStream in = null;
+//                try {
+//                    in = (InputStream) new URL(imageURL).getContent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                bitmap[0] = BitmapFactory.decodeStream(in);
+//
+//
+//            }
+//        });
+//        t.start();
+//        try {
+//            t.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+        return imageURL;
+    }
+
     public void customLoadMoreDataFromApi(int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
     }
+
     @Override
     public void onBackPressed() {
         Intent i = new Intent(getApplicationContext(),
@@ -502,6 +590,20 @@ public class RankingActivity extends AppCompatActivity {
                         iCounter++;
 
                     }
+                    int currentUserPosition = 0;
+                    List <String >myList = new LinkedList<>();
+                    //new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                    if (Arrays.asList(UsrsobjIDsTab).contains(MainActivity.user.getUserObjectId())) {
+
+                        //UsrsobjIDsTab = clean(UsrsobjIDsTab);
+                        myList = Arrays.asList(UsrsobjIDsTab);
+
+
+                        //myList.removeAll(null);
+
+                        //currentUserPosition = new String (String.valueOf(Arrays.asList(UsrsobjIDsTab))).indexOf(MainActivity.user.getUserObjectId());
+                        currentUserPosition = myList.indexOf(MainActivity.user.getUserObjectId());
+                    }
 
                     //   System.out.println(e.getMessage() + "     detail " + e.getDetail());
 
@@ -516,6 +618,7 @@ public class RankingActivity extends AppCompatActivity {
                     final LayoutInflater mInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                     final ArrayAdapter adapter = new ArrayAdapter< String>(RankingActivity.this, R.layout.activity_listview,R.id.itemTextView , RankingList) {
+                        ImageLoader imageLoader = ImageLoader.getInstance();
 
                         @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
@@ -536,16 +639,19 @@ public class RankingActivity extends AppCompatActivity {
 
                             if (RankingActivity.Highlighted.contains(position)) {
 
+
+                                ImageView fbProfilePic = (ImageView) view.findViewById(R.id.fbProfilePic);
+
                                 String airi  =  getItem(position);
-                                tvName.setBackgroundColor(Color.parseColor("#039be5"));
-
+                                tvName.setBackgroundColor(Color.parseColor("#BBDEFB"));
+                                imageLoader.displayImage(getFacebookProfilePicture(FbProfileID[position]),fbProfilePic);
                                 System.out.println(" the item at the position in the list view : " + airi);
-
                             }
 
                             return view;
                         }
                     }; // simple textview for list item
+
                     listView.setOnScrollListener(new EndlessScrollListener() {
                         @Override
                         public boolean onLoadMore(int page, int totalItemsCount) {
@@ -556,15 +662,23 @@ public class RankingActivity extends AppCompatActivity {
                             return true; // ONLY if more data is actually being loaded; false otherwise.
                         }
                     });
+                    final int finalCurrentUserPosition = currentUserPosition;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             listView.setAdapter(adapter);
+                            if (finalCurrentUserPosition !=0 && !alreadySeen) {
+                                listView.setSelection(finalCurrentUserPosition);
+                                alreadySeen =true;
+                            }
+                            else
                             listView.setSelectionFromTop(currentScrlPosition -2, 0);
+
                         }
                     });
 
-                  //  Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
+
+                    //  Profile2_ScrollingActivity.RankingProgreessDialogue.dismiss();
 //                    btnLoadMore.setOnClickListener(new View.OnClickListener() {
 //
 //                        @Override

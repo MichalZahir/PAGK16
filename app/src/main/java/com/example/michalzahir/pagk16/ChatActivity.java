@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
+import com.backendless.BackendlessUser;
 import com.backendless.Subscription;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
@@ -27,6 +29,7 @@ import com.backendless.messaging.SubscriptionOptions;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.example.michalzahir.pagk16.Helper.GettinQuesQuantityDyn;
+import com.example.michalzahir.pagk16.Helper.chatMessage;
 import com.example.michalzahir.pagk16.UsersDB.Users;
 import com.example.michalzahir.pagk16.model.User;
 import com.facebook.AccessToken;
@@ -43,25 +46,28 @@ import static com.example.michalzahir.pagk16.MainActivity.user;
 import static com.example.michalzahir.pagk16.MainActivity.userName;
 
 public class ChatActivity extends AppCompatActivity {
-    private static final String TAG = "Caht Activity" ;
+    private static final String TAG = "Chat Activity" ;
+
+
     String UserName;
     String UsrsobjIDsTab;
     String UsrsDeviceIDs;
     private EditText history;
     private EditText messageField;
     private TextView chatWithSmbTitleTextView;
-    private String subtopic;
+    private ImageButton sendChatButton;
+    static public String subtopic;
     private SubscriptionOptions subscriptionOptions;
     private PublishOptions publishOptions;
     private Subscription subscription;
     Boolean StartFromNotif = false;
-
+    public static Boolean onChatWindow = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
+        onChatWindow = true;
         Intent intent = getIntent();
         if (intent.hasExtra("fromNotification")&& user==null){
             Thread t = new Thread(new Runnable() {
@@ -92,17 +98,25 @@ public class ChatActivity extends AppCompatActivity {
         String FstUserName = user.getName();
         if(intent.hasExtra("subtopic")){
             subtopic = intent.getStringExtra("subtopic");
+            String MessageSender =intent.getStringExtra("MessageSender");
+            chatMessage cm =chatMessage.findChatMessageByPublisherID(MessageSender,PushReceiver.ChatMessages);
+            if (cm!=null)
+                onReceiveMessage(cm);
         }
             else {
             subtopic = FstUserName.concat( "_with_" ).concat( UserName);
         }
 
         publishOptions = new PublishOptions();
-        publishOptions.setPublisherId( FstUserName);
+        publishOptions.setPublisherId(FstUserName);
         publishOptions.setSubtopic( subtopic );
-
+        publishOptions.putHeader( PublishOptions.ANDROID_TICKER_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TITLE_TAG, getResources().getString( R.string.app_name ) );
+        publishOptions.putHeader( PublishOptions.ANDROID_CONTENT_TEXT_TAG, String.format( ConstantsClass.MESSAGE_SEND, MainActivity.user.getName() ) );
+        publishOptions.putHeader("Chat","Chat");
         subscriptionOptions = new SubscriptionOptions();
         subscriptionOptions.setSubtopic( subtopic );
+        System.out.println("Subtopic : " + subtopic);
         Backendless.Messaging.subscribe( ConstantsClass.DEFAULT_CHANNEL, new AsyncCallback<List<Message>>()
         {
             @Override
@@ -121,19 +135,21 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void handleResponse( Subscription response )
             {
-                super.handleResponse( response );
+                super.handleResponse(response);
                 subscription = response;
+
             }
         } );
     }
     @Override
     protected void onDestroy()
     {
+        onChatWindow = false;
         super.onDestroy();
         //super.onStop();
 
-        if( subscription != null )
-            subscription.cancelSubscription();
+//        if( subscription != null )
+//            subscription.cancelSubscription();
     }
 
     @Override
@@ -141,36 +157,50 @@ public class ChatActivity extends AppCompatActivity {
     {
         super.onResume();
 
-        if( subscription != null )
-            subscription.resumeSubscription();
+//        if( subscription != null )
+//            subscription.resumeSubscription();
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
+        onChatWindow = false;
 
-        if( subscription != null )
-            subscription.pauseSubscription();
+//        if( subscription != null )
+//            subscription.pauseSubscription();
     }
     private void onReceiveMessage( List<Message> messages )
     {
-
-
 
         for( Message message : messages )
         {
             history.setText( history.getText() + "\n" + message.getPublisherId() + ": " + message.getData() );
         }
     }
+    private void onReceiveMessage( chatMessage chatMessages )
+    {
+
+        for( String Message : chatMessages.getMessages() )
+        {
+            history.setText( history.getText() + "\n" + chatMessages.getPublisherID() + ": " + Message );
+
+        }
+    }
     private void initUI()
     {
         history = (EditText) findViewById( R.id.historyField );
+        sendChatButton = (ImageButton) findViewById(R.id.sendChatButton);
         messageField = (EditText) findViewById( R.id.messageField );
         chatWithSmbTitleTextView = (TextView) findViewById( R.id.textChatWithSmbTitle );
 
         chatWithSmbTitleTextView.setText( String.format(   "Waiting for %s to accept invitation..."  , UserName ) );
-
+        sendChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendMessage();
+            }
+        });
         messageField.setOnKeyListener( new View.OnKeyListener()
         {
             @Override
@@ -180,6 +210,36 @@ public class ChatActivity extends AppCompatActivity {
             }
         } );
     }
+    private void onSendMessage(){
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
+        deliveryOptions.setPushPolicy( PushPolicyEnum.ALSO );
+        deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
+
+            String message = messageField.getText().toString();
+            publishOptions.putHeader("message",message);
+            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
+
+            if( message == null || message.equals( "" ) ){
+
+            }
+            else {
+                Backendless.Messaging.publish((Object) message, publishOptions, deliveryOptions, new DefaultCallback<MessageStatus>(ChatActivity.this, "Sending...") {
+                    @Override
+                    public void handleResponse(MessageStatus response) {
+                        super.handleResponse(response);
+                        PublishStatusEnum messageStatus = response.getStatus();
+
+                        if (messageStatus == PublishStatusEnum.SCHEDULED) {
+                            messageField.setText("");
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Message status: " + messageStatus.toString(), Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+            }
+
+
+    }
     private boolean onSendMessage( int keyCode, KeyEvent keyEvent )
     {
         DeliveryOptions deliveryOptions = new DeliveryOptions();
@@ -188,6 +248,8 @@ public class ChatActivity extends AppCompatActivity {
         if( keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP )
         {
             String message = messageField.getText().toString();
+            publishOptions.putHeader("message",message);
+            publishOptions.putHeader("MessageSender",publishOptions.getPublisherId());
 
             if( message == null || message.equals( "" ) )
                 return true;
@@ -198,7 +260,6 @@ public class ChatActivity extends AppCompatActivity {
                 public void handleResponse( MessageStatus response )
                 {
                     super.handleResponse( response );
-
                     PublishStatusEnum messageStatus = response.getStatus();
 
                     if( messageStatus == PublishStatusEnum.SCHEDULED )
@@ -252,6 +313,11 @@ public class ChatActivity extends AppCompatActivity {
 
             playerObejtID.setUserObjectID(s);
             user.setUserObjectId(s);
+            BackendlessUser backendlessUser = Backendless.UserService.findById(s);
+            UserName = (String) backendlessUser.getProperty("name");
+            MainActivity.user.setName(UserName);
+            MainActivity.userName.setUserName(UserName);
+            MainActivity.userName.setUserNameUSrObjectID(s);
 
         }
         // token for fb login
@@ -319,6 +385,7 @@ public class ChatActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+        onChatWindow = false;
         if (StartFromNotif) {
             Intent i = new Intent(getApplicationContext(),
                     MainActivity.class);

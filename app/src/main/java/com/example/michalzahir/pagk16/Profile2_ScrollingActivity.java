@@ -462,6 +462,8 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        moveTaskToBack(true);
+
     }
 
 

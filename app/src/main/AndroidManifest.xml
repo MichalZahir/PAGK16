@@ -3,6 +3,7 @@
     package="com.example.michalzahir.pagk16">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -92,8 +93,9 @@
 
         <activity android:name=".fakeActivity.ActivityFake" />
         <activity android:name=".SavedGames.SavedGamesActivity" />
-        <activity android:name=".RankingActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RankingActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".splashScreenActivity" />
         <activity
             android:name=".Splashes.splashFbLoginActivity"
@@ -104,7 +106,8 @@
             android:name=".RankingProfileActivityTemp"
             android:label="@string/title_activity_ranking_temp"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".RankingProfPicActivity"></activity>
     </application>
 
 </manifest>

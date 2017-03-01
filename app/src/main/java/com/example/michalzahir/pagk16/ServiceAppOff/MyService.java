@@ -33,7 +33,7 @@ public class MyService extends AbstractService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Toast.makeText(getApplicationContext(), "onTaskRemoved called", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Your game was saved", Toast.LENGTH_LONG).show();
         System.out.println("onTaskRemoved called");
         com.example.michalzahir.pagk16.SavedGames.GamesSaving.SaveGame(this.getClass().getSimpleName());
 

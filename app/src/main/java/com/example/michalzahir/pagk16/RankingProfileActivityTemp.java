@@ -1,5 +1,6 @@
 package com.example.michalzahir.pagk16;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -104,8 +105,10 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
             public void onClick(View v)
             {
                 //actions
-
-                ProfilPicture.setScaleType(ImageView.ScaleType.FIT_XY);
+                Intent i = new Intent(RankingProfileActivityTemp.this,RankingProfPicActivity.class);
+                i.putExtra("ProfilePicture",((BitmapDrawable)ProfilPicture.getDrawable()).getBitmap());
+                startActivity(i);
+                //ProfilPicture.setScaleType(ImageView.ScaleType.FIT_XY);
 
             }
 
@@ -182,8 +185,9 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
         publishOptions.putHeader("UsrsDeviceIDsTab",UsrsDeviceIDs);
         publishOptions.putHeader("UsrsobjIDsTab",UsrsobjIDsTab);
         publishOptions.putHeader("UsrsNamesTab",UserName);
+        publishOptions.putHeader("noCheck","noCheck");
         publishOptions.putHeader("PublisherUsrName",MainActivity.userName.getUserName());
-
+        publishOptions.putHeader("MessageSender",MainActivity.userName.getUserName());
         DeliveryOptions deliveryOptions = new DeliveryOptions();
         deliveryOptions.setPushPolicy( PushPolicyEnum.ONLY );
         deliveryOptions.addPushSinglecast( UsrsDeviceIDs);
@@ -206,6 +210,7 @@ public class RankingProfileActivityTemp extends AppCompatActivity {
                     chatIntent.putExtra("UsrsDeviceIDsTab",UsrsDeviceIDs);
                     chatIntent.putExtra("UsrsobjIDsTab",UsrsobjIDsTab);
                     chatIntent.putExtra("UsrsNamesTab",UserName);
+                    chatIntent.putExtra("noCheck","noCheck");
                     chatIntent.putExtra("subtopic", message_subtopic );
                     startActivity( chatIntent );
                     //finish();
