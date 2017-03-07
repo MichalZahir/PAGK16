@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                     playerObejtID.setUserObjectID(s);
                     user.setUserObjectId(s);
+
                     Intent i = new Intent(AppContext,
                             Profile2_ScrollingActivity.class);
                     startActivity(i);
@@ -354,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
                     String DeviceID = null;
                     try {
                         DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                        user.setDeviceID(DeviceID);
                     } catch (BackendlessException e) {
                         RegisterDeviceUpdateUserDeviceID();
                     }
@@ -448,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
                         String DeviceID = null;
                         try {
                             DeviceID = Backendless.Messaging.getDeviceRegistration().getDeviceId();
+                            user.setDeviceID(DeviceID);
                         } catch (BackendlessException e) {
                             RegisterDeviceUpdateUserDeviceID(FbProfileID);
                         }
@@ -539,6 +542,7 @@ public class MainActivity extends AppCompatActivity {
                 Points = q.getPOINTS();
                 OldRanking = q.getOLDRANKING();
                 Profile2_ScrollingActivity.AnsweredQuestonsIds = q.getAnsweredQuestionsIDs();
+                user.setDeviceID(q.getDevice_ID());
             }
         } catch (BackendlessException fault) {
             Log.d(TAG, "fault trying to get FB users object ID" + fault.getMessage() + fault.getCode() + fault.getDetail() + fault.getClass());

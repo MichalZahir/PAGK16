@@ -131,6 +131,7 @@ public class Profile2_ScrollingActivity extends AppCompatActivity {
                     usersCount = (int) backendlessUser.getProperty("usersCount");
                     points = (int) backendlessUser.getProperty("POINTS");
                     AnsweredQuestonsIds = (String) backendlessUser.getProperty("AnsweredQuestionsIDs");
+                    MainActivity.user.setDeviceID((String)backendlessUser.getProperty("Device_ID"));
                     MainActivity.user.setName(UserName);
 
 //                            if (OldRanking < Ranking) {
